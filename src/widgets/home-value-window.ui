@@ -1,0 +1,1378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HomeValueWindow</class>
+ <widget class="QMainWindow" name="HomeValueWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1080</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1080</width>
+    <height>720</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Home Value Prediction</string>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>32</width>
+    <height>32</height>
+   </size>
+  </property>
+  <widget class="QWidget" name="main">
+   <layout class="QVBoxLayout" name="main_layout" stretch="1,0">
+    <property name="spacing">
+     <number>10</number>
+    </property>
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <property name="topMargin">
+     <number>10</number>
+    </property>
+    <property name="rightMargin">
+     <number>10</number>
+    </property>
+    <property name="bottomMargin">
+     <number>10</number>
+    </property>
+    <item>
+     <widget class="QWidget" name="header_widget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>80</height>
+       </size>
+      </property>
+      <layout class="QHBoxLayout" name="header_layout" stretch="0,0">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="Controller" name="controller" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>28</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="settings_button">
+         <property name="minimumSize">
+          <size>
+           <width>60</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>60</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>widgets/icons/preferences.svg</normaloff>widgets/icons/preferences.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="shortcut">
+          <string>F12</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="pages">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="home_page">
+       <layout class="QHBoxLayout" name="home_layout" stretch="3,1">
+        <property name="spacing">
+         <number>20</number>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="home_data_layout" stretch="0,0">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <widget class="QStackedWidget" name="pages_form">
+            <property name="currentIndex">
+             <number>2</number>
+            </property>
+            <widget class="QWidget" name="page_form_basic">
+             <widget class="QLabel" name="label_predicted_price_2">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>20</y>
+                <width>371</width>
+                <height>53</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Property Information</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_3">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>140</y>
+                <width>178</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Acreage&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_8">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>220</y>
+                <width>271</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Construction Year&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_9">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>100</y>
+                <width>271</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Property Type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="comboBox">
+              <property name="geometry">
+               <rect>
+                <x>510</x>
+                <y>100</y>
+                <width>201</width>
+                <height>31</height>
+               </rect>
+              </property>
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>Single-Family Home</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Mobile Home</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Townhouse</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Condominium</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Cluster</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Cooperative</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Duplex</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Triplex</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Quadriplex</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Manufactured/Modular</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>General Residential</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QDoubleSpinBox" name="doubleSpinBox">
+              <property name="geometry">
+               <rect>
+                <x>592</x>
+                <y>150</y>
+                <width>101</width>
+                <height>29</height>
+               </rect>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="decimals">
+               <number>3</number>
+              </property>
+              <property name="maximum">
+               <double>10000.000000000000000</double>
+              </property>
+             </widget>
+             <widget class="QDateEdit" name="dateEdit">
+              <property name="geometry">
+               <rect>
+                <x>600</x>
+                <y>230</y>
+                <width>110</width>
+                <height>29</height>
+               </rect>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="minimumDateTime">
+               <datetime>
+                <hour>0</hour>
+                <minute>0</minute>
+                <second>0</second>
+                <year>1800</year>
+                <month>9</month>
+                <day>14</day>
+               </datetime>
+              </property>
+              <property name="minimumDate">
+               <date>
+                <year>1800</year>
+                <month>9</month>
+                <day>14</day>
+               </date>
+              </property>
+              <property name="displayFormat">
+               <string>yyyy</string>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page">
+             <widget class="QLabel" name="label_predicted_price_4">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>20</y>
+                <width>371</width>
+                <height>53</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Home Information</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_10">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>240</y>
+                <width>271</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Bathrooms&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_11">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>200</y>
+                <width>271</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Bedrooms&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_12">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>160</y>
+                <width>271</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Floors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QSpinBox" name="spinBox_2">
+              <property name="geometry">
+               <rect>
+                <x>610</x>
+                <y>170</y>
+                <width>101</width>
+                <height>29</height>
+               </rect>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>1</number>
+              </property>
+             </widget>
+             <widget class="QSpinBox" name="spinBox_3">
+              <property name="geometry">
+               <rect>
+                <x>600</x>
+                <y>210</y>
+                <width>101</width>
+                <height>29</height>
+               </rect>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="minimum">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="value">
+               <number>3</number>
+              </property>
+             </widget>
+             <widget class="QSpinBox" name="spinBox_4">
+              <property name="geometry">
+               <rect>
+                <x>600</x>
+                <y>250</y>
+                <width>101</width>
+                <height>29</height>
+               </rect>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="minimum">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="value">
+               <number>2</number>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_15">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>280</y>
+                <width>271</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of Half Bathrooms&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QSpinBox" name="spinBox_5">
+              <property name="geometry">
+               <rect>
+                <x>600</x>
+                <y>280</y>
+                <width>101</width>
+                <height>29</height>
+               </rect>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="minimum">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <number>20</number>
+              </property>
+              <property name="value">
+               <number>0</number>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_2">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>90</y>
+                <width>251</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Interior Square Footage&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QSpinBox" name="spinBox">
+              <property name="geometry">
+               <rect>
+                <x>610</x>
+                <y>100</y>
+                <width>101</width>
+                <height>29</height>
+               </rect>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="minimum">
+               <number>100</number>
+              </property>
+              <property name="maximum">
+               <number>1000000</number>
+              </property>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_2">
+             <widget class="QLabel" name="label_predicted_price_5">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>20</y>
+                <width>371</width>
+                <height>53</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Home Information</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_4">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>100</y>
+                <width>178</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Heating System&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="comboBox_2">
+              <property name="geometry">
+               <rect>
+                <x>530</x>
+                <y>90</y>
+                <width>201</width>
+                <height>31</height>
+               </rect>
+              </property>
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>Central</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Baseboard</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Floor / Wall</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Heat Pump</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Solar</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Forced Air</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Radiant</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Gravity</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Yes, but Unknown Type</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>No Heating System</string>
+               </property>
+              </item>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_14">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>260</y>
+                <width>271</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Garage Bays&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QSpinBox" name="spinBox_6">
+              <property name="geometry">
+               <rect>
+                <x>600</x>
+                <y>260</y>
+                <width>101</width>
+                <height>29</height>
+               </rect>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>20</number>
+              </property>
+              <property name="value">
+               <number>1</number>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="button_garage">
+              <property name="geometry">
+               <rect>
+                <x>550</x>
+                <y>260</y>
+                <width>40</width>
+                <height>40</height>
+               </rect>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>widgets/icons/preferences.svg</normaloff>widgets/icons/preferences.svg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>32</width>
+                <height>32</height>
+               </size>
+              </property>
+              <property name="shortcut">
+               <string>F12</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_6">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>140</y>
+                <width>301</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Air Conditioning System&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QComboBox" name="comboBox_3">
+              <property name="geometry">
+               <rect>
+                <x>530</x>
+                <y>130</y>
+                <width>201</width>
+                <height>31</height>
+               </rect>
+              </property>
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>Central</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Wall Units</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Refrigeration</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Yes, but Unknown Type</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>No</string>
+               </property>
+              </item>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="page_3">
+             <widget class="QLabel" name="label_predicted_price_6">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>20</y>
+                <width>371</width>
+                <height>53</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Location Information</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_predicted_accuracy_5">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>100</y>
+                <width>178</width>
+                <height>36</height>
+               </rect>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;County Zoning Code&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
+             <widget class="QLineEdit" name="lineEdit">
+              <property name="geometry">
+               <rect>
+                <x>600</x>
+                <y>100</y>
+                <width>113</width>
+                <height>31</height>
+               </rect>
+              </property>
+             </widget>
+             <widget class="QPushButton" name="prediction_button">
+              <property name="geometry">
+               <rect>
+                <x>610</x>
+                <y>300</y>
+                <width>120</width>
+                <height>105</height>
+               </rect>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Predict
+Price</string>
+              </property>
+             </widget>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="home_bottom_layout" stretch="1">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="prediction_accuracy_layout">
+              <property name="spacing">
+               <number>10</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="prediction_layout" stretch="0,1">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="label_predicted_price">
+                  <property name="font">
+                   <font>
+                    <pointsize>16</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Predicted Price</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="editor_predicted_price">
+                  <property name="font">
+                   <font>
+                    <pointsize>24</pointsize>
+                    <italic>true</italic>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>$259,999.99</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="accuracy_layout" stretch="0,1">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="label_predicted_accuracy">
+                  <property name="font">
+                   <font>
+                    <pointsize>11</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Projected Error Margin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="editor_predicted_accuracy">
+                  <property name="font">
+                   <font>
+                    <pointsize>16</pointsize>
+                    <italic>true</italic>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>5.72%</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="history_layout">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="history_label">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>20</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>History</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="margin">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QScrollArea" name="history_scroll">
+            <property name="styleSheet">
+             <string notr="true">ForecastWidget &gt; .QFrame {
+  border: 2px solid gray;
+  border-radius: 10px;
+}</string>
+            </property>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="history_scroll_widget">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>233</width>
+               <height>478</height>
+              </rect>
+             </property>
+             <layout class="QHBoxLayout" name="history_scroll_layout">
+              <property name="spacing">
+               <number>10</number>
+              </property>
+              <property name="leftMargin">
+               <number>10</number>
+              </property>
+              <property name="topMargin">
+               <number>10</number>
+              </property>
+              <property name="rightMargin">
+               <number>10</number>
+              </property>
+              <property name="bottomMargin">
+               <number>10</number>
+              </property>
+              <item>
+               <widget class="QWidget" name="history_widget" native="true"/>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="settings_page">
+       <layout class="QHBoxLayout" name="settings_layout" stretch="1,3">
+        <property name="spacing">
+         <number>10</number>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="general_group">
+          <property name="title">
+           <string>General</string>
+          </property>
+          <layout class="QVBoxLayout" name="general_layout">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <property name="bottomMargin">
+            <number>10</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="unit_layout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <property name="leftMargin">
+              <number>10</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>10</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="unit_label">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                </font>
+               </property>
+               <property name="cursor">
+                <cursorShape>ArrowCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Some Setting</string>
+               </property>
+               <property name="margin">
+                <number>0</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="unit_button">
+               <property name="minimumSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>widgets/icons/confirm.svg</normaloff>widgets/icons/confirm.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="general_spacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="project_credits_label">
+             <property name="minimumSize">
+              <size>
+               <width>180</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;MEMBERS&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&lt;br/&gt;Sierra Rose&lt;br/&gt;Mason Garrett&lt;br/&gt;Carter Adams&lt;br/&gt;Uchenna Ibe&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;SCRUM MASTER&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Sierra Rose&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;PROGRAM DESIGN&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Mason Garrett&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;UI DESIGN&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Mason Garrett&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::TextFormat::RichText</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignBottom|Qt::AlignmentFlag::AlignHCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="query_group">
+          <property name="title">
+           <string>Other</string>
+          </property>
+          <layout class="QVBoxLayout" name="query_layout">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <property name="bottomMargin">
+            <number>10</number>
+           </property>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="status">
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="sizeGripEnabled">
+    <bool>false</bool>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Controller</class>
+   <extends>QWidget</extends>
+   <header>controller.h</header>
+   <container>1</container>
+   <slots>
+    <slot>categoryChanged()</slot>
+    <slot>locationChanged()</slot>
+    <slot>refreshRequested()</slot>
+    <slot>settingsRequested(bool)</slot>
+    <slot>metricChanged(bool)</slot>
+    <slot>locationSelected(QListWidgetItem*)</slot>
+    <slot>sqlPagesDec()</slot>
+    <slot>sqlPagesInc()</slot>
+    <slot>locationButtonClicked()</slot>
+    <slot>locationValueChanged()</slot>
+    <slot>viewChanged()</slot>
+    <slot>dateChanged(QDateTime)</slot>
+    <slot>comparisonChanged()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>settings_button</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>controller</receiver>
+   <slot>settingsRequested(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1042</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>776</x>
+     <y>70</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
