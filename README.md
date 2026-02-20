@@ -5,3 +5,5 @@
 Use the model.py file to run the machine learning model.
 
 Use the runner.py file to run the UI.
+
+Package install command: python -m pip install pyside6
