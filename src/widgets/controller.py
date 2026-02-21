@@ -61,9 +61,36 @@ class Controller(QWidget):
 
         self.mainWindow = window
         self.pages = self.getWidgetChild(QStackedWidget, "pages")
+        self.form = self.getWidgetChild(QStackedWidget, "pages_form")
+        self.form.setCurrentIndex(0)
+
+        self.buttonPredictionBack = self.getWidgetChild(QPushButton, "button_back")
+        self.buttonPredictionNext = self.getWidgetChild(QPushButton, "button_next")
 
         self.pages.setCurrentIndex(0)
     
     @Slot(bool)
     def settingsRequested(self, on: bool):
         self.pages.setCurrentIndex(int(on))
+
+    @Slot()
+    def predictionBackClicked(self):
+        index = self.form.currentIndex()
+        if index == 0: return
+
+        index -= 1
+        self.form.setCurrentIndex(index)
+
+        self.buttonPredictionNext.setEnabled(True)
+        if index == 0: self.buttonPredictionBack.setEnabled(False)
+
+    @Slot()
+    def predictionNextClicked(self):
+        index = self.form.currentIndex()
+        if index == self.form.count() - 1: return
+
+        index += 1
+        self.form.setCurrentIndex(index)
+
+        self.buttonPredictionBack.setEnabled(True)
+        if index == self.form.count() - 1: self.buttonPredictionNext.setEnabled(False)
