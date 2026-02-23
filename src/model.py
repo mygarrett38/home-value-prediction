@@ -58,16 +58,14 @@ def main():
 
     df.drop(to_remove, axis=1, inplace=True)
 
-    # print(*(col for col in df.columns))
-
     df = df[(df['target'] > -1) & (df['target'] < 1)]
 
     for col in objects:
         le = LabelEncoder()
-        df[col] = le.fit_transform(df[col])
+        df[col] = le.fit_transform(df[col]) # type: ignore
 
     # Model Training Step
-    features = df.drop(['parcelid'], axis=1)
+    features = df.drop(['parcelid', 'target'], axis=1)
     target = df['target'].values
 
     X_train, X_val, Y_train, Y_val = train_test_split(features, target, test_size=0.1, random_state=22)
