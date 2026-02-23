@@ -122,7 +122,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>widgets/icons/preferences.svg</normaloff>widgets/icons/preferences.svg</iconset>
+           <normaloff>:/icons/preferences.svg</normaloff>:/icons/preferences.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -209,7 +209,7 @@
                 </font>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>2</number>
                </property>
                <widget class="QWidget" name="page_property">
                 <layout class="QFormLayout" name="layout_property">
@@ -996,16 +996,13 @@
                      </property>
                      <property name="icon">
                       <iconset>
-                       <normaloff>widgets/icons/preferences.svg</normaloff>widgets/icons/preferences.svg</iconset>
+                       <normaloff>:/icons/confirm.svg</normaloff>:/icons/confirm.svg</iconset>
                      </property>
                      <property name="iconSize">
                       <size>
                        <width>32</width>
                        <height>32</height>
                       </size>
-                     </property>
-                     <property name="shortcut">
-                      <string>F12</string>
                      </property>
                      <property name="checkable">
                       <bool>true</bool>
@@ -1277,7 +1274,7 @@
                 <widget class="QPushButton" name="button_next">
                  <property name="minimumSize">
                   <size>
-                   <width>120</width>
+                   <width>80</width>
                    <height>40</height>
                   </size>
                  </property>
@@ -1304,7 +1301,7 @@
                 <widget class="QPushButton" name="button_back">
                  <property name="minimumSize">
                   <size>
-                   <width>120</width>
+                   <width>80</width>
                    <height>40</height>
                   </size>
                  </property>
@@ -1334,7 +1331,7 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>120</width>
+                   <width>80</width>
                    <height>40</height>
                   </size>
                  </property>
@@ -1382,9 +1379,9 @@
            <number>10</number>
           </property>
           <item>
-           <widget class="QLabel" name="graph">
-            <property name="text">
-             <string/>
+           <widget class="GraphDisplay" name="graph" native="true">
+            <property name="styleSheet">
+             <string notr="true">border-radius: 10px;</string>
             </property>
            </widget>
           </item>
@@ -1659,7 +1656,7 @@
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>widgets/icons/confirm.svg</normaloff>widgets/icons/confirm.svg</iconset>
+                 <normaloff>:/icons/confirm.svg</normaloff>:/icons/confirm.svg</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -1751,6 +1748,12 @@
     <slot>predictionNextClicked()</slot>
     <slot>predictionBackClicked()</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>GraphDisplay</class>
+   <extends>QWidget</extends>
+   <header>graph.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>
