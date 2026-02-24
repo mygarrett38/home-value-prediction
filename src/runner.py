@@ -10,6 +10,8 @@ from PySide6.QtWidgets import QApplication, QMainWindow
 from PySide6.QtGui import QIcon
 from PySide6.QtUiTools import QUiLoader
 
+import widgets.icons._icons
+
 def absolutePath(relative_path: str):
     return os.path.join(os.path.dirname(__file__), relative_path)
 
@@ -25,7 +27,7 @@ class HomeValueApplication(QApplication):
         self.controller = window.findChild(Controller, name="controller", options=Qt.FindChildOption.FindChildrenRecursively)
         self.controller.setMainWindow(window) # type: ignore
 
-        window.setWindowIcon(QIcon(absolutePath("widgets/icons/refresh.svg")))
+        window.setWindowIcon(QIcon(":/icons/confirm.svg"))
 
         window.showMaximized()
         window.destroyed.connect(self.quit)
