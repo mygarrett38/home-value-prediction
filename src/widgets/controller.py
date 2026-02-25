@@ -1,6 +1,7 @@
 from itertools import cycle
 
 from PySide6.QtCore import (
+    QEvent,
     Qt,
     QObject,
     Signal,
@@ -14,6 +15,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QMainWindow,
     QStackedWidget, 
+    QTableWidget, 
     QLabel,
     QPushButton, 
     QDoubleSpinBox, 
@@ -60,14 +62,36 @@ class Controller(QWidget):
         if hasattr(self, "mainWindow"): return
 
         self.mainWindow = window
+        self.mainWindow.installEventFilter(self)
+
         self.pages = self.getWidgetChild(QStackedWidget, "pages")
         self.form = self.getWidgetChild(QStackedWidget, "pages_form")
         self.form.setCurrentIndex(0)
+
+        self.predictionTable = self.getWidgetChild(QTableWidget, "prediction_table")
 
         self.buttonPredictionBack = self.getWidgetChild(QPushButton, "button_back")
         self.buttonPredictionNext = self.getWidgetChild(QPushButton, "button_next")
 
         self.pages.setCurrentIndex(0)
+
+    def eventFilter(self, watched: QObject, event: QEvent) -> bool:
+        match event.type():
+            case QEvent.Type.Resize:
+                self.setTableAlignment()
+                
+            case QEvent.Type.ChildRemoved: # Prevent errors with premature Python garbage collection
+                return True        
+
+        return super().eventFilter(watched, event)
+
+    def setTableAlignment(self):
+        self.predictionTable.setColumnWidth(0, self.predictionTable.width() * 2 // 3)
+        self.predictionTable.setColumnWidth(1, self.predictionTable.width() * 1 // 6)
+        self.predictionTable.setColumnWidth(2, self.predictionTable.width() * 1 // 6)
+
+        for i in range(self.predictionTable.rowCount()):
+            self.predictionTable.setRowHeight(i, self.predictionTable.height() // 7)
     
     @Slot(bool)
     def settingsRequested(self, on: bool):
