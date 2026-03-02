@@ -27,7 +27,7 @@ class HomeValueApplication(QApplication):
         self.controller = window.findChild(Controller, name="controller", options=Qt.FindChildOption.FindChildrenRecursively)
         self.controller.setMainWindow(window) # type: ignore
 
-        window.setWindowIcon(QIcon(":/icons/confirm.svg"))
+        window.setWindowIcon(QIcon(":/icons/home.svg"))
 
         window.showMaximized()
         window.destroyed.connect(self.quit)
