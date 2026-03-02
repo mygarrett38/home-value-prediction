@@ -147,7 +147,7 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="home_page">
-       <layout class="QHBoxLayout" name="home_layout" stretch="1,3,1">
+       <layout class="QHBoxLayout" name="home_layout" stretch="2,3,2">
         <property name="spacing">
          <number>30</number>
         </property>
@@ -1397,7 +1397,7 @@
               </widget>
              </item>
              <item>
-              <layout class="QGridLayout" name="gridLayout">
+              <layout class="QGridLayout" name="layout_prediction_buttons">
                <property name="spacing">
                 <number>10</number>
                </property>
@@ -1896,14 +1896,26 @@
            </property>
            <item>
             <widget class="QScrollArea" name="history_scroll">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
              <property name="styleSheet">
-              <string notr="true">ForecastWidget &gt; .QFrame {
+              <string notr="true">HistoryEntry {
   border: 2px solid gray;
   border-radius: 10px;
 }</string>
              </property>
              <property name="verticalScrollBarPolicy">
-              <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+              <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
              </property>
              <property name="horizontalScrollBarPolicy">
               <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
@@ -1916,11 +1928,11 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>99</width>
-                <height>559</height>
+                <width>193</width>
+                <height>563</height>
                </rect>
               </property>
-              <layout class="QHBoxLayout" name="history_scroll_layout">
+              <layout class="QVBoxLayout" name="history_scroll_layout">
                <property name="spacing">
                 <number>10</number>
                </property>

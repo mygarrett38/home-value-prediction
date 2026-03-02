@@ -1,5 +1,7 @@
 from itertools import cycle
 
+from widgets.historyEntry import HistoryEntry
+
 from PySide6.QtCore import (
     QEvent,
     Qt,
@@ -69,6 +71,14 @@ class Controller(QWidget):
         self.form.setCurrentIndex(0)
 
         self.predictionTable = self.getWidgetChild(QTableWidget, "prediction_table")
+
+        self.historyBarLayout = self.getWidgetChild(QVBoxLayout, "history_scroll_layout")
+        self.historyBarLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        for i in [["123 Johnson St", "2,540 sq. ft.", "3 bed", "2 bath"], ["87 University Dr", "5,001 sq. ft.", "5 bed", "3.5 bath"]]:
+            entry = HistoryEntry(self)
+            entry.setAddress(i[0])
+            entry.setPropertyAttributes(i[1:])
+            self.historyBarLayout.addWidget(entry)
 
         self.buttonPredictionBack = self.getWidgetChild(QPushButton, "button_back")
         self.buttonPredictionNext = self.getWidgetChild(QPushButton, "button_next")
