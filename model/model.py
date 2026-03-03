@@ -1,13 +1,17 @@
-import numpy as np
+#################################################################
+#   This file was used to create the .pkl files that contain    #
+#   the models. Use this file as a reference, but DO NOT RUN    #
+#   IT! The models have already been generated!                 #
+#################################################################
+
 import pandas as pd
-import matplotlib.pyplot as plt
 import os.path
+import pickle
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.metrics import mean_absolute_error as mae
-from sklearn.linear_model import LinearRegression, Lasso, Ridge
-from sklearn.ensemble import RandomForestRegressor
-from xgboost import XGBRegressor
+from sklearn.metrics import mean_squared_log_error as msle
+from xgboost import XGBRegressor, XGBRFRegressor
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -24,7 +28,7 @@ def main():
         if df[col].nunique() == 1:
             to_remove.append(col)
 
-        # Removing columns with more than 90% of the
+        # Removing columns with more than 80% of the
         # rows as null values.
         elif (df[col].isnull()).mean() > 0.80:
             to_remove.append(col)
@@ -35,7 +39,7 @@ def main():
     
     # Remove NaNs
     for col in df.columns:
-        if df[col].dtype == 'object':
+        if df[col].dtype == 'object' or col.endswith("typeid"):
             df[col] = df[col].fillna(df[col].mode()[0])
         elif df[col].dtype in ("int64", "float64"):
             df[col] = df[col].fillna(df[col].mean())
@@ -68,24 +72,24 @@ def main():
     features = df.drop(['parcelid', 'target'], axis=1)
     target = df['target'].values
 
-    X_train, X_val, Y_train, Y_val = train_test_split(features, target, test_size=0.1, random_state=22)
+    X_train, X_val, Y_train, Y_val = train_test_split(features, target)
     
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_val = scaler.transform(X_val)
 
     # Model Evaluation Step
-    for model in [LinearRegression(), XGBRegressor(), Lasso(), RandomForestRegressor(), Ridge()]:
-        model.fit(X_train, Y_train)
+    model = XGBRegressor()
+    model.fit(X_train, Y_train)
 
-        print(f'{model} : ')
+    train_preds = model.predict(X_train)
+    print('  Training Error:', end=" ")
+    print(f"{np.sqrt(msle(Y_train, train_preds)):.6%}")
 
-        train_preds = model.predict(X_train)
-        print('Training Error : ', mae(Y_train, train_preds))
-
-        val_preds = model.predict(X_val)
-        print('Validation Error : ', mae(Y_val, val_preds))
-        print()
+    val_preds = model.predict(X_val)
+    print('Validation Error:', end=" ")
+    print(f"{np.sqrt(msle(Y_val, val_preds)):.6%}")
+    print()
 
 if __name__ == "__main__":
     main()
