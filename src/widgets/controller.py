@@ -51,8 +51,8 @@ class Controller(QWidget):
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
 
-        #title_label = QLabel("Home Value Prediction", alignment=Qt.AlignmentFlag.AlignCenter)
-        #main_layout.addWidget(title_label)
+        title_label = QLabel("Home Value Prediction", alignment=Qt.AlignmentFlag.AlignCenter)
+        main_layout.addWidget(title_label)
 
 
     def getWidgetChild(self, child_type: type[PlaceholderType], name: str) -> PlaceholderType:
@@ -65,11 +65,6 @@ class Controller(QWidget):
 
         self.mainWindow = window
         self.mainWindow.installEventFilter(self)
-
-        buttonPredict = self.getWidgetChild(QPushButton, "button_predict")
-        buttonVisualize = self.getWidgetChild(QPushButton, "button_visualize")
-        buttonSettings = self.getWidgetChild(QPushButton, "settings_button")
-        self.navButtons = [buttonPredict, buttonVisualize, buttonSettings]
 
         self.pages = self.getWidgetChild(QStackedWidget, "pages")
         self.form = self.getWidgetChild(QStackedWidget, "pages_form")
@@ -91,7 +86,7 @@ class Controller(QWidget):
         self.buttonPredictionStart = self.getWidgetChild(QPushButton, "button_predict_start")
         self.buttonPredictionStart.setVisible(False)
 
-        self.pages.setCurrentIndex(0)
+        self.pages.setCurrentIndex(1)
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:
         match event.type():
@@ -112,23 +107,22 @@ class Controller(QWidget):
 
         #for i in range(self.predictionTable.rowCount()):
         #    self.predictionTable.setRowHeight(i, self.predictionTable.height() // 7)
-
-    def setCurrentPage(self, page: int):
-        self.pages.setCurrentIndex(page)
-        for i in range(len(self.navButtons)):
-            self.navButtons[i].setChecked(i == page)
-
-    @Slot()
-    def predictModeClicked(self):
-        self.setCurrentPage(0)
-
-    @Slot()
-    def visualizeModeClicked(self):
-        self.setCurrentPage(1)
     
+    @Slot(bool)
+    def settingsRequested(self, on: bool):
+        self.pages.setCurrentIndex(2 if on else 1)
+
     @Slot()
-    def settingsRequested(self):
-        self.setCurrentPage(2)
+    def addClicked(self):
+        self.pages.setCurrentIndex(0)
+
+    @Slot()
+    def editClicked(self):
+        self.pages.setCurrentIndex(0)
+
+    @Slot()
+    def deleteClicked(self):
+        self.pages.setCurrentIndex(0)
 
     @Slot()
     def predictionBackClicked(self):
@@ -138,7 +132,8 @@ class Controller(QWidget):
         index -= 1
         self.form.setCurrentIndex(index)
 
-        self.buttonPredictionNext.setEnabled(True)
+        self.buttonPredictionStart.setVisible(False)
+        self.buttonPredictionNext.setVisible(True)
         if index == 0: self.buttonPredictionBack.setEnabled(False)
 
     @Slot()
@@ -150,4 +145,10 @@ class Controller(QWidget):
         self.form.setCurrentIndex(index)
 
         self.buttonPredictionBack.setEnabled(True)
-        if index == self.form.count() - 1: self.buttonPredictionNext.setEnabled(False)
+        if index == self.form.count() - 1:
+            self.buttonPredictionStart.setVisible(True)
+            self.buttonPredictionNext.setVisible(False)
+
+    @Slot()
+    def predictionStartClicked(self):
+        self.pages.setCurrentIndex(1)

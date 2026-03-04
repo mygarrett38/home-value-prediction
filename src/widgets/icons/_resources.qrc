@@ -1,9 +1,11 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
 <qresource prefix="icons/">
+    <file>add.svg</file>
     <file>confirm.svg</file>
+    <file>edit.svg</file>
+    <file>delete.svg</file>
     <file>home.svg</file>
     <file>preferences.svg</file>
-    <file>refresh.svg</file>
 </qresource>
 </RCC>
