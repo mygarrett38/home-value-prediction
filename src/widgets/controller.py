@@ -51,8 +51,8 @@ class Controller(QWidget):
         main_layout.setSpacing(0)
         self.setLayout(main_layout)
 
-        title_label = QLabel("Home Value Prediction", alignment=Qt.AlignmentFlag.AlignCenter)
-        main_layout.addWidget(title_label)
+        #title_label = QLabel("Home Value Prediction", alignment=Qt.AlignmentFlag.AlignCenter)
+        #main_layout.addWidget(title_label)
 
 
     def getWidgetChild(self, child_type: type[PlaceholderType], name: str) -> PlaceholderType:
@@ -66,11 +66,17 @@ class Controller(QWidget):
         self.mainWindow = window
         self.mainWindow.installEventFilter(self)
 
+        buttonPredict = self.getWidgetChild(QPushButton, "button_predict")
+        buttonVisualize = self.getWidgetChild(QPushButton, "button_visualize")
+        buttonSettings = self.getWidgetChild(QPushButton, "settings_button")
+        self.navButtons = [buttonPredict, buttonVisualize, buttonSettings]
+
         self.pages = self.getWidgetChild(QStackedWidget, "pages")
         self.form = self.getWidgetChild(QStackedWidget, "pages_form")
         self.form.setCurrentIndex(0)
 
         self.predictionTable = self.getWidgetChild(QTableWidget, "prediction_table")
+        self.setTableAlignment()
 
         self.historyBarLayout = self.getWidgetChild(QVBoxLayout, "history_scroll_layout")
         self.historyBarLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -82,6 +88,8 @@ class Controller(QWidget):
 
         self.buttonPredictionBack = self.getWidgetChild(QPushButton, "button_back")
         self.buttonPredictionNext = self.getWidgetChild(QPushButton, "button_next")
+        self.buttonPredictionStart = self.getWidgetChild(QPushButton, "button_predict_start")
+        self.buttonPredictionStart.setVisible(False)
 
         self.pages.setCurrentIndex(0)
 
@@ -96,16 +104,31 @@ class Controller(QWidget):
         return super().eventFilter(watched, event)
 
     def setTableAlignment(self):
-        self.predictionTable.setColumnWidth(0, self.predictionTable.width() * 2 // 3)
+        self.predictionTable.setColumnWidth(0, self.predictionTable.width() * 1 // 3)
         self.predictionTable.setColumnWidth(1, self.predictionTable.width() * 1 // 6)
         self.predictionTable.setColumnWidth(2, self.predictionTable.width() * 1 // 6)
+        self.predictionTable.setColumnWidth(3, self.predictionTable.width() * 1 // 6)
+        self.predictionTable.setColumnWidth(4, self.predictionTable.width() * 1 // 6)
 
-        for i in range(self.predictionTable.rowCount()):
-            self.predictionTable.setRowHeight(i, self.predictionTable.height() // 7)
+        #for i in range(self.predictionTable.rowCount()):
+        #    self.predictionTable.setRowHeight(i, self.predictionTable.height() // 7)
+
+    def setCurrentPage(self, page: int):
+        self.pages.setCurrentIndex(page)
+        for i in range(len(self.navButtons)):
+            self.navButtons[i].setChecked(i == page)
+
+    @Slot()
+    def predictModeClicked(self):
+        self.setCurrentPage(0)
+
+    @Slot()
+    def visualizeModeClicked(self):
+        self.setCurrentPage(1)
     
-    @Slot(bool)
-    def settingsRequested(self, on: bool):
-        self.pages.setCurrentIndex(int(on))
+    @Slot()
+    def settingsRequested(self):
+        self.setCurrentPage(2)
 
     @Slot()
     def predictionBackClicked(self):

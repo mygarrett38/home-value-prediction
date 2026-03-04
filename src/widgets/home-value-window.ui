@@ -56,7 +56,7 @@
         <height>80</height>
        </size>
       </property>
-      <layout class="QHBoxLayout" name="header_layout" stretch="0,0">
+      <layout class="QHBoxLayout" name="header_layout" stretch="0,0,0,0">
        <property name="spacing">
         <number>10</number>
        </property>
@@ -72,6 +72,95 @@
        <property name="bottomMargin">
         <number>5</number>
        </property>
+       <item>
+        <widget class="QPushButton" name="button_predict">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>130</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">padding: 10px;</string>
+         </property>
+         <property name="text">
+          <string>Predict</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="button_visualize">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">padding: 10px;</string>
+         </property>
+         <property name="text">
+          <string>Visualize</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="Controller" name="controller" native="true">
          <property name="sizePolicy">
@@ -144,10 +233,10 @@
     <item>
      <widget class="QStackedWidget" name="pages">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
-      <widget class="QWidget" name="home_page">
-       <layout class="QHBoxLayout" name="home_layout" stretch="2,3,2">
+      <widget class="QWidget" name="predict_page">
+       <layout class="QHBoxLayout" name="home_layout">
         <property name="spacing">
          <number>30</number>
         </property>
@@ -164,25 +253,35 @@
          <number>10</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="group_data">
-          <property name="title">
-           <string>Enter Home Data</string>
+         <spacer name="spacer_predict_buttons_1">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
-          <layout class="QVBoxLayout" name="layout_group_data">
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="group_data">
+          <layout class="QHBoxLayout" name="layout_group_data">
            <property name="spacing">
-            <number>0</number>
+            <number>10</number>
            </property>
            <property name="leftMargin">
-            <number>0</number>
+            <number>30</number>
            </property>
            <property name="topMargin">
-            <number>0</number>
+            <number>30</number>
            </property>
            <property name="rightMargin">
-            <number>0</number>
+            <number>30</number>
            </property>
            <property name="bottomMargin">
-            <number>0</number>
+            <number>30</number>
            </property>
            <item>
             <layout class="QVBoxLayout" name="home_data_layout" stretch="0,0">
@@ -213,6 +312,9 @@
                </property>
                <widget class="QWidget" name="page_location">
                 <layout class="QFormLayout" name="layout_location">
+                 <property name="labelAlignment">
+                  <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+                 </property>
                  <property name="horizontalSpacing">
                   <number>60</number>
                  </property>
@@ -236,13 +338,13 @@
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>80</height>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
                      <width>16777215</width>
-                     <height>80</height>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="font">
@@ -253,9 +355,12 @@
                    <property name="text">
                     <string>Location Information</string>
                    </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
                   </widget>
                  </item>
-                 <item row="2" column="0">
+                 <item row="1" column="0">
                   <widget class="QLabel" name="label_location_state">
                    <property name="font">
                     <font>
@@ -267,7 +372,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="1">
+                 <item row="1" column="1">
                   <widget class="QComboBox" name="editor_location_state">
                    <property name="minimumSize">
                     <size>
@@ -306,43 +411,7 @@
                    </item>
                   </widget>
                  </item>
-                 <item row="3" column="0">
-                  <widget class="QLabel" name="label_location_county">
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;County&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="1">
-                  <widget class="QComboBox" name="editor_location_county">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="currentIndex">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <property name="text">
-                     <string>Name...</string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item row="4" column="0">
+                 <item row="2" column="0">
                   <widget class="QLabel" name="label_location_address">
                    <property name="font">
                     <font>
@@ -354,7 +423,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="4" column="1">
+                 <item row="2" column="1">
                   <widget class="QLineEdit" name="editor_location_address">
                    <property name="minimumSize">
                     <size>
@@ -370,8 +439,38 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="5" column="0">
-                  <spacer name="spacer_location">
+                 <item row="3" column="1">
+                  <widget class="QPushButton" name="button_location_generate">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>120</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>11</pointsize>
+                    </font>
+                   </property>
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="text">
+                    <string>Find Location</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0" colspan="2">
+                  <spacer name="spacer_page_location">
                    <property name="orientation">
                     <enum>Qt::Orientation::Vertical</enum>
                    </property>
@@ -383,12 +482,42 @@
                    </property>
                   </spacer>
                  </item>
+                 <item row="5" column="0" colspan="2">
+                  <widget class="QLabel" name="label_location_state_2">
+                   <property name="font">
+                    <font>
+                     <pointsize>11</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Location detected.</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
                 </layout>
                </widget>
                <widget class="QWidget" name="page_property">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <layout class="QFormLayout" name="layout_property">
+                 <property name="sizeConstraint">
+                  <enum>QLayout::SizeConstraint::SetMaximumSize</enum>
+                 </property>
+                 <property name="fieldGrowthPolicy">
+                  <enum>QFormLayout::FieldGrowthPolicy::AllNonFixedFieldsGrow</enum>
+                 </property>
+                 <property name="formAlignment">
+                  <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTop|Qt::AlignmentFlag::AlignTrailing</set>
+                 </property>
                  <property name="horizontalSpacing">
-                  <number>60</number>
+                  <number>100</number>
                  </property>
                  <property name="verticalSpacing">
                   <number>10</number>
@@ -405,6 +534,33 @@
                  <property name="bottomMargin">
                   <number>10</number>
                  </property>
+                 <item row="0" column="0" colspan="2">
+                  <widget class="QLabel" name="label_property_title">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>100</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>100</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>16</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Property Information</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="0">
                   <widget class="QLabel" name="label_property_type">
                    <property name="font">
@@ -606,44 +762,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="7" column="0">
-                  <spacer name="spacer_property">
-                   <property name="orientation">
-                    <enum>Qt::Orientation::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="0" colspan="2">
-                  <widget class="QLabel" name="label_property_title">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>80</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>80</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>16</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Property Information</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="4" column="0">
+                 <item row="10" column="0">
                   <widget class="QLabel" name="label_property_empty">
                    <property name="font">
                     <font>
@@ -655,65 +774,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="5" column="0">
-                  <widget class="QLabel" name="label_property_tax_assessment">
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tax Assessment Value&lt;br/&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;(previous year)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="5" column="1">
-                  <widget class="QDoubleSpinBox" name="editor_property_tax_assessment">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                     <bold>false</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">padding: 5px;</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-                   </property>
-                   <property name="buttonSymbols">
-                    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-                   </property>
-                   <property name="showGroupSeparator" stdset="0">
-                    <bool>true</bool>
-                   </property>
-                   <property name="prefix">
-                    <string>$</string>
-                   </property>
-                   <property name="decimals">
-                    <number>2</number>
-                   </property>
-                   <property name="maximum">
-                    <double>100000000.000000000000000</double>
-                   </property>
-                   <property name="value">
-                    <double>80000.000000000000000</double>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="6" column="0">
+                 <item row="9" column="0">
                   <widget class="QLabel" name="label_property_tax_annual">
                    <property name="font">
                     <font>
@@ -725,7 +786,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="6" column="1">
+                 <item row="9" column="1">
                   <widget class="QDoubleSpinBox" name="editor_property_tax_annual">
                    <property name="minimumSize">
                     <size>
@@ -771,6 +832,77 @@
                    </property>
                   </widget>
                  </item>
+                 <item row="8" column="0">
+                  <widget class="QLabel" name="label_property_tax_assessment">
+                   <property name="font">
+                    <font>
+                     <pointsize>11</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tax Assessment Value&lt;br/&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;(previous year)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="1">
+                  <widget class="QDoubleSpinBox" name="editor_property_tax_assessment">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>11</pointsize>
+                     <bold>false</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">padding: 5px;</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                   </property>
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                   </property>
+                   <property name="showGroupSeparator" stdset="0">
+                    <bool>true</bool>
+                   </property>
+                   <property name="prefix">
+                    <string>$</string>
+                   </property>
+                   <property name="decimals">
+                    <number>2</number>
+                   </property>
+                   <property name="maximum">
+                    <double>100000000.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>80000.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="0" colspan="2">
+                  <spacer name="spacer_page_property">
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
                 </layout>
                </widget>
                <widget class="QWidget" name="page_home_1">
@@ -793,6 +925,33 @@
                  <property name="bottomMargin">
                   <number>10</number>
                  </property>
+                 <item row="0" column="0" colspan="2">
+                  <widget class="QLabel" name="label_home_title_1">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>100</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>100</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>16</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Home Information</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="0">
                   <widget class="QLabel" name="label_home_footage">
                    <property name="font">
@@ -901,7 +1060,20 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="0">
+                 <item row="3" column="0" colspan="2">
+                  <spacer name="spacer_page_home_1">
+                   <property name="orientation">
+                    <enum>Qt::Orientation::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="4" column="0">
                   <widget class="QLabel" name="label_home_bedrooms">
                    <property name="font">
                     <font>
@@ -913,7 +1085,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="1">
+                 <item row="4" column="1">
                   <widget class="QSpinBox" name="editor_home_bedrooms">
                    <property name="minimumSize">
                     <size>
@@ -955,7 +1127,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="4" column="0">
+                 <item row="5" column="0">
                   <widget class="QLabel" name="label_home_bathrooms">
                    <property name="font">
                     <font>
@@ -967,7 +1139,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="4" column="1">
+                 <item row="5" column="1">
                   <widget class="QSpinBox" name="editor_home_bathrooms">
                    <property name="minimumSize">
                     <size>
@@ -1009,7 +1181,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="5" column="0">
+                 <item row="6" column="0">
                   <widget class="QLabel" name="label_home_halfbaths">
                    <property name="font">
                     <font>
@@ -1021,7 +1193,7 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="5" column="1">
+                 <item row="6" column="1">
                   <widget class="QSpinBox" name="editor_home_halfbaths">
                    <property name="minimumSize">
                     <size>
@@ -1063,43 +1235,6 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="6" column="0">
-                  <spacer name="spacer_home_1">
-                   <property name="orientation">
-                    <enum>Qt::Orientation::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="0" colspan="2">
-                  <widget class="QLabel" name="label_home_title_1">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>80</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>80</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>16</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Home Information</string>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </widget>
                <widget class="QWidget" name="page_home_2">
@@ -1122,6 +1257,33 @@
                  <property name="bottomMargin">
                   <number>10</number>
                  </property>
+                 <item row="0" column="0" colspan="2">
+                  <widget class="QLabel" name="label_home_title_2">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>100</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>100</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>16</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Home Information</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
                  <item row="1" column="0">
                   <widget class="QLabel" name="label_home_heat">
                    <property name="font">
@@ -1355,80 +1517,16 @@
                    </item>
                   </layout>
                  </item>
-                 <item row="4" column="0">
-                  <spacer name="spacer_home_2">
-                   <property name="orientation">
-                    <enum>Qt::Orientation::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="0" colspan="2">
-                  <widget class="QLabel" name="label_home_title_2">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>80</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>80</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>16</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Home Information</string>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </widget>
               </widget>
              </item>
              <item>
-              <layout class="QGridLayout" name="layout_prediction_buttons">
+              <layout class="QHBoxLayout" name="layout_predict_buttons">
                <property name="spacing">
                 <number>10</number>
                </property>
-               <item row="0" column="1">
-                <widget class="QPushButton" name="button_next">
-                 <property name="minimumSize">
-                  <size>
-                   <width>80</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <pointsize>11</pointsize>
-                  </font>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string>Next</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
+               <item>
                 <widget class="QPushButton" name="button_back">
                  <property name="minimumSize">
                   <size>
@@ -1455,14 +1553,14 @@
                  </property>
                 </widget>
                </item>
-               <item row="1" column="0" colspan="2">
-                <widget class="QPushButton" name="button_predict">
+               <item>
+                <widget class="QPushButton" name="button_predict_start">
                  <property name="enabled">
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>80</width>
+                   <width>120</width>
                    <height>40</height>
                   </size>
                  </property>
@@ -1485,6 +1583,33 @@
                  </property>
                 </widget>
                </item>
+               <item>
+                <widget class="QPushButton" name="button_next">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                  </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="text">
+                  <string>Next</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </item>
             </layout>
@@ -1493,385 +1618,180 @@
          </widget>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="prediction_accuracy_layout" stretch="2,1">
-          <property name="spacing">
-           <number>10</number>
+         <spacer name="spacer_predict_buttons_2">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
-          <property name="leftMargin">
-           <number>10</number>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-          <property name="topMargin">
-           <number>10</number>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="visualize_page">
+       <layout class="QHBoxLayout" name="layout_visualize_page" stretch="4,3,2">
+        <property name="spacing">
+         <number>10</number>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
+        <item>
+         <widget class="GraphDisplay" name="graph" native="true">
+          <property name="styleSheet">
+           <string notr="true">border-radius: 10px;</string>
           </property>
-          <property name="rightMargin">
-           <number>10</number>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="prediction_table">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-          <property name="bottomMargin">
-           <number>10</number>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
           </property>
-          <item>
-           <widget class="GraphDisplay" name="graph" native="true">
-            <property name="styleSheet">
-             <string notr="true">border-radius: 10px;</string>
-            </property>
-           </widget>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+          </property>
+          <property name="showGrid">
+           <bool>true</bool>
+          </property>
+          <property name="gridStyle">
+           <enum>Qt::PenStyle::NoPen</enum>
+          </property>
+          <property name="cornerButtonEnabled">
+           <bool>false</bool>
+          </property>
+          <property name="supportedDragActions">
+           <set>Qt::DropAction::IgnoreAction</set>
+          </property>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>50</number>
+          </attribute>
+          <attribute name="horizontalHeaderHighlightSections">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderVisible">
+           <bool>false</bool>
+          </attribute>
+          <attribute name="verticalHeaderStretchLastSection">
+           <bool>false</bool>
+          </attribute>
+          <row>
+           <property name="text">
+            <string>123 Johnson St</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>87 University Dr</string>
+           </property>
+          </row>
+          <column>
+           <property name="text">
+            <string>Property</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Prediction</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Min</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Max</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Budget?</string>
+           </property>
+          </column>
+          <item row="0" column="0">
+           <property name="text">
+            <string>123 Johnson St</string>
+           </property>
           </item>
-          <item>
-           <widget class="QTableWidget" name="prediction_table">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="verticalScrollBarPolicy">
-             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="horizontalScrollBarPolicy">
-             <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-            </property>
-            <property name="editTriggers">
-             <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
-            </property>
-            <property name="alternatingRowColors">
-             <bool>true</bool>
-            </property>
-            <property name="selectionMode">
-             <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
-            </property>
-            <property name="showGrid">
-             <bool>true</bool>
-            </property>
-            <property name="gridStyle">
-             <enum>Qt::PenStyle::NoPen</enum>
-            </property>
-            <property name="cornerButtonEnabled">
-             <bool>false</bool>
-            </property>
-            <property name="supportedDragActions">
-             <set>Qt::DropAction::IgnoreAction</set>
-            </property>
-            <attribute name="horizontalHeaderMinimumSectionSize">
-             <number>100</number>
-            </attribute>
-            <attribute name="horizontalHeaderHighlightSections">
-             <bool>false</bool>
-            </attribute>
-            <attribute name="horizontalHeaderStretchLastSection">
-             <bool>true</bool>
-            </attribute>
-            <attribute name="verticalHeaderVisible">
-             <bool>false</bool>
-            </attribute>
-            <attribute name="verticalHeaderStretchLastSection">
-             <bool>true</bool>
-            </attribute>
-            <row>
-             <property name="text">
-              <string>SciKit: Random Forest</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>XGBoost: Linear Regression</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>SciKit: Linear Regression</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>SciKit: Ridge</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>SciKit: Lasso</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>Average</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </row>
-            <column>
-             <property name="text">
-              <string>Model</string>
-             </property>
-             <property name="textAlignment">
-              <set>AlignLeading|AlignVCenter</set>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Prediction</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Error Margin</string>
-             </property>
-            </column>
-            <item row="0" column="0">
-             <property name="text">
-              <string>SciKit: Random Forest</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </item>
-            <item row="0" column="1">
-             <property name="text">
-              <string>$259,999.99</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>11</pointsize>
-               <italic>true</italic>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignTrailing|AlignVCenter</set>
-             </property>
-            </item>
-            <item row="0" column="2">
-             <property name="text">
-              <string>5.72%</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignCenter</set>
-             </property>
-            </item>
-            <item row="1" column="0">
-             <property name="text">
-              <string>XGBoost: Linear Regression</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </item>
-            <item row="1" column="1">
-             <property name="text">
-              <string>$260,102.45</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>11</pointsize>
-               <italic>true</italic>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignTrailing|AlignVCenter</set>
-             </property>
-            </item>
-            <item row="1" column="2">
-             <property name="text">
-              <string>6.10%</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignCenter</set>
-             </property>
-            </item>
-            <item row="2" column="0">
-             <property name="text">
-              <string>SciKit: Linear Regression</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </item>
-            <item row="2" column="1">
-             <property name="text">
-              <string>$257,955.33</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>11</pointsize>
-               <italic>true</italic>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignTrailing|AlignVCenter</set>
-             </property>
-            </item>
-            <item row="2" column="2">
-             <property name="text">
-              <string>6.68%</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignCenter</set>
-             </property>
-            </item>
-            <item row="3" column="0">
-             <property name="text">
-              <string>SciKit: Ridge</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </item>
-            <item row="3" column="1">
-             <property name="text">
-              <string>$256,028.70</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>11</pointsize>
-               <italic>true</italic>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignTrailing|AlignVCenter</set>
-             </property>
-            </item>
-            <item row="3" column="2">
-             <property name="text">
-              <string>6.79%</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignCenter</set>
-             </property>
-            </item>
-            <item row="4" column="0">
-             <property name="text">
-              <string>SciKit: Lasso</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-            </item>
-            <item row="4" column="1">
-             <property name="text">
-              <string>$258,236.19</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>11</pointsize>
-               <italic>true</italic>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignTrailing|AlignVCenter</set>
-             </property>
-            </item>
-            <item row="4" column="2">
-             <property name="text">
-              <string>7.04%</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignCenter</set>
-             </property>
-            </item>
-            <item row="5" column="0">
-             <property name="text">
-              <string>Average</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-               <bold>true</bold>
-              </font>
-             </property>
-            </item>
-            <item row="5" column="1">
-             <property name="text">
-              <string>$258,778.66</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>11</pointsize>
-               <italic>true</italic>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignTrailing|AlignVCenter</set>
-             </property>
-            </item>
-            <item row="5" column="2">
-             <property name="text">
-              <string>6.45%</string>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>10</pointsize>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="textAlignment">
-              <set>AlignCenter</set>
-             </property>
-            </item>
-           </widget>
+          <item row="0" column="1">
+           <property name="text">
+            <string>$259,999.99</string>
+           </property>
           </item>
-         </layout>
+          <item row="0" column="2">
+           <property name="text">
+            <string>$231,599.99</string>
+           </property>
+          </item>
+          <item row="0" column="3">
+           <property name="text">
+            <string>$293,199.99</string>
+           </property>
+          </item>
+          <item row="0" column="4">
+           <property name="text">
+            <string>Yes</string>
+           </property>
+          </item>
+          <item row="1" column="0">
+           <property name="text">
+            <string>87 University Dr</string>
+           </property>
+          </item>
+          <item row="1" column="1">
+           <property name="text">
+            <string>$587,399.99</string>
+           </property>
+          </item>
+          <item row="1" column="2">
+           <property name="text">
+            <string>$520,999.99</string>
+           </property>
+          </item>
+          <item row="1" column="3">
+           <property name="text">
+            <string>$662,299.99</string>
+           </property>
+          </item>
+          <item row="1" column="4">
+           <property name="text">
+            <string>No</string>
+           </property>
+          </item>
+         </widget>
         </item>
         <item>
          <widget class="QGroupBox" name="history_group">
@@ -1928,8 +1848,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>193</width>
-                <height>563</height>
+                <width>219</width>
+                <height>559</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="history_scroll_layout">
@@ -2146,9 +2066,23 @@
    <header>controller.h</header>
    <container>1</container>
    <slots>
-    <slot>settingsRequested(bool)</slot>
+    <slot>settingsRequested()</slot>
     <slot>predictionNextClicked()</slot>
     <slot>predictionBackClicked()</slot>
+    <slot>categoryChanged()</slot>
+    <slot>locationChanged()</slot>
+    <slot>refreshRequested()</slot>
+    <slot>metricChanged(bool)</slot>
+    <slot>locationSelected(QListWidgetItem*)</slot>
+    <slot>sqlPagesDec()</slot>
+    <slot>sqlPagesInc()</slot>
+    <slot>locationButtonClicked()</slot>
+    <slot>locationValueChanged()</slot>
+    <slot>viewChanged()</slot>
+    <slot>dateChanged(QDateTime)</slot>
+    <slot>comparisonChanged()</slot>
+    <slot>visualizeModeClicked()</slot>
+    <slot>predictModeClicked()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -2161,30 +2095,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>settings_button</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>controller</receiver>
-   <slot>settingsRequested(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1042</x>
-     <y>63</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>776</x>
-     <y>70</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>button_next</sender>
    <signal>clicked()</signal>
    <receiver>controller</receiver>
    <slot>predictionNextClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>370</x>
-     <y>600</y>
+     <x>905</x>
+     <y>645</y>
     </hint>
     <hint type="destinationlabel">
      <x>477</x>
@@ -2203,8 +2121,8 @@
      <y>618</y>
     </hint>
     <hint type="destinationlabel">
-     <x>21</x>
-     <y>50</y>
+     <x>339</x>
+     <y>70</y>
     </hint>
    </hints>
   </connection>
@@ -2215,12 +2133,60 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>250</x>
-     <y>372</y>
+     <x>335</x>
+     <y>386</y>
     </hint>
     <hint type="destinationlabel">
-     <x>312</x>
-     <y>365</y>
+     <x>648</x>
+     <y>386</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_visualize</sender>
+   <signal>clicked()</signal>
+   <receiver>controller</receiver>
+   <slot>visualizeModeClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>245</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>344</x>
+     <y>66</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>button_predict</sender>
+   <signal>clicked()</signal>
+   <receiver>controller</receiver>
+   <slot>predictModeClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>128</x>
+     <y>42</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>325</x>
+     <y>33</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>settings_button</sender>
+   <signal>clicked()</signal>
+   <receiver>controller</receiver>
+   <slot>settingsRequested()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1040</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>963</x>
+     <y>64</y>
     </hint>
    </hints>
   </connection>
