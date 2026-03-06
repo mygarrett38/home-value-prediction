@@ -75,10 +75,11 @@ class Controller(QWidget):
 
         self.historyBarLayout = self.getWidgetChild(QVBoxLayout, "history_scroll_layout")
         self.historyBarLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        for i in [["123 Johnson St", "2,540 sq. ft.", "3 bed", "2 bath"], ["87 University Dr", "5,001 sq. ft.", "5 bed", "3.5 bath"]]:
+        for i in [["123 Johnson St", 259_999.99, "2,540 sq. ft.", "3 bed", "2 bath"], ["87 University Dr", 587_399.99, "5,001 sq. ft.", "5 bed", "3.5 bath"]]:
             entry = HistoryEntry(self)
             entry.setAddress(i[0])
-            entry.setPropertyAttributes(i[1:])
+            entry.setPrice(i[1])
+            entry.setPropertyAttributes(i[2:])
             self.historyBarLayout.addWidget(entry)
 
         self.buttonPredictionBack = self.getWidgetChild(QPushButton, "button_back")
@@ -99,11 +100,11 @@ class Controller(QWidget):
         return super().eventFilter(watched, event)
 
     def setTableAlignment(self):
-        self.predictionTable.setColumnWidth(0, self.predictionTable.width() * 1 // 3)
-        self.predictionTable.setColumnWidth(1, self.predictionTable.width() * 1 // 6)
-        self.predictionTable.setColumnWidth(2, self.predictionTable.width() * 1 // 6)
-        self.predictionTable.setColumnWidth(3, self.predictionTable.width() * 1 // 6)
-        self.predictionTable.setColumnWidth(4, self.predictionTable.width() * 1 // 6)
+        col_remaining_count = self.predictionTable.columnCount() - 1
+        col_width = self.predictionTable.width()
+        self.predictionTable.setColumnWidth(0, col_width * 1 // 3)
+        for i in range(col_remaining_count):
+            self.predictionTable.setColumnWidth(i + 1, col_width * 2 // (3 * col_remaining_count))
 
         #for i in range(self.predictionTable.rowCount()):
         #    self.predictionTable.setRowHeight(i, self.predictionTable.height() // 7)
@@ -127,14 +128,15 @@ class Controller(QWidget):
     @Slot()
     def predictionBackClicked(self):
         index = self.form.currentIndex()
-        if index == 0: return
+        if index == 0:
+            self.pages.setCurrentIndex(1)
+            return
 
         index -= 1
         self.form.setCurrentIndex(index)
 
         self.buttonPredictionStart.setVisible(False)
         self.buttonPredictionNext.setVisible(True)
-        if index == 0: self.buttonPredictionBack.setEnabled(False)
 
     @Slot()
     def predictionNextClicked(self):
@@ -144,11 +146,11 @@ class Controller(QWidget):
         index += 1
         self.form.setCurrentIndex(index)
 
-        self.buttonPredictionBack.setEnabled(True)
         if index == self.form.count() - 1:
             self.buttonPredictionStart.setVisible(True)
             self.buttonPredictionNext.setVisible(False)
 
     @Slot()
     def predictionStartClicked(self):
+        self.form.setCurrentIndex(0)
         self.pages.setCurrentIndex(1)
