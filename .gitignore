@@ -1,2 +1,5 @@
 # Exclude cache
 __pycache__/
+
+# Exclude data sources for model training
+data/
