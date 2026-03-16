@@ -1,7 +1,9 @@
 from PySide6.QtCore import (
-    Qt
+    Qt,
+    Signal
 )
 
+from PySide6.QtGui import QMouseEvent
 from PySide6.QtWidgets import (
     QWidget,
     QSizePolicy,
@@ -12,7 +14,9 @@ from PySide6.QtWidgets import (
 )
 
 
-class HistoryEntry(QWidget):
+class PropertyDisplay(QWidget):
+    selected = Signal()
+
     def __init__(self, parent: QWidget | None = None):
         super().__init__(parent)
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
@@ -51,6 +55,10 @@ class HistoryEntry(QWidget):
         self.priceLabel = QLabel("", parent=self, alignment=Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.priceLabel.setFont(propFont)
         main_layout.addWidget(self.priceLabel)
+
+    def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
+        self.selected.emit()
+        return super().mouseDoubleClickEvent(event)
 
     def setAddress(self, address: str):
         self.addressLabel.setText(address)

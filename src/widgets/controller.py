@@ -1,6 +1,6 @@
 from itertools import cycle
 
-from widgets.historyEntry import HistoryEntry
+from widgets.propertyDisplay import PropertyDisplay
 
 from PySide6.QtCore import (
     QEvent,
@@ -66,6 +66,7 @@ class Controller(QWidget):
         self.mainWindow = window
         self.mainWindow.installEventFilter(self)
 
+        self.settingsButton = self.getWidgetChild(QPushButton, "settings_button")
         self.pages = self.getWidgetChild(QStackedWidget, "pages")
         self.form = self.getWidgetChild(QStackedWidget, "pages_form")
         self.form.setCurrentIndex(0)
@@ -73,10 +74,15 @@ class Controller(QWidget):
         self.predictionTable = self.getWidgetChild(QTableWidget, "prediction_table")
         self.setTableAlignment()
 
+        self.addButton = self.getWidgetChild(QPushButton, "button_history_add")
+        self.editButton = self.getWidgetChild(QPushButton, "button_history_edit")
+        self.deleteButton = self.getWidgetChild(QPushButton, "button_history_delete")
+        self.deleteButton.setVisible(False)
+
         self.historyBarLayout = self.getWidgetChild(QVBoxLayout, "history_scroll_layout")
         self.historyBarLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         for i in [["123 Johnson St", 259_999.99, "2,540 sq. ft.", "3 bed", "2 bath"], ["87 University Dr", 587_399.99, "5,001 sq. ft.", "5 bed", "3.5 bath"]]:
-            entry = HistoryEntry(self)
+            entry = PropertyDisplay(self)
             entry.setAddress(i[0])
             entry.setPrice(i[1])
             entry.setPropertyAttributes(i[2:])
@@ -112,14 +118,21 @@ class Controller(QWidget):
     @Slot(bool)
     def settingsRequested(self, on: bool):
         self.pages.setCurrentIndex(2 if on else 1)
+        self.deleteButton.setVisible(on)
+
+    @Slot()
+    def propertyEntryClicked(self, prop: PropertyDisplay):
+        self.editButton.setVisible(prop is not None)
 
     @Slot()
     def addClicked(self):
         self.pages.setCurrentIndex(0)
+        self.settingsButton.setEnabled(False)
 
     @Slot()
     def editClicked(self):
         self.pages.setCurrentIndex(0)
+        self.settingsButton.setEnabled(False)
 
     @Slot()
     def deleteClicked(self):
@@ -130,6 +143,7 @@ class Controller(QWidget):
         index = self.form.currentIndex()
         if index == 0:
             self.pages.setCurrentIndex(1)
+            self.settingsButton.setEnabled(True)
             return
 
         index -= 1
@@ -154,3 +168,6 @@ class Controller(QWidget):
     def predictionStartClicked(self):
         self.form.setCurrentIndex(0)
         self.pages.setCurrentIndex(1)
+        self.settingsButton.setEnabled(True)
+        self.buttonPredictionStart.setVisible(False)
+        self.buttonPredictionNext.setVisible(True)
