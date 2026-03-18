@@ -17,7 +17,7 @@ class Configuration:
         self.ml_loc_model.load_model(absolutePath("../model/xgb_loc.json"))
 
         # Init the properties list
-        self.properties: list[Property] = kwargs["properties"]
+        self.properties: list[Property] = kwargs["properties"] if len(kwargs) > 0 else []
 
     @staticmethod
     def deserialize(obj: dict):

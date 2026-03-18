@@ -13,6 +13,11 @@ from PySide6.QtWidgets import (
     QLabel,
 )
 
+def resetStylesheet(widget: QWidget):
+    ss = widget.styleSheet()
+    widget.setStyleSheet("/* */")
+    widget.setStyleSheet(ss)
+
 
 class PropertyDisplay(QWidget):
     selected = Signal()
@@ -58,6 +63,8 @@ class PropertyDisplay(QWidget):
 
     def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
         self.selected.emit()
+        self.setProperty("selected", 1)
+        resetStylesheet(self)
         return super().mouseDoubleClickEvent(event)
 
     def setAddress(self, address: str):

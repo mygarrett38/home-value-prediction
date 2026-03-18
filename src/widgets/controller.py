@@ -1,6 +1,7 @@
 from itertools import cycle
 
 from widgets.propertyDisplay import PropertyDisplay
+from property import STATE_DICT
 
 from PySide6.QtCore import (
     QEvent,
@@ -20,9 +21,8 @@ from PySide6.QtWidgets import (
     QTableWidget, 
     QLabel,
     QPushButton, 
+    QComboBox,
     QDoubleSpinBox, 
-    QListWidget, 
-    QListWidgetItem,
     QMessageBox,
     QGraphicsOpacityEffect
 )
@@ -54,7 +54,6 @@ class Controller(QWidget):
         title_label = QLabel("Home Value Prediction", alignment=Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(title_label)
 
-
     def getWidgetChild(self, child_type: type[PlaceholderType], name: str) -> PlaceholderType:
         widget = self.mainWindow.findChild(child_type, name=name, options=Qt.FindChildOption.FindChildrenRecursively)
         if widget is None: raise ValueError(f"Child \"{name}\" was not found in this window!")
@@ -81,7 +80,9 @@ class Controller(QWidget):
 
         self.historyBarLayout = self.getWidgetChild(QVBoxLayout, "history_scroll_layout")
         self.historyBarLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        for i in [["123 Johnson St", 259_999.99, "2,540 sq. ft.", "3 bed", "2 bath"], ["87 University Dr", 587_399.99, "5,001 sq. ft.", "5 bed", "3.5 bath"]]:
+        for i in [["123 Johnson St", 259_999.99, "2,540 sq. ft.", "3 bed", "2 bath"],
+                  ["87 University Dr", 587_399.99, "5,001 sq. ft.", "5 bed", "3.5 bath"],
+                  ["301 N. King St", 479_399.99, "1,532 sq. ft.", "3 bed", "2.5 bath"]]:
             entry = PropertyDisplay(self)
             entry.setAddress(i[0])
             entry.setPrice(i[1])
@@ -92,6 +93,10 @@ class Controller(QWidget):
         self.buttonPredictionNext = self.getWidgetChild(QPushButton, "button_next")
         self.buttonPredictionStart = self.getWidgetChild(QPushButton, "button_predict_start")
         self.buttonPredictionStart.setVisible(False)
+
+        self.editorLocationState = self.getWidgetChild(QComboBox, "editor_location_state")
+        self.editorLocationState.clear()
+        self.editorLocationState.addItems(list(STATE_DICT.values()))
 
         self.pages.setCurrentIndex(1)
 
