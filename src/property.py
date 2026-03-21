@@ -59,16 +59,16 @@ STATE_DICT = {
 
 @dataclass
 class Property:
-    price: int = 0
+    price: float = 0
 
-    location_state: str = "WV"
+    location_state: int = 47
     location_address: str = "New Property"
     coords = [0.0, 0.0]
 
-    prop_type: str = "Single-Family Home"
+    prop_type: int = 0
     acreage: float = 0.5
-    year_built: int = 2000
-    tax_annual: float = 1000.00
+    year_built: int = 1985
+    tax_annual: float = 800.00
 
     square_feet: int = 2000
     floors: int = 2
@@ -76,8 +76,8 @@ class Property:
     baths: int = 2
     baths_half: int = 0
 
-    sys_heat: str = "Central"
-    sys_ac: str = "Central"
+    sys_heat: str | None = "Central"
+    sys_ac: bool = True
     garages: int = 0
 
     @staticmethod

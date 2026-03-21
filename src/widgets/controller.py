@@ -1,7 +1,7 @@
 from itertools import cycle
 
 from widgets.propertyDisplay import PropertyDisplayManager
-from property import STATE_DICT
+from property import Property, STATE_DICT
 
 from PySide6.QtCore import (
     QEvent,
@@ -9,7 +9,7 @@ from PySide6.QtCore import (
     QObject,
     Signal,
     Slot,
-    QByteArray,
+    QDate,
     QTimer,
     QPropertyAnimation
 )
@@ -22,7 +22,10 @@ from PySide6.QtWidgets import (
     QLabel,
     QPushButton, 
     QComboBox,
-    QDoubleSpinBox, 
+    QSpinBox,
+    QDoubleSpinBox,
+    QLineEdit,
+    QDateEdit,
     QMessageBox,
     QGraphicsOpacityEffect
 )
@@ -43,6 +46,8 @@ class Controller(QWidget):
         title_label = QLabel("Home Value Prediction", alignment=Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(title_label)
 
+        self.currentProperty: Property | None = None
+
     def getWidgetChild(self, child_type: type[PlaceholderType], name: str) -> PlaceholderType:
         widget = self.mainWindow.findChild(child_type, name=name, options=Qt.FindChildOption.FindChildrenRecursively)
         if widget is None: raise ValueError(f"Child \"{name}\" was not found in this window!")
@@ -54,6 +59,7 @@ class Controller(QWidget):
         self.mainWindow = window
         self.mainWindow.installEventFilter(self)
 
+        # VISUALIZATION WIDGETS #
         self.settingsButton = self.getWidgetChild(QPushButton, "settings_button")
         self.pages = self.getWidgetChild(QStackedWidget, "pages")
         self.form = self.getWidgetChild(QStackedWidget, "pages_form")
@@ -62,6 +68,7 @@ class Controller(QWidget):
         self.predictionTable = self.getWidgetChild(QTableWidget, "prediction_table")
         self.setTableAlignment()
 
+        # PROPERTY MANAGER WIDGETS #
         self.historyButtons = self.getWidgetChild(QWidget, "history_buttons")
         self.addButton = self.getWidgetChild(QPushButton, "button_history_add")
         self.editButton = self.getWidgetChild(QPushButton, "button_history_edit")
@@ -69,10 +76,12 @@ class Controller(QWidget):
         self.deleteButton.setVisible(False)
 
         self.propertyManager = self.getWidgetChild(PropertyDisplayManager, "history_scroll_widget")
+        self.propertyManager.propertySelected.connect(self.currentPropertyChanged)
         self.propertyManager.connectButton(self.addButton, type="add")
         self.propertyManager.connectButton(self.editButton, type="edit")
         self.propertyManager.connectButton(self.deleteButton, type="remove")
 
+        # PREDICTION FORM WIDGETS #
         self.buttonPredictionBack = self.getWidgetChild(QPushButton, "button_back")
         self.buttonPredictionNext = self.getWidgetChild(QPushButton, "button_next")
         self.buttonPredictionStart = self.getWidgetChild(QPushButton, "button_predict_start")
@@ -81,7 +90,26 @@ class Controller(QWidget):
         self.editorLocationState = self.getWidgetChild(QComboBox, "editor_location_state")
         self.editorLocationState.clear()
         self.editorLocationState.addItems(list(STATE_DICT.values()))
+        self.editorLocationAddress = self.getWidgetChild(QLineEdit, "editor_location_address")
 
+        self.editorPropertyType = self.getWidgetChild(QComboBox, "editor_property_type")
+        self.editorPropertyAcreage = self.getWidgetChild(QDoubleSpinBox, "editor_property_acreage")
+        self.editorPropertyYear = self.getWidgetChild(QDateEdit, "editor_property_year")
+        self.editorPropertyTax = self.getWidgetChild(QDoubleSpinBox, "editor_property_tax_annual")
+
+        self.editorHomeFootage = self.getWidgetChild(QSpinBox, "editor_home_footage")
+        self.editorHomeFloors = self.getWidgetChild(QSpinBox, "editor_home_floors")
+        self.editorHomeBeds = self.getWidgetChild(QSpinBox, "editor_home_bedrooms")
+        self.editorHomeBaths = self.getWidgetChild(QSpinBox, "editor_home_bathrooms")
+        self.editorHomeHalfBaths = self.getWidgetChild(QSpinBox, "editor_home_halfbaths")
+
+        self.buttonHomeHeat = self.getWidgetChild(QPushButton, "button_home_heat")
+        self.editorHomeHeat = self.getWidgetChild(QComboBox, "editor_home_heat")
+        self.buttonHomeAir = self.getWidgetChild(QPushButton, "button_home_ac")
+        self.buttonHomeGarage = self.getWidgetChild(QPushButton, "button_home_garage")
+        self.editorHomeGarage = self.getWidgetChild(QSpinBox, "editor_home_garage")
+
+        # STARTUP #
         self.pages.setCurrentIndex(1)
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:
@@ -111,11 +139,18 @@ class Controller(QWidget):
         self.editButton.setVisible(not on)
         self.deleteButton.setVisible(on)
 
+    @Slot(Property)
+    def currentPropertyChanged(self, prop: Property):
+        self.currentProperty = prop
+
     @Slot()
     def addClicked(self):
         self.pages.setCurrentIndex(0)
         self.settingsButton.setEnabled(False)
         self.historyButtons.hide()
+
+        self.currentProperty = Property()
+        self.setPropertyEditors()
 
     @Slot()
     def editClicked(self):
@@ -123,9 +158,34 @@ class Controller(QWidget):
         self.settingsButton.setEnabled(False)
         self.historyButtons.hide()
 
+        self.setPropertyEditors()
+
     @Slot()
     def deleteClicked(self):
         self.pages.setCurrentIndex(0)
+
+    def setPropertyEditors(self):
+        if self.currentProperty is None: raise ValueError("setPropertyEditors(): No current property!")
+
+        self.editorLocationState.setCurrentIndex(self.currentProperty.location_state)
+        self.editorLocationAddress.setText(self.currentProperty.location_address)
+
+        self.editorPropertyType.setCurrentIndex(self.currentProperty.prop_type)
+        self.editorPropertyAcreage.setValue(self.currentProperty.acreage)
+        self.editorPropertyYear.setDate(QDate(self.currentProperty.year_built, 1, 1))
+        self.editorPropertyTax.setValue(self.currentProperty.tax_annual)
+
+        self.editorHomeFootage.setValue(self.currentProperty.square_feet)
+        self.editorHomeFloors.setValue(self.currentProperty.floors)
+        self.editorHomeBeds.setValue(self.currentProperty.beds)
+        self.editorHomeBaths.setValue(self.currentProperty.baths)
+        self.editorHomeHalfBaths.setValue(self.currentProperty.baths_half)
+
+        self.buttonHomeHeat.setChecked(self.currentProperty.sys_heat is not None)
+        self.editorHomeHeat.setCurrentText("Central" if self.currentProperty.sys_heat is None else self.currentProperty.sys_heat)
+        self.buttonHomeAir.setChecked(self.currentProperty.sys_ac)
+        self.buttonHomeGarage.setChecked(self.currentProperty.garages > 0)
+        self.editorHomeGarage.setValue(max(self.currentProperty.garages, 1))
 
     @Slot()
     def predictionBackClicked(self):

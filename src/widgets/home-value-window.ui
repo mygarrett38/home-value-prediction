@@ -1304,7 +1304,7 @@
                     </layout>
                    </item>
                    <item row="2" column="1">
-                    <widget class="QPushButton" name="button_home_garage_2">
+                    <widget class="QPushButton" name="button_home_ac">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1348,12 +1348,12 @@
                     </widget>
                    </item>
                    <item row="1" column="1">
-                    <layout class="QHBoxLayout" name="layout_home_garage_2">
+                    <layout class="QHBoxLayout" name="layout_home_heat">
                      <property name="spacing">
                       <number>10</number>
                      </property>
                      <item>
-                      <widget class="QPushButton" name="button_home_garage_3">
+                      <widget class="QPushButton" name="button_home_heat">
                        <property name="minimumSize">
                         <size>
                          <width>40</width>
@@ -2546,7 +2546,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>button_home_garage_3</sender>
+   <sender>button_home_heat</sender>
    <signal>toggled(bool)</signal>
    <receiver>editor_home_heat</receiver>
    <slot>setEnabled(bool)</slot>
