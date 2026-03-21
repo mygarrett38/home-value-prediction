@@ -399,8 +399,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>216</width>
-                        <height>20</height>
+                        <width>412</width>
+                        <height>115</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="location_scroll_layout">
@@ -2233,7 +2233,7 @@
            <property name="widgetResizable">
             <bool>true</bool>
            </property>
-           <widget class="QWidget" name="history_scroll_widget">
+           <widget class="PropertyDisplayManager" name="history_scroll_widget">
             <property name="geometry">
              <rect>
               <x>0</x>
@@ -2263,150 +2263,152 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="layout_history_buttons">
-           <property name="spacing">
-            <number>10</number>
-           </property>
-           <property name="leftMargin">
-            <number>10</number>
-           </property>
-           <property name="topMargin">
-            <number>10</number>
-           </property>
-           <property name="rightMargin">
-            <number>10</number>
-           </property>
-           <property name="bottomMargin">
-            <number>10</number>
-           </property>
-           <item>
-            <widget class="QPushButton" name="button_history_add">
-             <property name="minimumSize">
-              <size>
-               <width>40</width>
-               <height>40</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>40</width>
-               <height>40</height>
-              </size>
-             </property>
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>:/icons/add.svg</normaloff>:/icons/add.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="shortcut">
-              <string>F12</string>
-             </property>
-             <property name="checkable">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="spacer_history_buttons">
-             <property name="orientation">
-              <enum>Qt::Orientation::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="button_history_edit">
-             <property name="minimumSize">
-              <size>
-               <width>40</width>
-               <height>40</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>40</width>
-               <height>40</height>
-              </size>
-             </property>
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>:/icons/edit.svg</normaloff>:/icons/edit.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="shortcut">
-              <string>F12</string>
-             </property>
-             <property name="checkable">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="button_history_delete">
-             <property name="minimumSize">
-              <size>
-               <width>40</width>
-               <height>40</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>40</width>
-               <height>40</height>
-              </size>
-             </property>
-             <property name="cursor">
-              <cursorShape>PointingHandCursor</cursorShape>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset>
-               <normaloff>:/icons/delete.svg</normaloff>:/icons/delete.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="shortcut">
-              <string>F12</string>
-             </property>
-             <property name="checkable">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QWidget" name="history_buttons" native="true">
+           <layout class="QHBoxLayout" name="layout_history_buttons">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>10</number>
+            </property>
+            <property name="topMargin">
+             <number>10</number>
+            </property>
+            <property name="rightMargin">
+             <number>10</number>
+            </property>
+            <property name="bottomMargin">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="button_history_add">
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>:/icons/add.svg</normaloff>:/icons/add.svg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="shortcut">
+               <string>F12</string>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="spacer_history_buttons">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="button_history_edit">
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>:/icons/edit.svg</normaloff>:/icons/edit.svg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="shortcut">
+               <string>F12</string>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="button_history_delete">
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>:/icons/delete.svg</normaloff>:/icons/delete.svg</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>20</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="shortcut">
+               <string>F12</string>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -2454,6 +2456,12 @@
    <header>graph.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>PropertyDisplayManager</class>
+   <extends>QWidget</extends>
+   <header>propertydisplaymanager.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
@@ -2464,7 +2472,7 @@
    <slot>predictionNextClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>612</x>
+     <x>593</x>
      <y>654</y>
     </hint>
     <hint type="destinationlabel">
@@ -2496,12 +2504,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>413</x>
-     <y>419</y>
+     <x>271</x>
+     <y>226</y>
     </hint>
     <hint type="destinationlabel">
-     <x>602</x>
-     <y>419</y>
+     <x>249</x>
+     <y>226</y>
     </hint>
    </hints>
   </connection>
@@ -2538,18 +2546,34 @@
    </hints>
   </connection>
   <connection>
+   <sender>button_home_garage_3</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>editor_home_heat</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>271</x>
+     <y>212</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>button_history_add</sender>
    <signal>clicked()</signal>
    <receiver>controller</receiver>
    <slot>addClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>807</x>
-     <y>695</y>
+     <x>785</x>
+     <y>673</y>
     </hint>
     <hint type="destinationlabel">
-     <x>825</x>
-     <y>74</y>
+     <x>800</x>
+     <y>56</y>
     </hint>
    </hints>
   </connection>
@@ -2560,12 +2584,12 @@
    <slot>editClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>971</x>
-     <y>667</y>
+     <x>983</x>
+     <y>674</y>
     </hint>
     <hint type="destinationlabel">
-     <x>971</x>
-     <y>55</y>
+     <x>942</x>
+     <y>71</y>
     </hint>
    </hints>
   </connection>
@@ -2576,28 +2600,12 @@
    <slot>deleteClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1021</x>
-     <y>665</y>
+     <x>1029</x>
+     <y>669</y>
     </hint>
     <hint type="destinationlabel">
      <x>983</x>
      <y>70</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>button_home_garage_3</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>editor_home_heat</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>396</x>
-     <y>303</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>455</x>
-     <y>300</y>
     </hint>
    </hints>
   </connection>

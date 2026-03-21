@@ -31,3 +31,11 @@ class Configuration:
             "version": [0, 1, 0],
             "properties": [prop.serialize() for prop in self.properties]
         }
+    
+    def addProperty(self, prop: Property):
+        self.properties.append(prop)
+
+    def removeProperty(self, prop: Property | None):
+        if prop is None: raise ValueError("removeProperty(): No property provided.")
+        self.properties.remove(prop)
+        del prop

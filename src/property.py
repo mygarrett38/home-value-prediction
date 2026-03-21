@@ -62,7 +62,7 @@ class Property:
     price: int = 0
 
     location_state: str = "WV"
-    location_address: str = ""
+    location_address: str = "New Property"
     coords = [0.0, 0.0]
 
     prop_type: str = "Single-Family Home"
@@ -80,14 +80,22 @@ class Property:
     sys_ac: str = "Central"
     garages: int = 0
 
-    def __str__(self): return "Property!"
-
     @staticmethod
     def deserialize(obj: dict):
         return Property(**obj)
 
     def serialize(self):
         return vars(self)
+    
+    def totalBaths(self):
+        return self.baths + self.baths_half / 2
+    
+    def attributes(self):
+        return [
+            f"{self.square_feet:,} sq. ft.",
+            f"{self.beds} bed",
+            f"{self.totalBaths():.1f} bath",
+        ]
 
     def toAmesModel(self) -> tuple:
         return (
@@ -98,7 +106,7 @@ class Property:
             self.sys_heat,
             *self.coords,
             self.acreage * SQUARE_FEET_PER_ACRE, 
-            self.baths + self.baths_half / 2,
+            self.totalBaths(),
             self.beds,
             self.square_feet,
             self.year_built
@@ -107,7 +115,7 @@ class Property:
     def toLocationModel(self) -> tuple:
         return (
             self.beds,
-            self.baths + self.baths_half / 2,
+            self.totalBaths(),
             self.acreage,
             self.square_feet,
             self.tax_annual,

@@ -6,6 +6,7 @@ from platformdirs import user_data_dir
 from config import Configuration, absolutePath
 from widgets.controller import Controller
 from widgets.graph import GraphDisplay
+from widgets.propertyDisplay import PropertyDisplayManager
 
 from PySide6.QtCore import Qt, QObject, QThread, QTimer, Signal, Slot
 from PySide6.QtWidgets import QApplication, QMainWindow
@@ -32,6 +33,7 @@ class HomeValueApplication(QApplication):
         ui_loader = QUiLoader(self)
         ui_loader.registerCustomWidget(Controller)
         ui_loader.registerCustomWidget(GraphDisplay)
+        ui_loader.registerCustomWidget(PropertyDisplayManager)
         window = ui_loader.load(absolutePath("widgets/home-value-window.ui"))
 
         self.controller = window.findChild(Controller, name="controller", options=Qt.FindChildOption.FindChildrenRecursively)

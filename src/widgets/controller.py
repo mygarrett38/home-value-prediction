@@ -1,6 +1,6 @@
 from itertools import cycle
 
-from widgets.propertyDisplay import PropertyDisplay
+from widgets.propertyDisplay import PropertyDisplayManager
 from property import STATE_DICT
 
 from PySide6.QtCore import (
@@ -30,17 +30,6 @@ from PySide6.QtGui import QPalette
 
 from typing import TypeVar
 PlaceholderType = TypeVar("PlaceholderType", bound=QObject)
-
-class Cycler():
-    def __init__(self, listlike: list):
-        self.cycle = cycle(listlike)
-        self.current = None
-
-    def __next__(self) -> object:
-        self.current = next(self.cycle)
-        return self.current
-
-    def currentValue(self): return self.current
 
 class Controller(QWidget):
     def __init__(self, parent: QWidget):
@@ -73,21 +62,16 @@ class Controller(QWidget):
         self.predictionTable = self.getWidgetChild(QTableWidget, "prediction_table")
         self.setTableAlignment()
 
+        self.historyButtons = self.getWidgetChild(QWidget, "history_buttons")
         self.addButton = self.getWidgetChild(QPushButton, "button_history_add")
         self.editButton = self.getWidgetChild(QPushButton, "button_history_edit")
         self.deleteButton = self.getWidgetChild(QPushButton, "button_history_delete")
         self.deleteButton.setVisible(False)
 
-        self.historyBarLayout = self.getWidgetChild(QVBoxLayout, "history_scroll_layout")
-        self.historyBarLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        for i in [["123 Johnson St", 259_999.99, "2,540 sq. ft.", "3 bed", "2 bath"],
-                  ["87 University Dr", 587_399.99, "5,001 sq. ft.", "5 bed", "3.5 bath"],
-                  ["301 N. King St", 479_399.99, "1,532 sq. ft.", "3 bed", "2.5 bath"]]:
-            entry = PropertyDisplay(self)
-            entry.setAddress(i[0])
-            entry.setPrice(i[1])
-            entry.setPropertyAttributes(i[2:])
-            self.historyBarLayout.addWidget(entry)
+        self.propertyManager = self.getWidgetChild(PropertyDisplayManager, "history_scroll_widget")
+        self.propertyManager.connectButton(self.addButton, type="add")
+        self.propertyManager.connectButton(self.editButton, type="edit")
+        self.propertyManager.connectButton(self.deleteButton, type="remove")
 
         self.buttonPredictionBack = self.getWidgetChild(QPushButton, "button_back")
         self.buttonPredictionNext = self.getWidgetChild(QPushButton, "button_next")
@@ -123,21 +107,21 @@ class Controller(QWidget):
     @Slot(bool)
     def settingsRequested(self, on: bool):
         self.pages.setCurrentIndex(2 if on else 1)
+        self.addButton.setVisible(not on)
+        self.editButton.setVisible(not on)
         self.deleteButton.setVisible(on)
-
-    @Slot()
-    def propertyEntryClicked(self, prop: PropertyDisplay):
-        self.editButton.setVisible(prop is not None)
 
     @Slot()
     def addClicked(self):
         self.pages.setCurrentIndex(0)
         self.settingsButton.setEnabled(False)
+        self.historyButtons.hide()
 
     @Slot()
     def editClicked(self):
         self.pages.setCurrentIndex(0)
         self.settingsButton.setEnabled(False)
+        self.historyButtons.hide()
 
     @Slot()
     def deleteClicked(self):
@@ -149,6 +133,7 @@ class Controller(QWidget):
         if index == 0:
             self.pages.setCurrentIndex(1)
             self.settingsButton.setEnabled(True)
+            self.historyButtons.show()
             return
 
         index -= 1
@@ -176,3 +161,4 @@ class Controller(QWidget):
         self.settingsButton.setEnabled(True)
         self.buttonPredictionStart.setVisible(False)
         self.buttonPredictionNext.setVisible(True)
+        self.historyButtons.show()
