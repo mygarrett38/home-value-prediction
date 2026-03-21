@@ -172,7 +172,7 @@ class Controller(QWidget):
         self.editorLocationState.setCurrentIndex(self.currentProperty.location_state)
         self.editorLocationAddress.setText(self.currentProperty.location_address)
 
-        self.editorPropertyType.setCurrentIndex(self.currentProperty.prop_type)
+        self.editorPropertyType.setCurrentText(self.currentProperty.prop_type)
         self.editorPropertyAcreage.setValue(self.currentProperty.acreage)
         self.editorPropertyYear.setDate(QDate(self.currentProperty.year_built, 1, 1))
         self.editorPropertyTax.setValue(self.currentProperty.tax_annual)
@@ -196,7 +196,7 @@ class Controller(QWidget):
             location_state=self.editorLocationState.currentIndex(),
             location_address=self.editorLocationAddress.text(),
 
-            prop_type=self.editorPropertyType.currentIndex(),
+            prop_type=self.editorPropertyType.currentText(),
             acreage=self.editorPropertyAcreage.value(),
             year_built=self.editorPropertyYear.date().year(),
             tax_annual=self.editorPropertyTax.value(),
@@ -255,4 +255,4 @@ class Controller(QWidget):
         self.buttonPredictionNext.setVisible(True)
         self.historyButtons.show()
 
-        #print(prop.price)
+        print(prop.price)

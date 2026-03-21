@@ -8,6 +8,9 @@ import joblib
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from xgboost import XGBRegressor
 
+import warnings
+warnings.filterwarnings('ignore')
+
 def absolutePath(relative_path: str):
     return os.path.join(os.path.dirname(__file__), relative_path)
 
@@ -52,9 +55,24 @@ class Configuration:
         self.properties.pop(index)
 
     def predictProperty(self, prop: Property):
-        price_ames = self.ml_ames_model.predict([prop.toAmesModel()])
-        price_loc = self.ml_loc_model.predict([prop.toLocationModel()])
-        price_norm = np.expm1((*price_ames, *price_loc))
-        print(price_norm)
+        ames_prop = prop.toAmesModel()
 
-        return float(sum(price_norm)) / 2.0
+        transform_type = self.ml_ames_ohe_type.transform([[ames_prop[0]]]).data  # type: ignore
+        ames_prop[0] = float(transform_type[0]) if len(transform_type) > 0 else 1
+
+        transform_heat = self.ml_ames_ohe_heat.transform([[ames_prop[4]]]).data  # type: ignore
+        ames_prop[4] = float(transform_heat[0]) if len(transform_heat) > 0 else 1
+
+        ames_prop = self.ml_ames_scaler.transform([ames_prop])
+        price_ames = self.ml_ames_model.predict(ames_prop)
+
+        loc_prop = prop.toLocationModel()
+        loc_prop = self.ml_loc_scaler.transform([loc_prop])
+        price_loc = self.ml_loc_model.predict(loc_prop)
+
+        price_avg = np.mean((*price_ames, *price_loc))
+        return float(np.expm1(price_avg))
+    
+if __name__ == "__main__":
+    c = Configuration()
+    print(c.predictProperty(Property()))

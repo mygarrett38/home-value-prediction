@@ -74,7 +74,7 @@ class Property:
     location_address: str = "123 Main St"
     coords = [-77.0, 39.0]
 
-    prop_type: int = 0
+    prop_type: str = "Single-Family Home"
     acreage: float = 0.5
     year_built: int = 2000
     tax_annual: float = 2000.00
@@ -106,29 +106,29 @@ class Property:
             f"{self.totalBaths():.1f} bath",
         ]
 
-    def toAmesModel(self) -> tuple:
-        return (
-            self.prop_type,
-            self.sys_ac,
+    def toAmesModel(self) -> list:
+        return [
+            "1Fam", #self.prop_type,
+            int(self.sys_ac),
             self.floors,
             self.garages,
-            0, #HEAT_TYPES.index(self.sys_heat),
+            "GasA", #self.sys_heat,
             self.acreage * SQUARE_FEET_PER_ACRE, 
             self.totalBaths(),
             self.beds,
             self.square_feet,
             self.year_built
-        )
+        ]
     
-    def toLocationModel(self) -> tuple:
-        return (
+    def toLocationModel(self) -> list:
+        return [
             self.beds,
             self.totalBaths(),
             self.acreage,
             self.square_feet,
             self.tax_annual,
             *self.coords
-        )
+        ]
 
 if __name__ == "__main__":
     pass
