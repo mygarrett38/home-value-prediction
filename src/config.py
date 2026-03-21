@@ -4,6 +4,8 @@ import numpy as np
 
 from property import Property
 
+import joblib
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from xgboost import XGBRegressor
 
 def absolutePath(relative_path: str):
@@ -15,8 +17,14 @@ class Configuration:
         self.ml_ames_model = XGBRegressor()
         self.ml_ames_model.load_model(absolutePath("../model/xgb_ames.json"))
 
+        self.ml_ames_ohe_type: OneHotEncoder = joblib.load(absolutePath("../model/ohe_ames_BldgType.joblib"))
+        self.ml_ames_ohe_heat: OneHotEncoder = joblib.load(absolutePath("../model/ohe_ames_Heating.joblib"))
+        self.ml_ames_scaler: StandardScaler = joblib.load(absolutePath("../model/scl_ames.joblib"))
+
         self.ml_loc_model = XGBRegressor()
         self.ml_loc_model.load_model(absolutePath("../model/xgb_loc.json"))
+
+        self.ml_loc_scaler: StandardScaler = joblib.load(absolutePath("../model/scl_loc.joblib"))
 
         # Init the properties list
         self.properties: list[Property] = kwargs["properties"] if len(kwargs) > 0 else []
