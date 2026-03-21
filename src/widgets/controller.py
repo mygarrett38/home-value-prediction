@@ -35,6 +35,8 @@ from typing import TypeVar
 PlaceholderType = TypeVar("PlaceholderType", bound=QObject)
 
 class Controller(QWidget):
+    requestPrediction = Signal(Property)
+
     def __init__(self, parent: QWidget):
         super().__init__(parent)
 
@@ -187,6 +189,29 @@ class Controller(QWidget):
         self.buttonHomeGarage.setChecked(self.currentProperty.garages > 0)
         self.editorHomeGarage.setValue(max(self.currentProperty.garages, 1))
 
+    def getPropertyEditors(self):
+        return Property(
+            price=0,
+
+            location_state=self.editorLocationState.currentIndex(),
+            location_address=self.editorLocationAddress.text(),
+
+            prop_type=self.editorPropertyType.currentIndex(),
+            acreage=self.editorPropertyAcreage.value(),
+            year_built=self.editorPropertyYear.date().year(),
+            tax_annual=self.editorPropertyTax.value(),
+
+            square_feet=self.editorHomeFootage.value(),
+            floors=self.editorHomeFloors.value(),
+            beds=self.editorHomeBeds.value(),
+            baths=self.editorHomeBaths.value(),
+            baths_half=self.editorHomeHalfBaths.value(),
+
+            sys_heat=self.editorHomeHeat.currentText() if self.buttonHomeHeat.isChecked() else None,
+            sys_ac=self.buttonHomeAir.isChecked(),
+            garages=self.editorHomeGarage.value() if self.buttonHomeGarage.isChecked() else 0
+        )
+
     @Slot()
     def predictionBackClicked(self):
         index = self.form.currentIndex()
@@ -216,9 +241,18 @@ class Controller(QWidget):
 
     @Slot()
     def predictionStartClicked(self):
+        self.requestPrediction.emit(self.getPropertyEditors())
+
+    @Slot(Property)
+    def predictionProcessed(self, prop: Property):
+        self.currentProperty = prop
+        self.propertyManager.setCurrentProperty(self.currentProperty)
+
         self.form.setCurrentIndex(0)
         self.pages.setCurrentIndex(1)
         self.settingsButton.setEnabled(True)
         self.buttonPredictionStart.setVisible(False)
         self.buttonPredictionNext.setVisible(True)
         self.historyButtons.show()
+
+        #print(prop.price)

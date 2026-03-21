@@ -1,5 +1,7 @@
 import os
 
+import numpy as np
+
 from property import Property
 
 from xgboost import XGBRegressor
@@ -35,7 +37,16 @@ class Configuration:
     def addProperty(self, prop: Property):
         self.properties.append(prop)
 
-    def removeProperty(self, prop: Property | None):
-        if prop is None: raise ValueError("removeProperty(): No property provided.")
-        self.properties.remove(prop)
-        del prop
+    def setProperty(self, index: int, prop: Property):
+        self.properties.insert(index, prop)
+
+    def removeProperty(self, index: int):
+        self.properties.pop(index)
+
+    def predictProperty(self, prop: Property):
+        price_ames = self.ml_ames_model.predict([prop.toAmesModel()])
+        price_loc = self.ml_loc_model.predict([prop.toLocationModel()])
+        price_norm = np.expm1((*price_ames, *price_loc))
+        print(price_norm)
+
+        return float(sum(price_norm)) / 2.0

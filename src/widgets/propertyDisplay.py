@@ -122,6 +122,9 @@ class PropertyDisplayManager(QWidget):
 
         button.clicked.connect(buttons[type])
 
+    def setCurrentProperty(self, prop: Property):
+        pass
+
     def currentProperty(self):
         return self.currentProp
 
@@ -131,15 +134,15 @@ class PropertyDisplayManager(QWidget):
         self.main_layout.addWidget(propDisplay)
         propDisplay.select()
 
-        self.propertyEditRequested.emit(None)
+        self.propertyEditRequested.emit(self.currentProp)
 
     def editProperty(self):
         self.propertyEditRequested.emit(self.currentProp)
 
     def removeProperty(self):
-        removingDisplay = self.main_layout.findChild(PropertyDisplay, str(id(self.currentProp)))
-        if removingDisplay is None: raise ValueError("removeProperty(): No property display found!")
+        #removingDisplay = self.main_layout.findChild(PropertyDisplay, str(id(self.currentProp)))
+        #if removingDisplay is None: raise ValueError("removeProperty(): No property display found!")
         if QMessageBox.question(self, "Are you sure?", "This property and its prediction will be permanently deleted.\n\nAre you sure you want to do this?") == QMessageBox.StandardButton.Cancel: return
 
-        self.configuration.removeProperty(self.currentProp)
-        self.main_layout.removeWidget(removingDisplay)
+        #self.configuration.removeProperty(self.)
+        #self.main_layout.removeWidget(removingDisplay)

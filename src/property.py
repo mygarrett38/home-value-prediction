@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import numpy as np
 
 SQUARE_FEET_PER_ACRE = 43560
 
@@ -56,24 +57,32 @@ STATE_DICT = {
     "WY": "Wyoming"
 }
 
+HEAT_TYPES = {
+    "Central",
+    "Baseboard",
+    "Floor / Wall",
+    "Solar",
+    "Gravity",
+    "Other"
+}
 
 @dataclass
 class Property:
     price: float = 0
 
-    location_state: int = 47
-    location_address: str = "New Property"
-    coords = [0.0, 0.0]
+    location_state: int = 48
+    location_address: str = "123 Main St"
+    coords = [-77.0, 39.0]
 
     prop_type: int = 0
     acreage: float = 0.5
-    year_built: int = 1985
-    tax_annual: float = 800.00
+    year_built: int = 2000
+    tax_annual: float = 2000.00
 
-    square_feet: int = 2000
+    square_feet: int = 0
     floors: int = 2
-    beds: int = 3
-    baths: int = 2
+    beds: int = 0
+    baths: int = 0
     baths_half: int = 0
 
     sys_heat: str | None = "Central"
@@ -88,7 +97,7 @@ class Property:
         return vars(self)
     
     def totalBaths(self):
-        return self.baths + self.baths_half / 2
+        return self.baths + self.baths_half
     
     def attributes(self):
         return [
@@ -103,8 +112,7 @@ class Property:
             self.sys_ac,
             self.floors,
             self.garages,
-            self.sys_heat,
-            *self.coords,
+            0, #HEAT_TYPES.index(self.sys_heat),
             self.acreage * SQUARE_FEET_PER_ACRE, 
             self.totalBaths(),
             self.beds,

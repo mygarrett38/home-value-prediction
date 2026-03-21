@@ -1424,22 +1424,7 @@
                        </item>
                        <item>
                         <property name="text">
-                         <string>Heat Pump</string>
-                        </property>
-                       </item>
-                       <item>
-                        <property name="text">
                          <string>Solar</string>
-                        </property>
-                       </item>
-                       <item>
-                        <property name="text">
-                         <string>Forced Air</string>
-                        </property>
-                       </item>
-                       <item>
-                        <property name="text">
-                         <string>Radiant</string>
                         </property>
                        </item>
                        <item>

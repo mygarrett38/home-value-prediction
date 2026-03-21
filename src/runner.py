@@ -4,6 +4,7 @@ import json
 from platformdirs import user_data_dir
 
 from config import Configuration, absolutePath
+from property import Property
 from widgets.controller import Controller
 from widgets.graph import GraphDisplay
 from widgets.propertyDisplay import PropertyDisplayManager
@@ -16,6 +17,8 @@ from PySide6.QtUiTools import QUiLoader
 import widgets.icons._icons
 
 class HomeValueApplication(QApplication):
+    processPrediction = Signal(Property)
+
     def __init__(self, argv: list[str]):
         super().__init__(argv)
 
@@ -27,8 +30,6 @@ class HomeValueApplication(QApplication):
 
         # Load any existing data
         self.configuration = self.load()
-        # print(vars(self.configuration.properties[0]))
-        self.save()
 
         ui_loader = QUiLoader(self)
         ui_loader.registerCustomWidget(Controller)
@@ -37,10 +38,21 @@ class HomeValueApplication(QApplication):
         window = ui_loader.load(absolutePath("widgets/home-value-window.ui"))
 
         self.controller = window.findChild(Controller, name="controller", options=Qt.FindChildOption.FindChildrenRecursively)
-        self.controller.setMainWindow(window) # type: ignore
+        if self.controller is None: raise ValueError("NEVER HAPPENS")
+
+        self.controller.setMainWindow(window)
+        self.controller.requestPrediction.connect(self.predictionRequested)
+        self.processPrediction.connect(self.controller.predictionProcessed)
 
         window.showMaximized()
+        window.destroyed.connect(self.save)
         window.destroyed.connect(self.quit)
+
+    @Slot(Property)
+    def predictionRequested(self, prop: Property):
+        prop.price = self.configuration.predictProperty(prop)
+        self.configuration.addProperty(prop)
+        self.processPrediction.emit(prop)
 
     @classmethod
     def defaultConfigPath(cls):
@@ -58,6 +70,8 @@ class HomeValueApplication(QApplication):
         return result
 
     def save(self, path: str | None = None):
+        if type(path) != str: path = None
+
         def serialize(config: Configuration): return config.serialize()
 
         with open(self.defaultConfigFile(path), "wt") as config_file:
