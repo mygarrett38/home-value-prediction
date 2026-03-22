@@ -31,6 +31,9 @@ class Configuration:
 
         # Init the properties list
         self.properties: list[Property] = kwargs["properties"] if len(kwargs) > 0 else []
+    
+    def __iter__(self):
+        return iter(self.properties)
 
     @staticmethod
     def deserialize(obj: dict):
@@ -72,7 +75,3 @@ class Configuration:
 
         price_avg = np.mean((*price_ames, *price_loc))
         return float(np.expm1(price_avg))
-    
-if __name__ == "__main__":
-    c = Configuration()
-    print(c.predictProperty(Property()))

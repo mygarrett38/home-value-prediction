@@ -40,6 +40,7 @@ class HomeValueApplication(QApplication):
         self.controller = window.findChild(Controller, name="controller", options=Qt.FindChildOption.FindChildrenRecursively)
         if self.controller is None: raise ValueError("NEVER HAPPENS")
 
+        self.controller.setConfiguration(self.configuration)
         self.controller.setMainWindow(window)
         self.controller.requestPrediction.connect(self.predictionRequested)
         self.processPrediction.connect(self.controller.predictionProcessed)

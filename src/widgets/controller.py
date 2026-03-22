@@ -1,7 +1,8 @@
 from itertools import cycle
 
-from widgets.propertyDisplay import PropertyDisplayManager
+from config import Configuration
 from property import Property, STATE_DICT
+from widgets.propertyDisplay import PropertyDisplayManager
 
 from PySide6.QtCore import (
     QEvent,
@@ -54,6 +55,9 @@ class Controller(QWidget):
         widget = self.mainWindow.findChild(child_type, name=name, options=Qt.FindChildOption.FindChildrenRecursively)
         if widget is None: raise ValueError(f"Child \"{name}\" was not found in this window!")
         return widget
+    
+    def setConfiguration(self, config: Configuration):
+        self.configuration = config
 
     def setMainWindow(self, window: QWidget):
         if hasattr(self, "mainWindow"): return
@@ -78,10 +82,8 @@ class Controller(QWidget):
         self.deleteButton.setVisible(False)
 
         self.propertyManager = self.getWidgetChild(PropertyDisplayManager, "history_scroll_widget")
+        self.propertyManager.setConfiguration(self.configuration)
         self.propertyManager.propertySelected.connect(self.currentPropertyChanged)
-        self.propertyManager.connectButton(self.addButton, type="add")
-        self.propertyManager.connectButton(self.editButton, type="edit")
-        self.propertyManager.connectButton(self.deleteButton, type="remove")
 
         # PREDICTION FORM WIDGETS #
         self.buttonPredictionBack = self.getWidgetChild(QPushButton, "button_back")
@@ -152,6 +154,7 @@ class Controller(QWidget):
         self.historyButtons.hide()
 
         self.currentProperty = Property()
+        self.propertyManager.addProperty(self.currentProperty)
         self.setPropertyEditors()
 
     @Slot()
@@ -164,6 +167,7 @@ class Controller(QWidget):
 
     @Slot()
     def deleteClicked(self):
+        if QMessageBox.question(self, "Are you sure?", "This property and its prediction will be permanently deleted.\n\nAre you sure you want to do this?") == QMessageBox.StandardButton.Cancel: return
         self.pages.setCurrentIndex(0)
 
     def setPropertyEditors(self):
@@ -219,6 +223,7 @@ class Controller(QWidget):
             self.pages.setCurrentIndex(1)
             self.settingsButton.setEnabled(True)
             self.historyButtons.show()
+            self.propertyManager.removeProperty()
             return
 
         index -= 1
@@ -246,7 +251,6 @@ class Controller(QWidget):
     @Slot(Property)
     def predictionProcessed(self, prop: Property):
         self.currentProperty = prop
-        self.propertyManager.setCurrentProperty(self.currentProperty)
 
         self.form.setCurrentIndex(0)
         self.pages.setCurrentIndex(1)

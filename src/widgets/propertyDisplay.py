@@ -107,42 +107,47 @@ class PropertyDisplayManager(QWidget):
         self.super_layout.addLayout(self.main_layout)
         self.super_layout.addStretch(1)
 
-        self.currentProp = None
+        self.currentPropIndex = -1
 
     def setConfiguration(self, config: Configuration):
         self.configuration = config
 
-    def connectButton(self, button: QPushButton, /, type: str):
-        buttons = {
-            "add": self.addProperty,
-            "edit": self.editProperty,
-            "remove": self.removeProperty
-        }
-        if type not in buttons.keys(): raise ValueError("Incorrect button connection type!")
+    def refreshWidgets(self):
+        while self.main_layout.count() > 0:
+            item = self.main_layout.takeAt(0)
+            item.widget().deleteLater() # type: ignore
+            del item
 
-        button.clicked.connect(buttons[type])
+        for property in self.configuration:
+            prop_display = PropertyDisplay(self, property)
+            prop_display.selected.connect(self.handlePropertySelected)
+            self.main_layout.addWidget(prop_display)
 
-    def setCurrentProperty(self, prop: Property):
-        pass
+    def setCurrentPropertyIndex(self, index: int):
+        if self.currentPropIndex == index: return
 
-    def currentProperty(self):
-        return self.currentProp
+        if self.currentPropIndex >= 0:
+            oldWidget: PropertyDisplay = self.main_layout.itemAt(self.currentPropIndex).widget() # type: ignore
+            oldWidget.deselect()
 
-    def addProperty(self):
-        self.currentProp = Property()
-        propDisplay = PropertyDisplay(self, self.currentProp)
+        self.currentPropIndex = index
+
+        if index >= 0: 
+            newWidget: PropertyDisplay = self.main_layout.itemAt(index).widget() # type: ignore
+            newWidget.select()
+
+    def handlePropertySelected(self):
+        self.setCurrentPropertyIndex(self.main_layout.indexOf(self.sender())) # type: ignore
+
+    def addProperty(self, prop: Property):
+        propDisplay = PropertyDisplay(self, prop)
+        propDisplay.selected.connect(self.handlePropertySelected)
         self.main_layout.addWidget(propDisplay)
         propDisplay.select()
 
-        self.propertyEditRequested.emit(self.currentProp)
-
-    def editProperty(self):
-        self.propertyEditRequested.emit(self.currentProp)
-
     def removeProperty(self):
-        #removingDisplay = self.main_layout.findChild(PropertyDisplay, str(id(self.currentProp)))
-        #if removingDisplay is None: raise ValueError("removeProperty(): No property display found!")
-        if QMessageBox.question(self, "Are you sure?", "This property and its prediction will be permanently deleted.\n\nAre you sure you want to do this?") == QMessageBox.StandardButton.Cancel: return
-
-        #self.configuration.removeProperty(self.)
-        #self.main_layout.removeWidget(removingDisplay)
+        item = self.main_layout.takeAt(self.main_layout.count() - 1)
+        item.widget().deleteLater() # type: ignore
+        del item
+        self.currentPropIndex = -1
+        
