@@ -144,8 +144,9 @@ class Controller(QWidget):
         self.deleteButton.setVisible(on)
 
     @Slot(Property)
-    def currentPropertyChanged(self, prop: Property):
+    def currentPropertyChanged(self, prop: Property | None):
         self.currentProperty = prop
+        self.deleteButton.setEnabled(prop is not None)
 
     @Slot()
     def addClicked(self):
@@ -168,7 +169,8 @@ class Controller(QWidget):
     @Slot()
     def deleteClicked(self):
         if QMessageBox.question(self, "Are you sure?", "This property and its prediction will be permanently deleted.\n\nAre you sure you want to do this?") == QMessageBox.StandardButton.Cancel: return
-        self.pages.setCurrentIndex(0)
+        self.configuration.removeProperty(self.propertyManager.currentPropIndex)
+        self.propertyManager.removeProperty()
 
     def setPropertyEditors(self):
         if self.currentProperty is None: raise ValueError("setPropertyEditors(): No current property!")

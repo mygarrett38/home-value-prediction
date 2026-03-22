@@ -90,8 +90,6 @@ class PropertyDisplay(QWidget):
 
 class PropertyDisplayManager(QWidget):
     propertySelected = Signal(Property)
-    propertyEditRequested = Signal(Property)
-    propertyRemoveRequested = Signal(Property)
 
     def __init__(self, parent: QWidget):
         super().__init__(parent)
@@ -131,6 +129,7 @@ class PropertyDisplayManager(QWidget):
             oldWidget.deselect()
 
         self.currentPropIndex = index
+        self.propertySelected.emit(self.configuration[index] if index >= 0 else None)
 
         if index >= 0: 
             newWidget: PropertyDisplay = self.main_layout.itemAt(index).widget() # type: ignore
@@ -146,7 +145,7 @@ class PropertyDisplayManager(QWidget):
         propDisplay.select()
 
     def removeProperty(self):
-        item = self.main_layout.takeAt(self.main_layout.count() - 1)
+        item = self.main_layout.takeAt(self.currentPropIndex)
         item.widget().deleteLater() # type: ignore
         del item
         self.currentPropIndex = -1
