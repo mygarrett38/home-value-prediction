@@ -129,7 +129,8 @@ class PropertyDisplayManager(QWidget):
             oldWidget.deselect()
 
         self.currentPropIndex = index
-        self.propertySelected.emit(self.configuration[index] if index >= 0 else None)
+        if -1 <= index < len(self.configuration):
+            self.propertySelected.emit(self.configuration[index] if index >= 0 else None)
 
         if index >= 0: 
             newWidget: PropertyDisplay = self.main_layout.itemAt(index).widget() # type: ignore

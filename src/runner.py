@@ -5,6 +5,7 @@ from platformdirs import user_data_dir
 
 from config import Configuration, absolutePath
 from property import Property
+from location import Location
 from widgets.controller import Controller
 from widgets.graph import GraphDisplay
 from widgets.propertyDisplay import PropertyDisplayManager
@@ -18,9 +19,13 @@ import widgets.icons._icons
 
 class HomeValueApplication(QApplication):
     processPrediction = Signal(Property)
+    processLocations = Signal(list)
 
     def __init__(self, argv: list[str]):
         super().__init__(argv)
+
+        # Load Location service
+        self.location_client = Location.load()
 
         # Create the config directory if not exists
         os.makedirs(self.defaultConfigPath(), exist_ok=True)
@@ -44,6 +49,8 @@ class HomeValueApplication(QApplication):
         self.controller.setMainWindow(window)
         self.controller.requestPrediction.connect(self.predictionRequested)
         self.processPrediction.connect(self.controller.predictionProcessed)
+        self.controller.requestLocations.connect(self.locationsRequested)
+        self.processLocations.connect(self.controller.locationsProcessed)
 
         window.showMaximized()
         window.destroyed.connect(self.save)
@@ -54,6 +61,10 @@ class HomeValueApplication(QApplication):
         prop.price = self.configuration.predictProperty(prop)
         self.configuration.addProperty(prop)
         self.processPrediction.emit(prop)
+
+    @Slot(Property)
+    def locationsRequested(self, prop: Property):
+        self.processLocations.emit(Location.requestLocation(self.location_client, prop))
 
     @classmethod
     def defaultConfigPath(cls):

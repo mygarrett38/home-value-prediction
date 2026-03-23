@@ -1,7 +1,8 @@
 from itertools import cycle
 
 from config import Configuration
-from property import Property, STATE_DICT
+from property import Property
+from location import Location, STATE_DICT
 from widgets.propertyDisplay import PropertyDisplayManager
 
 from PySide6.QtCore import (
@@ -37,6 +38,7 @@ PlaceholderType = TypeVar("PlaceholderType", bound=QObject)
 
 class Controller(QWidget):
     requestPrediction = Signal(Property)
+    requestLocations = Signal(Property)
 
     def __init__(self, parent: QWidget):
         super().__init__(parent)
@@ -83,6 +85,7 @@ class Controller(QWidget):
 
         self.propertyManager = self.getWidgetChild(PropertyDisplayManager, "history_scroll_widget")
         self.propertyManager.setConfiguration(self.configuration)
+        self.propertyManager.refreshWidgets()
         self.propertyManager.propertySelected.connect(self.currentPropertyChanged)
 
         # PREDICTION FORM WIDGETS #
@@ -168,7 +171,7 @@ class Controller(QWidget):
 
     @Slot()
     def deleteClicked(self):
-        if QMessageBox.question(self, "Are you sure?", "This property and its prediction will be permanently deleted.\n\nAre you sure you want to do this?") == QMessageBox.StandardButton.Cancel: return
+        if QMessageBox.question(self, "Are you sure?", "This property and its prediction will be permanently deleted.\n\nAre you sure you want to do this?") == QMessageBox.StandardButton.No: return
         self.configuration.removeProperty(self.propertyManager.currentPropIndex)
         self.propertyManager.removeProperty()
 
@@ -249,6 +252,16 @@ class Controller(QWidget):
     @Slot()
     def predictionStartClicked(self):
         self.requestPrediction.emit(self.getPropertyEditors())
+
+    @Slot()
+    def locationRequested(self):
+        if self.currentProperty is None: raise ValueError("locationRequested(): No Property to request!")
+        self.currentProperty = self.getPropertyEditors()
+        self.requestLocations.emit(self.currentProperty)
+
+    @Slot(list)
+    def locationsProcessed(self, locations: list[Location]):
+        print([l.getCoordinates() for l in locations])
 
     @Slot(Property)
     def predictionProcessed(self, prop: Property):

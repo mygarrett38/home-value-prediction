@@ -3,3 +3,6 @@ __pycache__/
 
 # Exclude data sources for model training
 data/
+
+# Exclude API Key for Google Maps
+.env

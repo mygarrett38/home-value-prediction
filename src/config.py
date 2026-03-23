@@ -35,6 +35,9 @@ class Configuration:
     def __iter__(self):
         return iter(self.properties)
     
+    def __len__(self):
+        return len(self.properties)
+    
     def __getitem__(self, index: int):
         return self.properties[index]
 
