@@ -36,10 +36,16 @@ class Property:
 
     @staticmethod
     def deserialize(obj: dict):
+        if "coordinates" in obj:
+            return Location.deserialize(obj)
+        
         return Property(**obj)
 
     def serialize(self):
-        return vars(self)
+        return {
+            **vars(self),
+            "location": Location.serialize(self.location)
+        }
     
     def totalBaths(self):
         return self.baths + self.baths_half
@@ -48,7 +54,7 @@ class Property:
         return [
             f"{self.square_feet:,} sq. ft.",
             f"{self.beds} bed",
-            f"{self.totalBaths():.1f} bath",
+            f"{self.totalBaths()} bath",
         ]
 
     def toAmesModel(self) -> list:

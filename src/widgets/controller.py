@@ -153,6 +153,7 @@ class Controller(QWidget):
     @Slot()
     def addClicked(self):
         self.pages.setCurrentIndex(0)
+        self.buttonPredictionNext.setEnabled(False)
         self.settingsButton.setEnabled(False)
         self.historyButtons.hide()
 
@@ -165,6 +166,9 @@ class Controller(QWidget):
         self.pages.setCurrentIndex(0)
         self.settingsButton.setEnabled(False)
         self.historyButtons.hide()
+
+        if self.currentProperty.location.getCoordinates() != (0.0, 0.0) and self.currentProperty.location.getMapImage().isNull(): # type: ignore
+            self.requestLocation.emit(self.currentProperty)
 
         self.setPropertyEditors()
 
@@ -244,6 +248,8 @@ class Controller(QWidget):
 
         index += 1
         self.form.setCurrentIndex(index)
+        self.getPropertyEditors()
+        self.propertyManager.refreshCurrentAttributes()
 
         if index == self.form.count() - 1:
             self.buttonPredictionStart.setVisible(True)
@@ -263,12 +269,17 @@ class Controller(QWidget):
     @Slot()
     def locationProcessed(self):
         if self.currentProperty is None: raise ValueError("locationProcessed(): No Property to process!")
+        if self.currentProperty.location.getCoordinates() == (0.0, 0.0): return
+
         self.labelLocationMap.setPixmap(self.currentProperty.location.getMapImage())
-        print(self.currentProperty.location.getCoordinates())
+        self.buttonPredictionNext.setEnabled(True)
+
+        self.propertyManager.refreshCurrentAttributes()
 
     @Slot(Property)
     def predictionProcessed(self, prop: Property):
         self.currentProperty = prop
+        self.propertyManager.refreshCurrentAttributes()
 
         self.form.setCurrentIndex(0)
         self.pages.setCurrentIndex(1)
@@ -276,5 +287,3 @@ class Controller(QWidget):
         self.buttonPredictionStart.setVisible(False)
         self.buttonPredictionNext.setVisible(True)
         self.historyButtons.show()
-
-        print(prop.price)

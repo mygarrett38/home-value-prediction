@@ -12,7 +12,7 @@ def absolutePath(relative_path: str):
     return os.path.join(os.path.dirname(__file__), relative_path)
 
 class Location:
-    def __init__(self, zip_code: str, address: str, coordinates: tuple[float, float] = (39.0, -77.0)):
+    def __init__(self, zip_code: str, address: str, coordinates: tuple[float, float] = (0.0, 0.0)):
         self.zip_code = zip_code
         self.address = address
         self.coordinates = coordinates 
@@ -36,6 +36,17 @@ class Location:
     def getCoordinates(self):
         return self.coordinates
     
+    @staticmethod
+    def deserialize(obj: dict):
+        return Location(**obj)
+
+    def serialize(self):
+        return {
+            "zip": self.zip_code,
+            "address": self.address,
+            "coordinates": self.coordinates
+        }
+    
     def requestMap(self, client: googlemaps.Client):
         map_args = {
             "size": (400, 300),
@@ -56,8 +67,6 @@ class Location:
         self.mapImage = pixmap
 
     def requestLocation(self, client: googlemaps.Client):
-        if not (0 < int(self.zip_code) < 100000): self.zip_code = "25443" # Default to Shepherdstown, WV
-
         result: dict = {}
         try:
             result = client.geocode(self.address, components={"country": "US", "postal_code": self.zip_code})[0] # type: ignore
@@ -75,7 +84,6 @@ class Location:
 
         self.coordinates = tuple(result["geometry"]["location"].values())
         self.requestMap(client)
-
 
     @staticmethod
     def load():

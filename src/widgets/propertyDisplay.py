@@ -39,9 +39,6 @@ class PropertyDisplay(QWidget):
         main_layout.setSpacing(5)
         self.setLayout(main_layout)
 
-        """ self.selectedWidget = QCheckBox("", parent=self)
-        main_layout.addWidget(self.selectedWidget) """
-
         desc_layout = QVBoxLayout()
         desc_layout.setContentsMargins(0, 0, 0, 0)
         desc_layout.setSpacing(5)
@@ -60,7 +57,6 @@ class PropertyDisplay(QWidget):
 
         self.propertyLabel = QLabel("", parent=self)
         self.propertyLabel.setFont(propFont)
-        self.refreshPropertyAttributes()
         desc_layout.addWidget(self.propertyLabel)
 
         propFont.setPointSize(12)
@@ -69,6 +65,8 @@ class PropertyDisplay(QWidget):
         self.priceLabel = QLabel(f"${round(property.price / 1000)}k", parent=self, alignment=Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.priceLabel.setFont(propFont)
         main_layout.addWidget(self.priceLabel)
+
+        self.refreshPropertyAttributes()
 
     def select(self):
         self.setProperty("selected", 1)
@@ -84,8 +82,9 @@ class PropertyDisplay(QWidget):
         return super().mouseDoubleClickEvent(event)
 
     def refreshPropertyAttributes(self):
-        attrs = self.prop.attributes()
-        self.propertyLabel.setText(" | ".join(attrs))
+        self.addressLabel.setText(self.prop.location.address)
+        self.propertyLabel.setText(" | ".join(self.prop.attributes()))
+        self.priceLabel.setText(f"${round(self.prop.price / 1000)}k")
 
 
 class PropertyDisplayManager(QWidget):
@@ -120,6 +119,10 @@ class PropertyDisplayManager(QWidget):
             prop_display = PropertyDisplay(self, property)
             prop_display.selected.connect(self.handlePropertySelected)
             self.main_layout.addWidget(prop_display)
+
+    def refreshCurrentAttributes(self):
+        currentDisplay: PropertyDisplay = self.main_layout.itemAt(self.currentPropIndex).widget() # type: ignore
+        currentDisplay.refreshPropertyAttributes()
 
     def setCurrentPropertyIndex(self, index: int):
         if self.currentPropIndex == index: return
