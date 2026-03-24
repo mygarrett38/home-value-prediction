@@ -42,13 +42,6 @@ class Property:
     sys_ac: bool = True
     garages: int = 0
 
-    @staticmethod
-    def deserialize(obj: dict):
-        if "coordinates" in obj:
-            return Location.deserialize(obj)
-        
-        return Property(**obj)
-
     def serialize(self):
         return {
             **vars(self),

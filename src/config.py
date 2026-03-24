@@ -39,13 +39,6 @@ class Configuration:
     
     def __getitem__(self, index: int):
         return self.properties[index]
-
-    @staticmethod
-    def deserialize(obj: dict):
-        if "version" in obj:
-            return Configuration(**obj)
-        
-        return Property.deserialize(obj)
     
     def serialize(self):
         return {

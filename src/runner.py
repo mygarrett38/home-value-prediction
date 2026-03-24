@@ -80,10 +80,21 @@ class HomeValueApplication(QApplication):
         if path is None: path = cls.defaultConfigPath()
         return os.path.join(path, "config.json")
     
+    @classmethod
+    def deserialize(cls, obj: dict):
+        if "version" in obj:
+            return Configuration(**obj)
+        elif "coordinates" in obj:
+            return Location(**obj)
+        else:
+            return Property(**obj)
+    
     def load(self, path: str | None = None):
         with open(self.defaultConfigFile(path)) as config_file:
-            try: result = json.load(config_file, object_hook=Configuration.deserialize)
-            except: result = Configuration()
+            try: result = json.load(config_file, object_hook=self.deserialize)
+            except Exception as error:
+                print(error)
+                result = Configuration()
         return result
 
     def save(self, path: str | None = None):

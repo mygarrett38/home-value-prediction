@@ -35,14 +35,10 @@ class Location:
 
     def getCoordinates(self):
         return self.coordinates
-    
-    @staticmethod
-    def deserialize(obj: dict):
-        return Location(**obj)
 
     def serialize(self):
         return {
-            "zip": self.zip_code,
+            "zip_code": self.zip_code,
             "address": self.address,
             "coordinates": self.coordinates
         }
