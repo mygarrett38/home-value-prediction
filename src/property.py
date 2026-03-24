@@ -4,13 +4,21 @@ from location import Location
 
 SQUARE_FEET_PER_ACRE = 43560
 
+HOME_TYPES = {
+    "Single-Family Home": "1Fam",
+    "Multi-Family Home": "2fmCon",
+    "Townhouse": "TwnhsE",
+    "Duplex, Triplex, etc.": "Duplex"
+}
+
 HEAT_TYPES = {
-    "Central",
-    "Baseboard",
-    "Floor / Wall",
-    "Solar",
-    "Gravity",
-    "Other"
+    "Central": "GasA",
+    "Forced Air": "GasA",
+    "Steam": "GasW",
+    "Floor": "Floor",
+    "Wall": "Wall",
+    "Gravity": "Grav",
+    "Other": "OthW"
 }
 
 @dataclass
@@ -59,11 +67,11 @@ class Property:
 
     def toAmesModel(self) -> list:
         return [
-            "1Fam", #self.prop_type,
+            HOME_TYPES.get(self.prop_type, "1Fam"),
             int(self.sys_ac),
             self.floors,
             self.garages,
-            "GasA", #self.sys_heat,
+            HEAT_TYPES.get(self.sys_heat, "GasA"), # type: ignore
             self.acreage * SQUARE_FEET_PER_ACRE, 
             self.totalBaths(),
             self.beds,

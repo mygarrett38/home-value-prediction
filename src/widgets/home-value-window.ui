@@ -228,7 +228,7 @@
                   </font>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>3</number>
                  </property>
                  <widget class="QWidget" name="page_location">
                   <layout class="QFormLayout" name="layout_location">
@@ -537,7 +537,7 @@
                       </font>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Property Type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Property Type&lt;br/&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;(choose Single-Family Home if unsure)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -570,7 +570,7 @@
                      </item>
                      <item>
                       <property name="text">
-                       <string>Mobile Home</string>
+                       <string>Multi-Family Home</string>
                       </property>
                      </item>
                      <item>
@@ -580,42 +580,7 @@
                      </item>
                      <item>
                       <property name="text">
-                       <string>Condominium</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Cluster</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Cooperative</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Duplex</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Triplex</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Quadriplex</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Manufactured/Modular</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>General Residential</string>
+                       <string>Duplex, Triplex, etc.</string>
                       </property>
                      </item>
                     </widget>
@@ -1490,17 +1455,22 @@
                        </item>
                        <item>
                         <property name="text">
-                         <string>Baseboard</string>
+                         <string>Forced Air</string>
                         </property>
                        </item>
                        <item>
                         <property name="text">
-                         <string>Floor / Wall</string>
+                         <string>Steam</string>
                         </property>
                        </item>
                        <item>
                         <property name="text">
-                         <string>Solar</string>
+                         <string>Floor</string>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string>Wall</string>
                         </property>
                        </item>
                        <item>
