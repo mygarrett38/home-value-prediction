@@ -157,7 +157,9 @@ class Controller(QWidget):
     @Slot(Property)
     def currentPropertyChanged(self, prop: Property | None):
         self.currentProperty = prop
+        self.editButton.setEnabled(prop is not None)
         self.deleteButton.setEnabled(prop is not None)
+        self.predictionGraph.refresh(self.currentProperty)
 
     @Slot()
     def addClicked(self):
@@ -284,6 +286,7 @@ class Controller(QWidget):
         self.buttonPredictionNext.setEnabled(True)
 
         self.propertyManager.refreshCurrentAttributes()
+        self.predictionGraph.refresh(self.currentProperty)
 
     @Slot(Property)
     def predictionProcessed(self, prop: Property):
@@ -300,7 +303,7 @@ class Controller(QWidget):
     @Slot(str)
     def graphModeChanged(self, graphMode: str):
         self.configuration.graphMode = GraphMode(graphMode)
-        self.predictionGraph.refresh()
+        self.predictionGraph.refresh(self.currentProperty)
 
     @Slot(str)
     def tableModeChanged(self, tableMode: str):
