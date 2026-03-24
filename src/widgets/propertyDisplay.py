@@ -1,6 +1,7 @@
 from PySide6.QtCore import (
     Qt,
-    Signal
+    Signal,
+    QSignalBlocker
 )
 
 from PySide6.QtGui import (
@@ -25,7 +26,7 @@ def resetStylesheet(widget: QWidget):
 
 
 class PropertyDisplay(QWidget):
-    selected = Signal()
+    selected = Signal(bool)
 
     def __init__(self, parent: QWidget, property: Property):
         super().__init__(parent)
@@ -71,15 +72,19 @@ class PropertyDisplay(QWidget):
     def select(self):
         self.setProperty("selected", 1)
         resetStylesheet(self)
-        self.selected.emit()
+        self.selected.emit(True)
 
     def deselect(self):
         self.setProperty("selected", 0)
         resetStylesheet(self)
+        self.selected.emit(False)
 
-    def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
-        self.select()
-        return super().mouseDoubleClickEvent(event)
+    def isSelected(self):
+        return self.property("selected") == 1
+
+    def mousePressEvent(self, event: QMouseEvent) -> None:
+        self.select() if not self.isSelected() else self.deselect()
+        return super().mousePressEvent(event)
 
     def refreshPropertyAttributes(self):
         self.addressLabel.setText(self.prop.location.address)
@@ -129,6 +134,7 @@ class PropertyDisplayManager(QWidget):
 
         if self.currentPropIndex >= 0:
             oldWidget: PropertyDisplay = self.main_layout.itemAt(self.currentPropIndex).widget() # type: ignore
+            blocker = QSignalBlocker(oldWidget)
             oldWidget.deselect()
 
         self.currentPropIndex = index
@@ -139,8 +145,8 @@ class PropertyDisplayManager(QWidget):
             newWidget: PropertyDisplay = self.main_layout.itemAt(index).widget() # type: ignore
             newWidget.select()
 
-    def handlePropertySelected(self):
-        self.setCurrentPropertyIndex(self.main_layout.indexOf(self.sender())) # type: ignore
+    def handlePropertySelected(self, selected: bool):
+        self.setCurrentPropertyIndex(self.main_layout.indexOf(self.sender()) if selected else -1) # type: ignore
 
     def addProperty(self, prop: Property):
         propDisplay = PropertyDisplay(self, prop)
