@@ -1,8 +1,7 @@
-import os
-
 import numpy as np
 
 from property import Property
+from location import absolutePath
 
 import joblib
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
@@ -10,9 +9,6 @@ from xgboost import XGBRegressor
 
 import warnings
 warnings.filterwarnings('ignore')
-
-def absolutePath(relative_path: str):
-    return os.path.join(os.path.dirname(__file__), relative_path)
 
 class Configuration:
     def __init__(self, **kwargs):
@@ -37,6 +33,9 @@ class Configuration:
     
     def __len__(self):
         return len(self.properties)
+    
+    def __contains__(self, prop: Property | None):
+        return prop in self.properties
     
     def __getitem__(self, index: int):
         return self.properties[index]

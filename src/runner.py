@@ -3,9 +3,9 @@ import os.path
 import json
 from platformdirs import user_data_dir
 
-from config import Configuration, absolutePath
+from config import Configuration
 from property import Property
-from location import Location
+from location import Location, absolutePath
 from widgets.controller import Controller
 from widgets.graph import GraphDisplay
 from widgets.propertyDisplay import PropertyDisplayManager
@@ -19,13 +19,14 @@ import widgets.icons._icons
 
 class HomeValueApplication(QApplication):
     processPrediction = Signal(Property)
-    processLocations = Signal(list)
+    processLocation = Signal()
 
     def __init__(self, argv: list[str]):
         super().__init__(argv)
 
         # Load Location service
         self.location_client = Location.load()
+        self.lastLocation = None
 
         # Create the config directory if not exists
         os.makedirs(self.defaultConfigPath(), exist_ok=True)
@@ -49,8 +50,8 @@ class HomeValueApplication(QApplication):
         self.controller.setMainWindow(window)
         self.controller.requestPrediction.connect(self.predictionRequested)
         self.processPrediction.connect(self.controller.predictionProcessed)
-        self.controller.requestLocations.connect(self.locationsRequested)
-        self.processLocations.connect(self.controller.locationsProcessed)
+        self.controller.requestLocation.connect(self.locationRequested)
+        self.processLocation.connect(self.controller.locationProcessed)
 
         window.showMaximized()
         window.destroyed.connect(self.save)
@@ -63,8 +64,12 @@ class HomeValueApplication(QApplication):
         self.processPrediction.emit(prop)
 
     @Slot(Property)
-    def locationsRequested(self, prop: Property):
-        self.processLocations.emit(Location.requestLocation(self.location_client, prop))
+    def locationRequested(self, prop: Property):
+        if prop.location == self.lastLocation: return
+        self.lastLocation = prop.location
+
+        prop.location.requestLocation(self.location_client)
+        self.processLocation.emit()
 
     @classmethod
     def defaultConfigPath(cls):

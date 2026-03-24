@@ -51,7 +51,7 @@ class PropertyDisplay(QWidget):
         propFont.setPointSize(14)
         propFont.setBold(True)
 
-        self.addressLabel = QLabel(property.location_address, parent=self)
+        self.addressLabel = QLabel(property.location.address, parent=self)
         self.addressLabel.setFont(propFont)
         desc_layout.addWidget(self.addressLabel)
 

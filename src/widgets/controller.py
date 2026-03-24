@@ -2,7 +2,7 @@ from itertools import cycle
 
 from config import Configuration
 from property import Property
-from location import Location, STATE_DICT
+from location import Location
 from widgets.propertyDisplay import PropertyDisplayManager
 
 from PySide6.QtCore import (
@@ -38,7 +38,7 @@ PlaceholderType = TypeVar("PlaceholderType", bound=QObject)
 
 class Controller(QWidget):
     requestPrediction = Signal(Property)
-    requestLocations = Signal(Property)
+    requestLocation = Signal(Property)
 
     def __init__(self, parent: QWidget):
         super().__init__(parent)
@@ -94,10 +94,9 @@ class Controller(QWidget):
         self.buttonPredictionStart = self.getWidgetChild(QPushButton, "button_predict_start")
         self.buttonPredictionStart.setVisible(False)
 
-        self.editorLocationState = self.getWidgetChild(QComboBox, "editor_location_state")
-        self.editorLocationState.clear()
-        self.editorLocationState.addItems(list(STATE_DICT.values()))
+        self.editorLocationZipCode = self.getWidgetChild(QLineEdit, "editor_location_zip")
         self.editorLocationAddress = self.getWidgetChild(QLineEdit, "editor_location_address")
+        self.labelLocationMap = self.getWidgetChild(QLabel, "label_location_map")
 
         self.editorPropertyType = self.getWidgetChild(QComboBox, "editor_property_type")
         self.editorPropertyAcreage = self.getWidgetChild(QDoubleSpinBox, "editor_property_acreage")
@@ -178,8 +177,9 @@ class Controller(QWidget):
     def setPropertyEditors(self):
         if self.currentProperty is None: raise ValueError("setPropertyEditors(): No current property!")
 
-        self.editorLocationState.setCurrentIndex(self.currentProperty.location_state)
-        self.editorLocationAddress.setText(self.currentProperty.location_address)
+        self.editorLocationZipCode.setText(self.currentProperty.location.getZipCode())
+        self.editorLocationAddress.setText(self.currentProperty.location.getAddress())
+        self.labelLocationMap.setPixmap(self.currentProperty.location.getMapImage())
 
         self.editorPropertyType.setCurrentText(self.currentProperty.prop_type)
         self.editorPropertyAcreage.setValue(self.currentProperty.acreage)
@@ -199,27 +199,26 @@ class Controller(QWidget):
         self.editorHomeGarage.setValue(max(self.currentProperty.garages, 1))
 
     def getPropertyEditors(self):
-        return Property(
-            price=0,
+        if self.currentProperty is None: raise ValueError("getPropertyEditors(): No property to set to!")
 
-            location_state=self.editorLocationState.currentIndex(),
-            location_address=self.editorLocationAddress.text(),
+        zip_address = Location(self.editorLocationZipCode.text(), self.editorLocationAddress.text())
+        if self.currentProperty.location != zip_address:
+            self.currentProperty.location = zip_address
 
-            prop_type=self.editorPropertyType.currentText(),
-            acreage=self.editorPropertyAcreage.value(),
-            year_built=self.editorPropertyYear.date().year(),
-            tax_annual=self.editorPropertyTax.value(),
+        self.currentProperty.prop_type = self.editorPropertyType.currentText()
+        self.currentProperty.acreage = self.editorPropertyAcreage.value()
+        self.currentProperty.year_built = self.editorPropertyYear.date().year()
+        self.currentProperty.tax_annual = self.editorPropertyTax.value()
 
-            square_feet=self.editorHomeFootage.value(),
-            floors=self.editorHomeFloors.value(),
-            beds=self.editorHomeBeds.value(),
-            baths=self.editorHomeBaths.value(),
-            baths_half=self.editorHomeHalfBaths.value(),
+        self.currentProperty.square_feet = self.editorHomeFootage.value()
+        self.currentProperty.floors = self.editorHomeFloors.value()
+        self.currentProperty.beds = self.editorHomeBeds.value()
+        self.currentProperty.baths = self.editorHomeBaths.value()
+        self.currentProperty.baths_half = self.editorHomeHalfBaths.value()
 
-            sys_heat=self.editorHomeHeat.currentText() if self.buttonHomeHeat.isChecked() else None,
-            sys_ac=self.buttonHomeAir.isChecked(),
-            garages=self.editorHomeGarage.value() if self.buttonHomeGarage.isChecked() else 0
-        )
+        self.currentProperty.sys_heat = self.editorHomeHeat.currentText() if self.buttonHomeHeat.isChecked() else None
+        self.currentProperty.sys_ac = self.buttonHomeAir.isChecked()
+        self.currentProperty.garages = self.editorHomeGarage.value() if self.buttonHomeGarage.isChecked() else 0
 
     @Slot()
     def predictionBackClicked(self):
@@ -228,7 +227,8 @@ class Controller(QWidget):
             self.pages.setCurrentIndex(1)
             self.settingsButton.setEnabled(True)
             self.historyButtons.show()
-            self.propertyManager.removeProperty()
+            if self.currentProperty not in self.configuration:
+                self.propertyManager.removeProperty()
             return
 
         index -= 1
@@ -251,17 +251,20 @@ class Controller(QWidget):
 
     @Slot()
     def predictionStartClicked(self):
-        self.requestPrediction.emit(self.getPropertyEditors())
+        self.getPropertyEditors()
+        self.requestPrediction.emit(self.currentProperty)
 
     @Slot()
     def locationRequested(self):
         if self.currentProperty is None: raise ValueError("locationRequested(): No Property to request!")
-        self.currentProperty = self.getPropertyEditors()
-        self.requestLocations.emit(self.currentProperty)
+        self.getPropertyEditors()
+        self.requestLocation.emit(self.currentProperty)
 
-    @Slot(list)
-    def locationsProcessed(self, locations: list[Location]):
-        print([l.getCoordinates() for l in locations])
+    @Slot()
+    def locationProcessed(self):
+        if self.currentProperty is None: raise ValueError("locationProcessed(): No Property to process!")
+        self.labelLocationMap.setPixmap(self.currentProperty.location.getMapImage())
+        print(self.currentProperty.location.getCoordinates())
 
     @Slot(Property)
     def predictionProcessed(self, prop: Property):

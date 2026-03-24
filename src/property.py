@@ -1,5 +1,6 @@
-from dataclasses import dataclass
-import numpy as np
+from dataclasses import dataclass, field
+
+from location import Location
 
 SQUARE_FEET_PER_ACRE = 43560
 
@@ -16,16 +17,14 @@ HEAT_TYPES = {
 class Property:
     price: float = 0
 
-    location_state: int = 48
-    location_address: str = "123 Main St"
-    coords = [-77.0, 39.0]
+    location: Location = field(default_factory=lambda: Location("25443", "123 Main St"))
 
     prop_type: str = "Single-Family Home"
     acreage: float = 0.5
     year_built: int = 2000
     tax_annual: float = 2000.00
 
-    square_feet: int = 0
+    square_feet: int = 1000
     floors: int = 2
     beds: int = 0
     baths: int = 0
@@ -73,7 +72,7 @@ class Property:
             self.acreage,
             self.square_feet,
             self.tax_annual,
-            *self.coords
+            *self.location.getCoordinates()
         ]
 
 if __name__ == "__main__":
