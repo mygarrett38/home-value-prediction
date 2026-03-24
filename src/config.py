@@ -1,4 +1,5 @@
 import numpy as np
+from enum import Enum
 
 from property import Property
 from location import absolutePath
@@ -9,6 +10,17 @@ from xgboost import XGBRegressor
 
 import warnings
 warnings.filterwarnings('ignore')
+
+class GraphMode(Enum):
+    PREDICTION_RANGE = "Prediction Range"
+    ACREAGE_SQ_FT = "Acreage & Square Footage"
+    BED_BATH = "Bedrooms & Bathrooms"
+
+class TableMode(Enum):
+    PREDICTION_RANGE = "Prediction Range"
+    PROPERTY_INFO = "Property Information"
+    HOME_INFO = "Home Information"
+
 
 class Configuration:
     def __init__(self, **kwargs):
@@ -24,6 +36,12 @@ class Configuration:
         self.ml_loc_model.load_model(absolutePath("../model/xgb_loc.json"))
 
         self.ml_loc_scaler: StandardScaler = joblib.load(absolutePath("../model/scl_loc.joblib"))
+
+        # Init the settings
+        has_valid_graph = "graphMode" in kwargs and kwargs["graphMode"] in GraphMode
+        has_valid_table = "tableMode" in kwargs and kwargs["tableMode"] in TableMode
+        self.graphMode = GraphMode.ACREAGE_SQ_FT if not has_valid_graph else GraphMode(kwargs["graphMode"])
+        self.tableMode = TableMode.PROPERTY_INFO if not has_valid_table else TableMode(kwargs["tableMode"])
 
         # Init the properties list
         self.properties: list[Property] = kwargs["properties"] if len(kwargs) > 0 else []
@@ -43,6 +61,8 @@ class Configuration:
     def serialize(self):
         return {
             "version": [0, 1, 0],
+            "graphMode": self.graphMode.value,
+            "tableMode": self.tableMode.value,
             "properties": [prop.serialize() for prop in self.properties]
         }
     

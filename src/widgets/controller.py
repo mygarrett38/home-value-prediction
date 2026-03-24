@@ -1,9 +1,10 @@
 from itertools import cycle
 
-from config import Configuration
+from config import Configuration, GraphMode, TableMode
 from property import Property
 from location import Location
 from widgets.propertyDisplay import PropertyDisplayManager
+from widgets.graph import GraphDisplay
 
 from PySide6.QtCore import (
     QEvent,
@@ -73,8 +74,16 @@ class Controller(QWidget):
         self.form = self.getWidgetChild(QStackedWidget, "pages_form")
         self.form.setCurrentIndex(0)
 
+        self.predictionGraph = self.getWidgetChild(GraphDisplay, "graph")
+        self.predictionGraph.setConfiguration(self.configuration)
         self.predictionTable = self.getWidgetChild(QTableWidget, "prediction_table")
         self.setTableAlignment()
+
+        # SETTINGS WIDGETS #
+        self.editorGraphMode = self.getWidgetChild(QComboBox, "editor_graph_mode")
+        self.editorGraphMode.setCurrentText(self.configuration.graphMode.value)
+        self.editorTableMode = self.getWidgetChild(QComboBox, "editor_table_mode")
+        self.editorTableMode.setCurrentText(self.configuration.tableMode.value)
 
         # PROPERTY MANAGER WIDGETS #
         self.historyButtons = self.getWidgetChild(QWidget, "history_buttons")
@@ -287,3 +296,13 @@ class Controller(QWidget):
         self.buttonPredictionStart.setVisible(False)
         self.buttonPredictionNext.setVisible(True)
         self.historyButtons.show()
+
+    @Slot(str)
+    def graphModeChanged(self, graphMode: str):
+        self.configuration.graphMode = GraphMode(graphMode)
+        self.predictionGraph.refresh()
+
+    @Slot(str)
+    def tableModeChanged(self, tableMode: str):
+        self.configuration.tableMode = TableMode(tableMode)
+

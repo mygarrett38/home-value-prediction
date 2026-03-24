@@ -3,6 +3,8 @@ from matplotlib.figure import Figure
 
 from PySide6.QtWidgets import QWidget
 
+from config import Configuration, GraphMode, TableMode
+
 import pandas as pd
 
 class GraphDisplay(FigureCanvas):
@@ -11,16 +13,16 @@ class GraphDisplay(FigureCanvas):
         figure.subplots_adjust(0.1, 0.15, 0.95, 0.85, 0.3, 0.1)
         super().__init__(figure)
 
-        self.axes_a = figure.add_subplot(1, 2, 1)
-        self.axes_a.set_title("Price vs. Acreage")
+        self.axes_m = figure.add_subplot(1, 2, 1)
+        self.axes_m.set_title("Price vs. Acreage")
 
-        self.axes_b = figure.add_subplot(1, 2, 2)
-        self.axes_b.set_title("Price vs. Square Footage")
+        self.axes_s = figure.add_subplot(1, 2, 2)
+        self.axes_s.set_title("Price vs. Square Footage")
 
-        self.axes_a.set_xlim(0, 2)
-        self.axes_a.set_ylim(0, 1000)
-        self.axes_b.set_xlim(0, 5000)
-        self.axes_b.set_ylim(0, 1000)
+        self.axes_m.set_xlim(0, 2)
+        self.axes_m.set_ylim(0, 1000)
+        self.axes_s.set_xlim(0, 5000)
+        self.axes_s.set_ylim(0, 1000)
 
         dfa = pd.DataFrame([
             [0.45, 525000.0],
@@ -43,5 +45,17 @@ class GraphDisplay(FigureCanvas):
         ], columns=['Interior Square Footage', 'Price (thousands)'])
         dfb["Price (thousands)"] /= 1000
 
-        dfa.plot.scatter(x="Acreage", y="Price (thousands)", s=50, c="#ee0000", ax=self.axes_a)
-        dfb.plot.scatter(x="Interior Square Footage", y="Price (thousands)", s=50, c="#0000ee", ax=self.axes_b)
+        dfa.plot.scatter(x="Acreage", y="Price (thousands)", s=50, c="#ee0000", ax=self.axes_m)
+        dfb.plot.scatter(x="Interior Square Footage", y="Price (thousands)", s=50, c="#0000ee", ax=self.axes_s)
+    
+    def setConfiguration(self, config: Configuration):
+        self.configuration = config
+
+    def refresh(self):
+        graphMode = self.configuration.graphMode
+
+        #self.axes_m.clear()
+        #self.axes_s.clear()
+        self.axes_s.set_visible(graphMode != GraphMode.PREDICTION_RANGE)
+
+        self.figure.canvas.draw()
