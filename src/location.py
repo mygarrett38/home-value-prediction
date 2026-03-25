@@ -1,6 +1,7 @@
 import googlemaps
 import googlemaps.maps
 
+import sys
 import os
 import dotenv
 from io import BytesIO
@@ -8,8 +9,12 @@ from io import BytesIO
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QMessageBox
 
-def absolutePath(relative_path: str):
-    return os.path.join(os.path.dirname(__file__), relative_path)
+def resourcePath(rel_path: str):
+    try:
+        # For PyInstaller
+        return os.path.join(sys._MEIPASS, rel_path) # type: ignore
+    except Exception:
+        return os.path.join(os.path.dirname(__file__), f"../{rel_path}")
 
 class Location:
     def __init__(self, zip_code: str, address: str, coordinates: tuple[float, float] = (0.0, 0.0)):
@@ -67,7 +72,7 @@ class Location:
         try:
             result = client.geocode(self.address, components={"country": "US", "postal_code": self.zip_code})[0] # type: ignore
         except googlemaps.exceptions.ApiError as apiError:
-            print(apiError)
+            #print(apiError)
             return
         except Exception as error:
             QMessageBox.information(None, "Location Error", "There was an error requesting this address.\n\nPlease try again.")
@@ -83,7 +88,7 @@ class Location:
 
     @staticmethod
     def load():
-        dotenv.load_dotenv(absolutePath("../.env"))
+        dotenv.load_dotenv(resourcePath(".env"))
         apiKey = os.getenv("API_KEY")
         if apiKey is None:
             raise LookupError("Location API Key not found. Make sure the .env file is present with a valid API key.")

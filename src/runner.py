@@ -5,7 +5,7 @@ from platformdirs import user_data_dir
 
 from config import Configuration
 from property import Property
-from location import Location, absolutePath
+from location import Location, resourcePath
 from widgets.controller import Controller
 from widgets.graph import GraphDisplay
 from widgets.propertyDisplay import PropertyDisplayManager
@@ -41,7 +41,7 @@ class HomeValueApplication(QApplication):
         ui_loader.registerCustomWidget(Controller)
         ui_loader.registerCustomWidget(GraphDisplay)
         ui_loader.registerCustomWidget(PropertyDisplayManager)
-        window = ui_loader.load(absolutePath("widgets/home-value-window.ui"))
+        window = ui_loader.load(resourcePath("src/widgets/home-value-window.ui"))
 
         self.controller = window.findChild(Controller, name="controller", options=Qt.FindChildOption.FindChildrenRecursively)
         if self.controller is None: raise ValueError("NEVER HAPPENS")
@@ -93,7 +93,7 @@ class HomeValueApplication(QApplication):
         with open(self.defaultConfigFile(path)) as config_file:
             try: result = json.load(config_file, object_hook=self.deserialize)
             except Exception as error:
-                print(error)
+                #print(error)
                 result = Configuration()
         return result
 

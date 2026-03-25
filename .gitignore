@@ -1,4 +1,6 @@
-# Exclude cache
+# Exclude cache and build
+build/
+dist/
 __pycache__/
 
 # Exclude data sources for model training

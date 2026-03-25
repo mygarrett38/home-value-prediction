@@ -2,7 +2,7 @@ import numpy as np
 from enum import Enum
 
 from property import Property
-from location import absolutePath
+from location import resourcePath
 
 import joblib
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
@@ -26,16 +26,16 @@ class Configuration:
     def __init__(self, **kwargs):
         # Load the machine learning models
         self.ml_ames_model = XGBRegressor()
-        self.ml_ames_model.load_model(absolutePath("../model/xgb_ames.json"))
+        self.ml_ames_model.load_model(resourcePath("model/xgb_ames.json"))
 
-        self.ml_ames_ohe_type: OneHotEncoder = joblib.load(absolutePath("../model/ohe_ames_BldgType.joblib"))
-        self.ml_ames_ohe_heat: OneHotEncoder = joblib.load(absolutePath("../model/ohe_ames_Heating.joblib"))
-        self.ml_ames_scaler: StandardScaler = joblib.load(absolutePath("../model/scl_ames.joblib"))
+        self.ml_ames_ohe_type: OneHotEncoder = joblib.load(resourcePath("model/ohe_ames_BldgType.joblib"))
+        self.ml_ames_ohe_heat: OneHotEncoder = joblib.load(resourcePath("model/ohe_ames_Heating.joblib"))
+        self.ml_ames_scaler: StandardScaler = joblib.load(resourcePath("model/scl_ames.joblib"))
 
         self.ml_loc_model = XGBRegressor()
-        self.ml_loc_model.load_model(absolutePath("../model/xgb_loc.json"))
+        self.ml_loc_model.load_model(resourcePath("model/xgb_loc.json"))
 
-        self.ml_loc_scaler: StandardScaler = joblib.load(absolutePath("../model/scl_loc.joblib"))
+        self.ml_loc_scaler: StandardScaler = joblib.load(resourcePath("model/scl_loc.joblib"))
 
         # Init the settings
         has_valid_graph = "graphMode" in kwargs and kwargs["graphMode"] in GraphMode
