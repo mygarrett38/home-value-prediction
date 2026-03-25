@@ -23,7 +23,7 @@ X_AXIS_NAMES = {
 
 X_AXIS_SCALES = {
     GraphMode.PREDICTION_RANGE: ((-50, 1050), (0, 0)),
-    GraphMode.ACREAGE_SQ_FT: ((-0.1, 3.1), (-10, 6010)),
+    GraphMode.ACREAGE_SQ_FT: ((-0.1, 3.1), (-100, 6100)),
     GraphMode.BED_BATH: ((-0.5, 6.5), (-0.5, 5.5))
 }
 
