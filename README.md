@@ -6,4 +6,10 @@ Use the model.py file to run the machine learning model.
 
 Use the runner.py file to run the UI.
 
-Package install command: python -m pip install pyside6
+Package install command:
+
+`python -m pip install pyside6 xgboost python-dotenv googlemaps numpy pandas matplotlib joblib`
+
+Create the executable using this command:
+
+`pyinstaller "Home Value Prediction.spec"`
