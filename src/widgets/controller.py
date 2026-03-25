@@ -292,8 +292,13 @@ class Controller(QWidget):
             self.pages.setCurrentIndex(1)
             self.settingsButton.setEnabled(True)
             self.historyButtons.show()
+            
             if self.currentProperty not in self.configuration:
                 self.propertyManager.removeProperty()
+                self.currentProperty = None
+
+                self.predictionGraph.refresh(self.currentProperty)
+                self.refreshTable()
             return
 
         index -= 1

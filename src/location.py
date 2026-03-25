@@ -75,6 +75,7 @@ class Location:
             #print(apiError)
             return
         except Exception as error:
+            #print(error)
             QMessageBox.information(None, "Location Error", "There was an error requesting this address.\n\nPlease try again.")
             return
 

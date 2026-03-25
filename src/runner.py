@@ -60,7 +60,7 @@ class HomeValueApplication(QApplication):
     @Slot(Property)
     def predictionRequested(self, prop: Property):
         prop.price = self.configuration.predictProperty(prop)
-        self.configuration.addProperty(prop)
+        if prop not in self.configuration: self.configuration.addProperty(prop)
         self.processPrediction.emit(prop)
 
     @Slot(Property)
