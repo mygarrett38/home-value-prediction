@@ -234,6 +234,7 @@ class Controller(QWidget):
         if QMessageBox.question(self, "Are you sure?", "This property and its prediction will be permanently deleted.\n\nAre you sure you want to do this?") == QMessageBox.StandardButton.No: return
         self.configuration.removeProperty(self.propertyManager.currentPropIndex)
         self.propertyManager.removeProperty()
+        self.currentProperty = None
 
         self.predictionGraph.refresh(self.currentProperty)
         self.refreshTable()
