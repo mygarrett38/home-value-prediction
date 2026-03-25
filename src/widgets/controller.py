@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QStackedWidget, 
     QTableWidget, 
+    QTableWidgetItem, 
     QLabel,
     QPushButton, 
     QComboBox,
@@ -36,6 +37,30 @@ from PySide6.QtGui import QPalette
 
 from typing import TypeVar
 PlaceholderType = TypeVar("PlaceholderType", bound=QObject)
+
+TABLE_COLUMN_NAMES = {
+    TableMode.PREDICTION_RANGE: ("Home Address", "Prediction", "Lower Bound", "Upper Bound"),
+    TableMode.PROPERTY_INFO: ("Home Address", "Prediction", "Year Built", "Type", "Acreage", "Annual Tax"),
+    TableMode.HOME_INFO: ("Home Address", "Prediction", "Square Footage", "Bedrooms", "Bathrooms", "Heating", "A/C", "Garages")
+}
+
+def propertyNameToValue(name: str, prop: Property):
+    match name:
+        case "Home Address": return prop.location.address
+        case "Prediction": return f"${round(prop.price, -2):,.2f}"
+        case "Lower Bound": return f"${round(prop.price * 0.835, -2):,.2f}"
+        case "Upper Bound": return f"${round(prop.price * 1.18, -2):,.2f}"
+        case "Year Built": return str(prop.year_built)
+        case "Type": return prop.prop_type
+        case "Acreage": return f"{prop.acreage:.3f}"
+        case "Annual Tax": return f"${prop.tax_annual:,.2f}"
+        case "Square Footage": return str(prop.square_feet)
+        case "Bedrooms": return str(prop.beds)
+        case "Bathrooms": return str(prop.totalBaths())
+        case "Heating": return prop.sys_heat if prop.sys_heat is not None else "No"
+        case "A/C": return "Yes" if prop.sys_ac else "No"
+        case "Garages": return str(prop.garages)
+        case _: return ""
 
 class Controller(QWidget):
     requestPrediction = Signal(Property)
@@ -77,7 +102,7 @@ class Controller(QWidget):
         self.predictionGraph = self.getWidgetChild(GraphDisplay, "graph")
         self.predictionGraph.setConfiguration(self.configuration)
         self.predictionTable = self.getWidgetChild(QTableWidget, "prediction_table")
-        self.setTableAlignment()
+        self.refreshTable()
 
         # SETTINGS WIDGETS #
         self.editorGraphMode = self.getWidgetChild(QComboBox, "editor_graph_mode")
@@ -146,6 +171,26 @@ class Controller(QWidget):
 
         #for i in range(self.predictionTable.rowCount()):
         #    self.predictionTable.setRowHeight(i, self.predictionTable.height() // 7)
+
+    def refreshTable(self):
+        tableMode = self.configuration.tableMode
+
+        self.predictionTable.clear()
+
+        self.predictionTable.setColumnCount(len(TABLE_COLUMN_NAMES[tableMode]))
+        self.predictionTable.setHorizontalHeaderLabels(TABLE_COLUMN_NAMES[tableMode])
+
+        self.predictionTable.setRowCount(len(self.configuration))
+        for i, prop in enumerate(self.configuration):
+            for j, col in enumerate(TABLE_COLUMN_NAMES[tableMode]):
+                item = QTableWidgetItem(propertyNameToValue(col, prop))
+                if j > 0: item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+                font = item.font()
+                font.setBold(self.currentProperty == prop)
+                item.setFont(font)
+                self.predictionTable.setItem(i, j, item)
+
+        self.setTableAlignment()
     
     @Slot(bool)
     def settingsRequested(self, on: bool):
@@ -160,6 +205,7 @@ class Controller(QWidget):
         self.editButton.setEnabled(prop is not None)
         self.deleteButton.setEnabled(prop is not None)
         self.predictionGraph.refresh(self.currentProperty)
+        self.refreshTable()
 
     @Slot()
     def addClicked(self):
@@ -188,6 +234,9 @@ class Controller(QWidget):
         if QMessageBox.question(self, "Are you sure?", "This property and its prediction will be permanently deleted.\n\nAre you sure you want to do this?") == QMessageBox.StandardButton.No: return
         self.configuration.removeProperty(self.propertyManager.currentPropIndex)
         self.propertyManager.removeProperty()
+
+        self.predictionGraph.refresh(self.currentProperty)
+        self.refreshTable()
 
     def setPropertyEditors(self):
         if self.currentProperty is None: raise ValueError("setPropertyEditors(): No current property!")
@@ -286,13 +335,14 @@ class Controller(QWidget):
         self.buttonPredictionNext.setEnabled(True)
 
         self.propertyManager.refreshCurrentAttributes()
-        self.predictionGraph.refresh(self.currentProperty)
 
     @Slot(Property)
     def predictionProcessed(self, prop: Property):
         self.currentProperty = prop
         self.propertyManager.refreshCurrentAttributes()
-
+        self.predictionGraph.refresh(self.currentProperty)
+        self.refreshTable()
+        
         self.form.setCurrentIndex(0)
         self.pages.setCurrentIndex(1)
         self.settingsButton.setEnabled(True)
@@ -308,4 +358,4 @@ class Controller(QWidget):
     @Slot(str)
     def tableModeChanged(self, tableMode: str):
         self.configuration.tableMode = TableMode(tableMode)
-
+        self.refreshTable()
