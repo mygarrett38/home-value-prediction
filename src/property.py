@@ -49,7 +49,7 @@ class Property:
         }
     
     def totalBaths(self):
-        return self.baths + self.baths_half
+        return self.baths + self.baths_half / 2.0
     
     def attributes(self):
         return [
@@ -66,7 +66,7 @@ class Property:
             self.garages,
             HEAT_TYPES.get(self.sys_heat, "GasA"), # type: ignore
             self.acreage * SQUARE_FEET_PER_ACRE, 
-            self.totalBaths(),
+            self.baths + self.baths_half,
             self.beds,
             self.square_feet,
             self.year_built
@@ -75,7 +75,7 @@ class Property:
     def toLocationModel(self) -> list:
         return [
             self.beds,
-            self.totalBaths(),
+            self.baths + self.baths_half,
             self.acreage,
             self.square_feet,
             self.tax_annual,
