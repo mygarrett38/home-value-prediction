@@ -153,7 +153,7 @@
       <item>
        <widget class="QStackedWidget" name="pages">
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="predict_page">
          <layout class="QHBoxLayout" name="home_layout">
@@ -2213,7 +2213,7 @@
                 </size>
                </property>
                <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;MEMBERS&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&lt;br/&gt;Sierra Rose&lt;br/&gt;Mason Garrett&lt;br/&gt;Carter Adams&lt;br/&gt;Uchenna Ibe&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;MEMBERS&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&lt;br/&gt;Sierra Rose&lt;br/&gt;Mason Garrett&lt;br/&gt;Carter Adams&lt;br/&gt;Uchenna Ibe&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:700;&quot;&gt;DISCLAIMER&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Predictions are based on 2021 housing data.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="textFormat">
                 <enum>Qt::TextFormat::RichText</enum>
