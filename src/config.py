@@ -91,5 +91,7 @@ class Configuration:
         loc_prop = self.ml_loc_scaler.transform([loc_prop])
         price_loc = self.ml_loc_model.predict(loc_prop)
 
-        price_avg = np.mean((*price_ames, *price_loc))
-        return float(np.expm1(price_avg))
+        price_merge = 0.97 * price_loc[0] + 0.03 * price_ames[0]
+        # print(np.expm1((*price_loc, *price_ames, price_merge)))
+
+        return float(np.expm1(price_merge))
