@@ -56,14 +56,14 @@ class Location:
         }
         pixmap = QPixmap()
 
-        if True: # try:
+        try:
             with BytesIO() as img_buf:
                 for chunk in client.static_map(**map_args): # type: ignore
                     if chunk: img_buf.write(chunk)
 
                 if not pixmap.loadFromData(img_buf.getvalue()):
                     raise BufferError("Buffer could not load properly.")
-        # except: pass
+        except: pass
         
         self.mapImage = pixmap
 
