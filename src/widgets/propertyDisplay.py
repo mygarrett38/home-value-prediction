@@ -132,7 +132,7 @@ class PropertyDisplayManager(QWidget):
     def setCurrentPropertyIndex(self, index: int):
         if self.currentPropIndex == index: return
 
-        if self.currentPropIndex >= 0:
+        if 0 <= self.currentPropIndex < len(self.configuration):
             oldWidget: PropertyDisplay = self.main_layout.itemAt(self.currentPropIndex).widget() # type: ignore
             blocker = QSignalBlocker(oldWidget)
             oldWidget.deselect()
@@ -158,5 +158,5 @@ class PropertyDisplayManager(QWidget):
         item = self.main_layout.takeAt(self.currentPropIndex)
         item.widget().deleteLater() # type: ignore
         del item
-        self.currentPropIndex = -1
+        self.setCurrentPropertyIndex(-1)
         

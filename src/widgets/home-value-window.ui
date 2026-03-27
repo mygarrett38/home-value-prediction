@@ -2398,6 +2398,9 @@
             </item>
             <item>
              <widget class="QPushButton" name="button_history_edit">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>40</width>
@@ -2436,6 +2439,9 @@
             </item>
             <item>
              <widget class="QPushButton" name="button_history_delete">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>40</width>
