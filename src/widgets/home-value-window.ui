@@ -153,7 +153,7 @@
       <item>
        <widget class="QStackedWidget" name="pages">
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="predict_page">
          <layout class="QHBoxLayout" name="home_layout">
@@ -1659,14 +1659,20 @@
           </item>
           <item>
            <widget class="QTableWidget" name="prediction_table">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="focusPolicy">
+             <enum>Qt::FocusPolicy::NoFocus</enum>
+            </property>
             <property name="styleSheet">
-             <string notr="true">QTableWidget::item:hover { background-color: transparent; }</string>
+             <string notr="true">QTableWidget::item:!selected:hover { background-color: transparent; }</string>
             </property>
             <property name="verticalScrollBarPolicy">
              <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>

@@ -14,12 +14,12 @@ from PySide6.QtCore import (
     Slot,
     QDate,
     QTimer,
-    QPropertyAnimation
+    QPropertyAnimation,
+    QItemSelectionModel
 )
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
-    QMainWindow,
     QStackedWidget, 
     QTableWidget, 
     QTableWidgetItem, 
@@ -46,7 +46,7 @@ TABLE_COLUMN_NAMES = {
 
 def propertyNameToValue(name: str, prop: Property):
     match name:
-        case "Home Address": return prop.location.address
+        case "Home Address": return f" {prop.location.address}"
         case "Prediction": return f"${round(prop.price, -2):,.2f}"
         case "Lower Bound": return f"${round(prop.price * 0.835, -2):,.2f}"
         case "Upper Bound": return f"${round(prop.price * 1.18, -2):,.2f}"
@@ -189,6 +189,12 @@ class Controller(QWidget):
                 font.setBold(self.currentProperty == prop)
                 item.setFont(font)
                 self.predictionTable.setItem(i, j, item)
+
+            if self.currentProperty == prop:
+                self.predictionTable.selectionModel().select(
+                    self.predictionTable.model().index(i, 0),
+                    QItemSelectionModel.SelectionFlag.Select | QItemSelectionModel.SelectionFlag.Rows
+                )
 
         self.setTableAlignment()
     
