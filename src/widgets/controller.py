@@ -249,7 +249,10 @@ class Controller(QWidget):
 
         self.editorLocationZipCode.setText(self.currentProperty.location.getZipCode())
         self.editorLocationAddress.setText(self.currentProperty.location.getAddress())
-        self.labelLocationMap.setPixmap(self.currentProperty.location.getMapImage())
+        if self.currentProperty.location.getMapImage().isNull():
+            self.labelLocationMap.setText("The location of the home will appear here.")
+        else:
+            self.labelLocationMap.setPixmap(self.currentProperty.location.getMapImage())
 
         self.editorPropertyType.setCurrentText(self.currentProperty.prop_type)
         self.editorPropertyAcreage.setValue(self.currentProperty.acreage)
@@ -334,6 +337,8 @@ class Controller(QWidget):
     @Slot()
     def locationRequested(self):
         if self.currentProperty is None: raise ValueError("locationRequested(): No Property to request!")
+
+        self.labelLocationMap.setText("The location of the home will appear here.")
         self.getPropertyEditors()
         self.requestLocation.emit(self.currentProperty)
 
@@ -349,10 +354,8 @@ class Controller(QWidget):
 
     @Slot(Property)
     def predictionProcessed(self, prop: Property):
-        self.currentProperty = prop
+        self.currentPropertyChanged(prop)
         self.propertyManager.refreshCurrentAttributes()
-        self.predictionGraph.refresh(self.currentProperty)
-        self.refreshTable()
         
         self.form.setCurrentIndex(0)
         self.pages.setCurrentIndex(1)

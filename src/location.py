@@ -50,8 +50,8 @@ class Location:
     
     def requestMap(self, client: googlemaps.Client):
         map_args = {
-            "size": (400, 300),
-            "zoom": 15,
+            "size": (540, 420),
+            "zoom": 14,
             "markers": ",".join((str(c) for c in self.coordinates)),
         }
         pixmap = QPixmap()
