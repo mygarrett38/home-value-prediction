@@ -33,7 +33,6 @@ class PropertyDisplay(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
 
         self.prop = property
-        self.setObjectName(str(id(property)))
         
         main_layout = QHBoxLayout()
         main_layout.setContentsMargins(10, 10, 10, 10)
@@ -91,6 +90,7 @@ class PropertyDisplay(QWidget):
         self.propertyLabel.setText(" | ".join(self.prop.attributes()))
         priceText = f"${round(self.prop.price / 1_000_000, 2)}m" if self.prop.price >= 1_000_000 else f"${round(self.prop.price / 1000)}k"
         self.priceLabel.setText(priceText)
+        self.setObjectName(self.prop.location.address)
 
 
 class PropertyDisplayManager(QWidget):
@@ -111,6 +111,10 @@ class PropertyDisplayManager(QWidget):
         self.super_layout.addStretch(1)
 
         self.currentPropIndex = -1
+        self.inProgressIndex = -1
+    
+    def setPredictionInProgress(self, in_progress_index: int):
+        self.inProgressIndex = in_progress_index
 
     def setConfiguration(self, config: Configuration):
         self.configuration = config
@@ -131,6 +135,7 @@ class PropertyDisplayManager(QWidget):
         currentDisplay.refreshPropertyAttributes()
 
     def setCurrentPropertyIndex(self, index: int):
+        self.inProgressIndex = -1
         if self.currentPropIndex == index: return
 
         if 0 <= self.currentPropIndex < len(self.configuration):
@@ -147,17 +152,28 @@ class PropertyDisplayManager(QWidget):
             newWidget.select()
 
     def handlePropertySelected(self, selected: bool):
-        self.setCurrentPropertyIndex(self.main_layout.indexOf(self.sender()) if selected else -1) # type: ignore
+        selected_widget: PropertyDisplay = self.sender() # type: ignore
+        selected_index = self.main_layout.indexOf(selected_widget)
 
+        if self.inProgressIndex >= 0:
+            if self.inProgressIndex == selected_index and not selected:
+                selected_widget.select()
+            elif self.inProgressIndex != selected_index and selected: 
+                selected_widget.deselect()
+        else:
+            self.setCurrentPropertyIndex(selected_index if selected else -1) # type: ignore
+        
     def addProperty(self, prop: Property):
         propDisplay = PropertyDisplay(self, prop)
         propDisplay.selected.connect(self.handlePropertySelected)
         self.main_layout.addWidget(propDisplay)
         propDisplay.select()
+        self.setPredictionInProgress(self.main_layout.count() - 1)
 
     def removeProperty(self):
         item = self.main_layout.takeAt(self.currentPropIndex)
         item.widget().deleteLater() # type: ignore
         del item
+        self.setPredictionInProgress(-1)
         self.setCurrentPropertyIndex(-1)
         

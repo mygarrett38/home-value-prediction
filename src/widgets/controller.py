@@ -235,6 +235,7 @@ class Controller(QWidget):
         if self.currentProperty.location.getCoordinates() != (0.0, 0.0) and self.currentProperty.location.getMapImage().isNull(): # type: ignore
             self.requestLocation.emit(self.currentProperty)
 
+        self.propertyManager.setPredictionInProgress(self.propertyManager.currentPropIndex)
         self.setPropertyEditors()
 
     @Slot()
@@ -302,13 +303,11 @@ class Controller(QWidget):
             self.pages.setCurrentIndex(1)
             self.settingsButton.setEnabled(True)
             self.historyButtons.show()
+            self.propertyManager.setPredictionInProgress(-1)
             
             if self.currentProperty not in self.configuration:
                 self.propertyManager.removeProperty()
-                self.currentProperty = None
-
-                self.predictionGraph.refresh(self.currentProperty)
-                self.refreshTable()
+                self.currentPropertyChanged(None)
             return
 
         index -= 1
@@ -358,6 +357,7 @@ class Controller(QWidget):
     def predictionProcessed(self, prop: Property):
         self.currentPropertyChanged(prop)
         self.propertyManager.refreshCurrentAttributes()
+        self.propertyManager.setPredictionInProgress(-1)
         
         self.form.setCurrentIndex(0)
         self.pages.setCurrentIndex(1)
