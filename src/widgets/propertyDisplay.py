@@ -63,7 +63,7 @@ class PropertyDisplay(QWidget):
         propFont.setPointSize(12)
         propFont.setItalic(True)
 
-        self.priceLabel = QLabel(f"${round(property.price / 1000)}k", parent=self, alignment=Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        self.priceLabel = QLabel("", parent=self, alignment=Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.priceLabel.setFont(propFont)
         main_layout.addWidget(self.priceLabel)
 
@@ -89,7 +89,8 @@ class PropertyDisplay(QWidget):
     def refreshPropertyAttributes(self):
         self.addressLabel.setText(self.prop.location.address)
         self.propertyLabel.setText(" | ".join(self.prop.attributes()))
-        self.priceLabel.setText(f"${round(self.prop.price / 1000)}k")
+        priceText = f"${round(self.prop.price / 1_000_000, 2)}m" if self.prop.price >= 1_000_000 else f"${round(self.prop.price / 1000)}k"
+        self.priceLabel.setText(priceText)
 
 
 class PropertyDisplayManager(QWidget):
