@@ -23,6 +23,7 @@ from PySide6.QtWidgets import (
     QStackedWidget, 
     QTableWidget, 
     QTableWidgetItem, 
+    QHeaderView,
     QLabel,
     QPushButton, 
     QComboBox,
@@ -102,6 +103,7 @@ class Controller(QWidget):
         self.predictionGraph = self.getWidgetChild(GraphDisplay, "graph")
         self.predictionGraph.setConfiguration(self.configuration)
         self.predictionTable = self.getWidgetChild(QTableWidget, "prediction_table")
+        self.predictionTable.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
         self.refreshTable()
 
         # SETTINGS WIDGETS #
