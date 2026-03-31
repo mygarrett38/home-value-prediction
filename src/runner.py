@@ -27,6 +27,7 @@ class HomeValueApplication(QApplication):
         # Load Location service
         self.location_client = Location.load()
         self.lastLocation = None
+        self.lastLocationZoom = 0
 
         # Create the config directory if not exists
         os.makedirs(self.defaultConfigPath(), exist_ok=True)
@@ -66,8 +67,12 @@ class HomeValueApplication(QApplication):
     @Slot(Property)
     def locationRequested(self, prop: Property):
         if prop.location != self.lastLocation:
-            self.lastLocation = prop.location
             prop.location.requestLocation(self.location_client)
+        elif prop.location.zoomLevel != self.lastLocationZoom:
+            prop.location.requestMap(self.location_client)
+
+        self.lastLocation = prop.location
+        self.lastLocationZoom = prop.location.zoomLevel
         self.processLocation.emit()
 
     @classmethod

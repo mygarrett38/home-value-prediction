@@ -21,7 +21,9 @@ class Location:
         self.zip_code = zip_code
         self.address = address
         self.coordinates = coordinates 
-        self.mapImage: QPixmap | None = None
+
+        self.mapImages: dict[int, QPixmap] = {}
+        self.zoomLevel = 14
 
     def __str__(self):
         return self.getAddress()
@@ -30,7 +32,7 @@ class Location:
         return type(other) == Location and self.zip_code == other.zip_code and self.address == other.address
     
     def getMapImage(self):
-        return QPixmap() if self.mapImage is None else self.mapImage
+        return QPixmap() if self.zoomLevel not in self.mapImages else self.mapImages[self.zoomLevel]
     
     def getZipCode(self):
         return self.zip_code
@@ -49,9 +51,11 @@ class Location:
         }
     
     def requestMap(self, client: googlemaps.Client):
+        if self.zoomLevel in self.mapImages: return
+
         map_args = {
             "size": (540, 420),
-            "zoom": 14,
+            "zoom": self.zoomLevel,
             "markers": ",".join((str(c) for c in self.coordinates)),
         }
         pixmap = QPixmap()
@@ -65,7 +69,7 @@ class Location:
                     raise BufferError("Buffer could not load properly.")
         except: pass
         
-        self.mapImage = pixmap
+        self.mapImages[self.zoomLevel] = pixmap
 
     def requestLocation(self, client: googlemaps.Client):
         result: dict = {}

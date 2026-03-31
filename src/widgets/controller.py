@@ -220,6 +220,10 @@ class Controller(QWidget):
         self.editButton.setVisible(not on)
         self.deleteButton.setVisible(on)
 
+    @Slot()
+    def infoClicked(self):
+        pass
+
     @Slot(Property)
     def currentPropertyChanged(self, prop: Property | None):
         self.currentProperty = prop
@@ -345,6 +349,20 @@ class Controller(QWidget):
     def predictionStartClicked(self):
         self.getPropertyEditors()
         self.requestPrediction.emit(self.currentProperty)
+
+    @Slot()
+    def zoomInClicked(self):
+        if self.currentProperty is None: raise ValueError("zoomInClicked(): No Property to request!")
+
+        self.currentProperty.location.zoomLevel += 1
+        self.locationRequested()
+
+    @Slot()
+    def zoomOutClicked(self):
+        if self.currentProperty is None: raise ValueError("zoomOutClicked(): No Property to request!")
+
+        self.currentProperty.location.zoomLevel -= 1
+        self.locationRequested()
 
     @Slot()
     def locationRequested(self):
