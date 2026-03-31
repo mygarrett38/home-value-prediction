@@ -12,9 +12,9 @@ import warnings
 warnings.filterwarnings('ignore')
 
 class GraphMode(Enum):
-    PREDICTION_RANGE = "Prediction Range"
-    ACREAGE_SQ_FT = "Acreage & Square Footage"
-    BED_BATH = "Bedrooms & Bathrooms"
+    PREDICTION_RANGE = "Predictions"
+    ACREAGE_SQ_FT = "Property Info"
+    BED_BATH = "Home Info"
 
 class TableMode(Enum):
     PREDICTION_RANGE = "Prediction Range"

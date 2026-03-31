@@ -1,4 +1,5 @@
 from typing import Literal
+from itertools import cycle
 
 from config import Configuration, GraphMode, TableMode
 from property import Property
@@ -68,6 +69,7 @@ def propertyNameToValue(name: str, prop: Property):
 class Controller(QWidget):
     requestPrediction = Signal(Property)
     requestLocation = Signal(Property)
+    requestInfo = Signal()
 
     def __init__(self, parent: QWidget):
         super().__init__(parent)
@@ -80,6 +82,7 @@ class Controller(QWidget):
         title_label = QLabel("Home Value Prediction", alignment=Qt.AlignmentFlag.AlignCenter)
         main_layout.addWidget(title_label)
 
+        self.cyclerVisualizationRange = cycle(GraphMode)
         self.currentProperty: Property | None = None
 
     def getWidgetChild(self, child_type: type[PlaceholderType], name: str) -> PlaceholderType:
@@ -97,7 +100,7 @@ class Controller(QWidget):
         self.mainWindow.installEventFilter(self)
 
         # VISUALIZATION WIDGETS #
-        self.settingsButton = self.getWidgetChild(QPushButton, "settings_button")
+        self.buttonGraphMode = self.getWidgetChild(QPushButton, "graph_mode_button")
         self.pages = self.getWidgetChild(QStackedWidget, "pages")
         self.form = self.getWidgetChild(QStackedWidget, "pages_form")
         self.form.setCurrentIndex(0)
@@ -108,18 +111,11 @@ class Controller(QWidget):
         self.predictionTable.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
         self.refreshTable()
 
-        # SETTINGS WIDGETS #
-        self.editorGraphMode = self.getWidgetChild(QComboBox, "editor_graph_mode")
-        self.editorGraphMode.setCurrentText(self.configuration.graphMode.value)
-        self.editorTableMode = self.getWidgetChild(QComboBox, "editor_table_mode")
-        self.editorTableMode.setCurrentText(self.configuration.tableMode.value)
-
         # PROPERTY MANAGER WIDGETS #
         self.historyButtons = self.getWidgetChild(QWidget, "history_buttons")
         self.addButton = self.getWidgetChild(QPushButton, "button_history_add")
         self.editButton = self.getWidgetChild(QPushButton, "button_history_edit")
         self.deleteButton = self.getWidgetChild(QPushButton, "button_history_delete")
-        self.deleteButton.setVisible(False)
 
         self.propertyManager = self.getWidgetChild(PropertyDisplayManager, "history_scroll_widget")
         self.propertyManager.setConfiguration(self.configuration)
@@ -159,6 +155,11 @@ class Controller(QWidget):
             self.buttonPredictionBack.setVisible(False)
         else:
             self.pages.setCurrentIndex(1)
+
+        currentGraphMode = self.configuration.graphMode
+        self.visualizeModeClicked()
+        while currentGraphMode != self.configuration.graphMode:
+            self.visualizeModeClicked()
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:
         match event.type():
@@ -208,7 +209,7 @@ class Controller(QWidget):
         visualizeViewed = view == "graph"
 
         self.pages.setCurrentIndex(1 if visualizeViewed else 0)
-        self.settingsButton.setEnabled(visualizeViewed)
+        self.buttonGraphMode.setEnabled(visualizeViewed)
         self.historyButtons.setVisible(visualizeViewed)
 
         if visualizeViewed:
@@ -223,7 +224,18 @@ class Controller(QWidget):
 
     @Slot()
     def infoClicked(self):
-        pass
+        self.requestInfo.emit()
+
+    @Slot()
+    def visualizeModeClicked(self):
+        newMode = next(self.cyclerVisualizationRange)
+
+        self.configuration.graphMode = newMode
+        self.configuration.tableMode = list(TableMode.__members__.values())[list(GraphMode.__members__.values()).index(newMode)]
+        self.buttonGraphMode.setText(newMode.value)
+
+        self.predictionGraph.refresh(self.currentProperty)
+        self.refreshTable()
 
     @Slot(Property)
     def currentPropertyChanged(self, prop: Property | None):
@@ -396,13 +408,3 @@ class Controller(QWidget):
         self.form.setCurrentIndex(0)
         self.buttonPredictionStart.setVisible(False)
         self.buttonPredictionNext.setVisible(True)
-
-    @Slot(str)
-    def graphModeChanged(self, graphMode: str):
-        self.configuration.graphMode = GraphMode(graphMode)
-        self.predictionGraph.refresh(self.currentProperty)
-
-    @Slot(str)
-    def tableModeChanged(self, tableMode: str):
-        self.configuration.tableMode = TableMode(tableMode)
-        self.refreshTable()

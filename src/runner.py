@@ -11,7 +11,7 @@ from widgets.graph import GraphDisplay
 from widgets.propertyDisplay import PropertyDisplayManager
 
 from PySide6.QtCore import Qt, QObject, QThread, QTimer, Signal, Slot
-from PySide6.QtWidgets import QApplication, QMainWindow
+from PySide6.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide6.QtGui import QIcon
 from PySide6.QtUiTools import QUiLoader
 
@@ -42,21 +42,24 @@ class HomeValueApplication(QApplication):
         ui_loader.registerCustomWidget(Controller)
         ui_loader.registerCustomWidget(GraphDisplay)
         ui_loader.registerCustomWidget(PropertyDisplayManager)
-        window = ui_loader.load(resourcePath("src/widgets/home-value-window.ui"))
+        self.main_window: QMainWindow = ui_loader.load(resourcePath("src/widgets/home-value-window.ui")) #type: ignore
+        self.info_window: QDialog = ui_loader.load(resourcePath("src/widgets/home-value-info.ui")) #type: ignore
+        self.info_window.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowTitleHint | Qt.WindowType.CustomizeWindowHint | Qt.WindowType.WindowCloseButtonHint)
 
-        self.controller = window.findChild(Controller, name="controller", options=Qt.FindChildOption.FindChildrenRecursively)
+        self.controller = self.main_window.findChild(Controller, name="controller", options=Qt.FindChildOption.FindChildrenRecursively)
         if self.controller is None: raise ValueError("NEVER HAPPENS")
 
         self.controller.setConfiguration(self.configuration)
-        self.controller.setMainWindow(window)
+        self.controller.setMainWindow(self.main_window)
+        self.controller.requestInfo.connect(self.info_window.show)
         self.controller.requestPrediction.connect(self.predictionRequested)
         self.processPrediction.connect(self.controller.predictionProcessed)
         self.controller.requestLocation.connect(self.locationRequested)
         self.processLocation.connect(self.controller.locationProcessed)
 
-        window.showMaximized()
-        window.destroyed.connect(self.save)
-        window.destroyed.connect(self.quit)
+        self.main_window.showMaximized()
+        self.main_window.destroyed.connect(self.save)
+        self.main_window.destroyed.connect(self.quit)
 
     @Slot(Property)
     def predictionRequested(self, prop: Property):
