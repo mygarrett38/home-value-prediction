@@ -135,6 +135,8 @@ class Controller(QWidget):
         self.editorLocationZipCode = self.getWidgetChild(QLineEdit, "editor_location_zip")
         self.editorLocationAddress = self.getWidgetChild(QLineEdit, "editor_location_address")
         self.labelLocationMap = self.getWidgetChild(QLabel, "label_location_map")
+        self.buttonLocationZoomIn = self.getWidgetChild(QPushButton, "button_location_zoom_in")
+        self.buttonLocationZoomOut = self.getWidgetChild(QPushButton, "button_location_zoom_out")
 
         self.editorPropertyType = self.getWidgetChild(QComboBox, "editor_property_type")
         self.editorPropertyAcreage = self.getWidgetChild(QDoubleSpinBox, "editor_property_acreage")
@@ -267,9 +269,13 @@ class Controller(QWidget):
         self.editorLocationAddress.setText(self.currentProperty.location.getAddress())
         if self.currentProperty.location.getMapImage().isNull():
             self.labelLocationMap.setText("The location of the home will appear here.")
+            self.buttonLocationZoomIn.setEnabled(False)
+            self.buttonLocationZoomOut.setEnabled(False)
         else:
             self.labelLocationMap.setPixmap(self.currentProperty.location.getMapImage())
-
+            self.buttonLocationZoomIn.setEnabled(True)
+            self.buttonLocationZoomOut.setEnabled(True)
+        
         self.editorPropertyType.setCurrentText(self.currentProperty.prop_type)
         self.editorPropertyAcreage.setValue(self.currentProperty.acreage)
         self.editorPropertyYear.setDate(QDate(self.currentProperty.year_built, 1, 1))
@@ -375,6 +381,8 @@ class Controller(QWidget):
         if self.currentProperty.location.getCoordinates() == (0.0, 0.0): return
 
         self.labelLocationMap.setPixmap(self.currentProperty.location.getMapImage())
+        self.buttonLocationZoomIn.setEnabled(True)
+        self.buttonLocationZoomOut.setEnabled(True)
         self.buttonPredictionNext.setEnabled(True)
 
         self.propertyManager.refreshCurrentAttributes()
