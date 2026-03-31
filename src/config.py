@@ -28,6 +28,7 @@ class Configuration:
         self.ml_ames_model = XGBRegressor()
         self.ml_ames_model.load_model(resourcePath("model/xgb_ames.json"))
 
+        self.ml_ames_ohe_bsmt: OneHotEncoder = joblib.load(resourcePath("model/ohe_ames_Basement.joblib"))
         self.ml_ames_ohe_type: OneHotEncoder = joblib.load(resourcePath("model/ohe_ames_BldgType.joblib"))
         self.ml_ames_ohe_heat: OneHotEncoder = joblib.load(resourcePath("model/ohe_ames_Heating.joblib"))
         self.ml_ames_scaler: StandardScaler = joblib.load(resourcePath("model/scl_ames.joblib"))
@@ -78,11 +79,14 @@ class Configuration:
     def predictProperty(self, prop: Property):
         ames_prop = prop.toAmesModel()
 
-        transform_type = self.ml_ames_ohe_type.transform([[ames_prop[0]]]).data  # type: ignore
-        ames_prop[0] = float(transform_type[0]) if len(transform_type) > 0 else 1
+        transform_bsmt = self.ml_ames_ohe_bsmt.transform([[ames_prop[1]]]).data  # type: ignore
+        ames_prop[1] = float(transform_bsmt[0]) if len(transform_bsmt) > 0 else 1
 
-        transform_heat = self.ml_ames_ohe_heat.transform([[ames_prop[4]]]).data  # type: ignore
-        ames_prop[4] = float(transform_heat[0]) if len(transform_heat) > 0 else 1
+        transform_type = self.ml_ames_ohe_type.transform([[ames_prop[3]]]).data  # type: ignore
+        ames_prop[3] = float(transform_type[0]) if len(transform_type) > 0 else 1
+
+        transform_heat = self.ml_ames_ohe_heat.transform([[ames_prop[8]]]).data  # type: ignore
+        ames_prop[8] = float(transform_heat[0]) if len(transform_heat) > 0 else 1
 
         ames_prop = self.ml_ames_scaler.transform([ames_prop])
         price_ames = self.ml_ames_model.predict(ames_prop)

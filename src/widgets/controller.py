@@ -43,24 +43,25 @@ PlaceholderType = TypeVar("PlaceholderType", bound=QObject)
 TABLE_COLUMN_NAMES = {
     TableMode.PREDICTION_RANGE: ("Home Address", "Prediction", "Lower Bound", "Upper Bound"),
     TableMode.PROPERTY_INFO: ("Home Address", "Prediction", "Year Built", "Type", "Acreage", "Annual Tax"),
-    TableMode.HOME_INFO: ("Home Address", "Prediction", "Square Footage", "Bedrooms", "Bathrooms", "Heating", "A/C", "Garages")
+    TableMode.HOME_INFO: ("Home Address", "Prediction", "Sq. Ft.", "Beds", "Baths", "Floors", "Basement", "Heating", "Garages")
 }
 
 def propertyNameToValue(name: str, prop: Property):
     match name:
         case "Home Address": return f" {prop.location.address}"
-        case "Prediction": return f"${round(prop.price, -2):,.2f}"
-        case "Lower Bound": return f"${round(prop.price * 0.835, -2):,.2f}"
-        case "Upper Bound": return f"${round(prop.price * 1.18, -2):,.2f}"
+        case "Prediction": return f"${round(prop.price, -2):,.0f}"
+        case "Lower Bound": return f"${round(prop.price * 0.835, -2):,.0f}"
+        case "Upper Bound": return f"${round(prop.price * 1.18, -2):,.0f}"
         case "Year Built": return str(prop.year_built)
         case "Type": return prop.prop_type
         case "Acreage": return f"{prop.acreage:.3f}"
         case "Annual Tax": return f"${prop.tax_annual:,.2f}"
-        case "Square Footage": return str(prop.square_feet)
-        case "Bedrooms": return str(prop.beds)
-        case "Bathrooms": return str(prop.totalBaths())
-        case "Heating": return prop.sys_heat if prop.sys_heat is not None else "No"
-        case "A/C": return "Yes" if prop.sys_ac else "No"
+        case "Sq. Ft.": return str(prop.square_feet)
+        case "Beds": return str(prop.beds)
+        case "Baths": return str(prop.totalBaths())
+        case "Floors": return str(prop.floors)
+        case "Basement": return prop.basement
+        case "Heating": return prop.heat
         case "Garages": return str(prop.garages)
         case _: return ""
 
@@ -141,15 +142,13 @@ class Controller(QWidget):
         self.editorPropertyTax = self.getWidgetChild(QDoubleSpinBox, "editor_property_tax_annual")
 
         self.editorHomeFootage = self.getWidgetChild(QSpinBox, "editor_home_footage")
-        self.editorHomeFloors = self.getWidgetChild(QSpinBox, "editor_home_floors")
         self.editorHomeBeds = self.getWidgetChild(QSpinBox, "editor_home_bedrooms")
         self.editorHomeBaths = self.getWidgetChild(QSpinBox, "editor_home_bathrooms")
         self.editorHomeHalfBaths = self.getWidgetChild(QSpinBox, "editor_home_halfbaths")
 
-        self.buttonHomeHeat = self.getWidgetChild(QPushButton, "button_home_heat")
+        self.editorHomeFloors = self.getWidgetChild(QSpinBox, "editor_home_floors")
+        self.editorHomeBasement = self.getWidgetChild(QComboBox, "editor_home_basement")
         self.editorHomeHeat = self.getWidgetChild(QComboBox, "editor_home_heat")
-        self.buttonHomeAir = self.getWidgetChild(QPushButton, "button_home_ac")
-        self.buttonHomeGarage = self.getWidgetChild(QPushButton, "button_home_garage")
         self.editorHomeGarage = self.getWidgetChild(QSpinBox, "editor_home_garage")
 
         # STARTUP #
@@ -277,16 +276,14 @@ class Controller(QWidget):
         self.editorPropertyTax.setValue(self.currentProperty.tax_annual)
 
         self.editorHomeFootage.setValue(self.currentProperty.square_feet)
-        self.editorHomeFloors.setValue(self.currentProperty.floors)
         self.editorHomeBeds.setValue(self.currentProperty.beds)
         self.editorHomeBaths.setValue(self.currentProperty.baths)
         self.editorHomeHalfBaths.setValue(self.currentProperty.baths_half)
 
-        self.buttonHomeHeat.setChecked(self.currentProperty.sys_heat is not None)
-        self.editorHomeHeat.setCurrentText("Central" if self.currentProperty.sys_heat is None else self.currentProperty.sys_heat)
-        self.buttonHomeAir.setChecked(self.currentProperty.sys_ac)
-        self.buttonHomeGarage.setChecked(self.currentProperty.garages > 0)
-        self.editorHomeGarage.setValue(max(self.currentProperty.garages, 1))
+        self.editorHomeFloors.setValue(self.currentProperty.floors)
+        self.editorHomeBasement.setCurrentText(self.currentProperty.basement)
+        self.editorHomeHeat.setCurrentText(self.currentProperty.heat)
+        self.editorHomeGarage.setValue(self.currentProperty.garages)
 
     def getPropertyEditors(self):
         if self.currentProperty is None: raise ValueError("getPropertyEditors(): No property to set to!")
@@ -301,14 +298,14 @@ class Controller(QWidget):
         self.currentProperty.tax_annual = self.editorPropertyTax.value()
 
         self.currentProperty.square_feet = self.editorHomeFootage.value()
-        self.currentProperty.floors = self.editorHomeFloors.value()
         self.currentProperty.beds = self.editorHomeBeds.value()
         self.currentProperty.baths = self.editorHomeBaths.value()
         self.currentProperty.baths_half = self.editorHomeHalfBaths.value()
 
-        self.currentProperty.sys_heat = self.editorHomeHeat.currentText() if self.buttonHomeHeat.isChecked() else None
-        self.currentProperty.sys_ac = self.buttonHomeAir.isChecked()
-        self.currentProperty.garages = self.editorHomeGarage.value() if self.buttonHomeGarage.isChecked() else 0
+        self.currentProperty.floors = self.editorHomeFloors.value()
+        self.currentProperty.basement = self.editorHomeBasement.currentText()
+        self.currentProperty.heat = self.editorHomeHeat.currentText()
+        self.currentProperty.garages = self.editorHomeGarage.value()
 
     @Slot()
     def predictionBackClicked(self):

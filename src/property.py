@@ -21,6 +21,12 @@ HEAT_TYPES = {
     "Other": "OthW"
 }
 
+BASEMENT_TYPES = {
+    "No Basement": "NA",
+    "Finished": "FN",
+    "Unfinished": "UF"
+}
+
 @dataclass
 class Property:
     price: float = 0
@@ -33,13 +39,13 @@ class Property:
     tax_annual: float = 2000.00
 
     square_feet: int = 1000
-    floors: int = 2
-    beds: int = 0
-    baths: int = 0
+    beds: int = 3
+    baths: int = 2
     baths_half: int = 0
 
-    sys_heat: str | None = "Central"
-    sys_ac: bool = True
+    floors: int = 2
+    basement: str = "No Basement"
+    heat: str = "Central"
     garages: int = 0
 
     def serialize(self):
@@ -60,15 +66,15 @@ class Property:
 
     def toAmesModel(self) -> list:
         return [
-            HOME_TYPES.get(self.prop_type, "1Fam"),
-            int(self.sys_ac),
-            self.floors,
-            self.garages,
-            HEAT_TYPES.get(self.sys_heat, "GasA"), # type: ignore
-            self.acreage * SQUARE_FEET_PER_ACRE, 
-            self.baths + self.baths_half,
+            self.acreage,
+            BASEMENT_TYPES.get(self.basement, "NA"), 
             self.beds,
-            self.square_feet,
+            HOME_TYPES.get(self.prop_type, "1Fam"),
+            self.floors,
+            self.baths,
+            self.garages,
+            self.baths_half,
+            HEAT_TYPES.get(self.heat, "GasA"),
             self.year_built
         ]
     
