@@ -97,5 +97,6 @@ class Configuration:
 
         price_merge = 0.97 * price_loc[0] + 0.03 * price_ames[0]
         # print(np.expm1((*price_loc, *price_ames, price_merge)))
+        result = float(np.expm1(price_merge))
 
-        return float(np.expm1(price_merge))
+        return result + ["No Basement", "Unfinished", "Finished"].index(prop.basement) * 20_000.0
