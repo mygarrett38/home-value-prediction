@@ -10,6 +10,7 @@ from PySide6.QtCore import (
     QEvent,
     Qt,
     QObject,
+    QMetaObject,
     Signal,
     Slot,
     QDate,
@@ -152,7 +153,11 @@ class Controller(QWidget):
         self.editorHomeGarage = self.getWidgetChild(QSpinBox, "editor_home_garage")
 
         # STARTUP #
-        self.pages.setCurrentIndex(1)
+        if len(self.configuration) == 0:
+            self.addClicked()
+            self.buttonPredictionBack.setVisible(False)
+        else:
+            self.pages.setCurrentIndex(1)
 
     def eventFilter(self, watched: QObject, event: QEvent) -> bool:
         match event.type():
@@ -164,15 +169,13 @@ class Controller(QWidget):
 
         return super().eventFilter(watched, event)
 
+    @Slot()
     def setTableAlignment(self):
         col_remaining_count = self.predictionTable.columnCount() - 1
         col_width = self.predictionTable.width()
         self.predictionTable.setColumnWidth(0, col_width * 1 // 3)
         for i in range(col_remaining_count):
             self.predictionTable.setColumnWidth(i + 1, col_width * 2 // (3 * col_remaining_count))
-
-        #for i in range(self.predictionTable.rowCount()):
-        #    self.predictionTable.setRowHeight(i, self.predictionTable.height() // 7)
 
     def refreshTable(self):
         tableMode = self.configuration.tableMode
@@ -198,7 +201,7 @@ class Controller(QWidget):
                     QItemSelectionModel.SelectionFlag.Select | QItemSelectionModel.SelectionFlag.Rows
                 )
 
-        self.setTableAlignment()
+        QMetaObject.invokeMethod(self, "setTableAlignment", Qt.ConnectionType.QueuedConnection) # type: ignore
     
     @Slot(bool)
     def settingsRequested(self, on: bool):
@@ -211,7 +214,7 @@ class Controller(QWidget):
     def currentPropertyChanged(self, prop: Property | None):
         self.currentProperty = prop
         self.editButton.setEnabled(prop is not None)
-        self.deleteButton.setEnabled(prop is not None)
+        self.deleteButton.setEnabled(prop is not None and len(self.configuration) > 1)
         self.predictionGraph.refresh(self.currentProperty)
         self.refreshTable()
 
@@ -308,7 +311,10 @@ class Controller(QWidget):
             if self.currentProperty not in self.configuration:
                 self.propertyManager.removeProperty()
                 self.currentPropertyChanged(None)
+            
             return
+        elif index == 1 and len(self.configuration) == 0:
+            self.buttonPredictionBack.setVisible(False)
 
         index -= 1
         self.form.setCurrentIndex(index)
@@ -326,6 +332,7 @@ class Controller(QWidget):
         self.getPropertyEditors()
         self.propertyManager.refreshCurrentAttributes()
 
+        self.buttonPredictionBack.setVisible(True)
         if index == self.form.count() - 1:
             self.buttonPredictionStart.setVisible(True)
             self.buttonPredictionNext.setVisible(False)
