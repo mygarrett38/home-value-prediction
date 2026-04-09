@@ -65,6 +65,14 @@ class GraphDisplay(FigureCanvas):
             }
 
             return prop_data[graphMode][graph_num]
+        
+        def seriesMax(s: pd.Series):
+            return s.max() if not s.empty else float("-inf")
+
+        def dataFrameSeriesMax(df: pd.DataFrame, /, df_idx: int, y_axis: bool):
+            col = Y_AXIS_NAMES[graphMode][df_idx] if y_axis else X_AXIS_NAMES[graphMode][df_idx]
+            lim = y_lim[df_idx][1] if y_axis else x_lim[df_idx][1]
+            return max(seriesMax(df[col]), lim)
 
         self.axes_m.clear()
         self.axes_s.clear()
@@ -89,8 +97,8 @@ class GraphDisplay(FigureCanvas):
                     group[graphMode][1] for group in [X_AXIS_NAMES, Y_AXIS_NAMES]
                 ])
 
-                df_mmax = (max(df_m[X_AXIS_NAMES[graphMode][0]].max(), x_lim[0][1]), max(df_m[Y_AXIS_NAMES[graphMode][0]].max(), y_lim[0][1]))
-                df_smax = (max(df_s[X_AXIS_NAMES[graphMode][1]].max(), x_lim[1][1]), max(df_s[Y_AXIS_NAMES[graphMode][1]].max(), y_lim[1][1]))
+                df_mmax = (dataFrameSeriesMax(df_m, df_idx=0, y_axis=False), dataFrameSeriesMax(df_m, df_idx=0, y_axis=True))
+                df_smax = (dataFrameSeriesMax(df_s, df_idx=1, y_axis=False), dataFrameSeriesMax(df_s, df_idx=1, y_axis=True))
                 df_moff = np.divide(df_mmax, 20.0)
                 df_soff = np.divide(df_smax, 20.0)
                 x_lim = ((0 - df_moff[0], df_mmax[0] + df_moff[0]), (0 - df_soff[0], df_smax[0] + df_soff[0]))
@@ -107,7 +115,7 @@ class GraphDisplay(FigureCanvas):
                 ], columns=["Minimum", "Prediction", "Maximum"])
                 df_m.insert(0, "Property", [prop.location.address for prop in self.configuration])
 
-                x_max = max(df_m["Maximum"].max(), 1000)
+                x_max = max(seriesMax(df_m["Maximum"]), 1000)
                 x_lim = ((x_max / -20.0, x_max * 1.05), (0, 0))
                 y_lim = ((-0.5, len(self.configuration) - 0.5), (0, 0))
 
