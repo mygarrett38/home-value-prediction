@@ -1671,7 +1671,8 @@
              <enum>Qt::FocusPolicy::NoFocus</enum>
             </property>
             <property name="styleSheet">
-             <string notr="true">QTableWidget::item:!selected:hover { background-color: transparent; }</string>
+             <string notr="true">QTableWidget::item:!selected:hover { background-color: transparent; }
+QTableWidget::item:selected { background-color: rgba(60, 120, 255, 128); }</string>
             </property>
             <property name="verticalScrollBarPolicy">
              <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
@@ -2288,10 +2289,10 @@
   border-radius: 10px;
 }
 * &gt; PropertyDisplay:hover {
-  background-color: rgba(255, 255, 255, 10);
+  background-color: rgba(128, 128, 128, 20);
 }
 * &gt; PropertyDisplay[selected=&quot;1&quot;] {
-  background-color: rgba(255, 255, 255, 30);
+  background-color: rgba(128, 128, 128, 40);
 }</string>
            </property>
            <property name="verticalScrollBarPolicy">
