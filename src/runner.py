@@ -65,10 +65,9 @@ class HomeValueApplication(QApplication):
 
     @Slot(Property)
     def locationRequested(self, prop: Property):
-        if prop.location == self.lastLocation: return
-        self.lastLocation = prop.location
-
-        prop.location.requestLocation(self.location_client)
+        if prop.location != self.lastLocation:
+            self.lastLocation = prop.location
+            prop.location.requestLocation(self.location_client)
         self.processLocation.emit()
 
     @classmethod
