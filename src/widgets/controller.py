@@ -1,4 +1,4 @@
-from itertools import cycle
+from typing import Literal
 
 from config import Configuration, GraphMode, TableMode
 from property import Property
@@ -203,6 +203,16 @@ class Controller(QWidget):
 
         QMetaObject.invokeMethod(self, "setTableAlignment", Qt.ConnectionType.QueuedConnection) # type: ignore
     
+    def setView(self, view: Literal["prediction", "graph"]):
+        visualizeViewed = view == "graph"
+
+        self.pages.setCurrentIndex(1 if visualizeViewed else 0)
+        self.settingsButton.setEnabled(visualizeViewed)
+        self.historyButtons.setVisible(visualizeViewed)
+
+        if visualizeViewed:
+            self.propertyManager.setPredictionInProgress(-1)
+
     @Slot(bool)
     def settingsRequested(self, on: bool):
         self.pages.setCurrentIndex(2 if on else 1)
@@ -220,10 +230,8 @@ class Controller(QWidget):
 
     @Slot()
     def addClicked(self):
-        self.pages.setCurrentIndex(0)
+        self.setView("prediction")
         self.buttonPredictionNext.setEnabled(False)
-        self.settingsButton.setEnabled(False)
-        self.historyButtons.hide()
 
         self.currentProperty = Property()
         self.propertyManager.addProperty(self.currentProperty)
@@ -231,9 +239,8 @@ class Controller(QWidget):
 
     @Slot()
     def editClicked(self):
-        self.pages.setCurrentIndex(0)
-        self.settingsButton.setEnabled(False)
-        self.historyButtons.hide()
+        self.setView("prediction")
+        self.buttonPredictionNext.setEnabled(True)
 
         if self.currentProperty.location.getCoordinates() != (0.0, 0.0) and self.currentProperty.location.getMapImage().isNull(): # type: ignore
             self.requestLocation.emit(self.currentProperty)
@@ -303,10 +310,7 @@ class Controller(QWidget):
     def predictionBackClicked(self):
         index = self.form.currentIndex()
         if index == 0:
-            self.pages.setCurrentIndex(1)
-            self.settingsButton.setEnabled(True)
-            self.historyButtons.show()
-            self.propertyManager.setPredictionInProgress(-1)
+            self.setView("graph")
             
             if self.currentProperty not in self.configuration:
                 self.propertyManager.removeProperty()
@@ -364,14 +368,11 @@ class Controller(QWidget):
     def predictionProcessed(self, prop: Property):
         self.currentPropertyChanged(prop)
         self.propertyManager.refreshCurrentAttributes()
-        self.propertyManager.setPredictionInProgress(-1)
-        
+
+        self.setView("graph")
         self.form.setCurrentIndex(0)
-        self.pages.setCurrentIndex(1)
-        self.settingsButton.setEnabled(True)
         self.buttonPredictionStart.setVisible(False)
         self.buttonPredictionNext.setVisible(True)
-        self.historyButtons.show()
 
     @Slot(str)
     def graphModeChanged(self, graphMode: str):
