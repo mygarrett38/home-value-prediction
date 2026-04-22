@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 
 from location import Location
 
+# These are conversion dictionaries that help convert display values to ML model values
 SQUARE_FEET_PER_ACRE = 43560
 
 HOME_TYPES = {
@@ -21,6 +22,7 @@ HEAT_TYPES = {
     "Other": "OthW"
 }
 
+# The dataclass is used to make initialization and access easier throughout the program
 @dataclass
 class Property:
     price: float = 0
@@ -49,9 +51,11 @@ class Property:
         }
     
     def totalBaths(self):
+        """ Returns the total number of bathrooms, including the half bathroom weights. """
         return self.baths + self.baths_half / 2.0
     
     def attributes(self):
+        """ Returns the attributes listed below the property on the property manager screen. """
         return [
             f"{self.square_feet:,} sq. ft.",
             f"{self.beds} bed",
@@ -59,6 +63,7 @@ class Property:
         ]
 
     def toAmesModel(self) -> list:
+        """ Converts this property into a format that the Ames ML model can use. """
         return [
             HOME_TYPES.get(self.prop_type, "1Fam"),
             int(self.sys_ac),
@@ -73,6 +78,7 @@ class Property:
         ]
     
     def toLocationModel(self) -> list:
+        """ Converts this property into a format that the Location ML model can use. """
         return [
             self.beds,
             self.baths + self.baths_half,

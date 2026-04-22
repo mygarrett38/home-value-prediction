@@ -37,6 +37,7 @@ class HomeValueApplication(QApplication):
         # Load any existing data
         self.configuration = self.load()
 
+        # Load the interface
         ui_loader = QUiLoader(self)
         ui_loader.registerCustomWidget(Controller)
         ui_loader.registerCustomWidget(GraphDisplay)
@@ -53,18 +54,23 @@ class HomeValueApplication(QApplication):
         self.controller.requestLocation.connect(self.locationRequested)
         self.processLocation.connect(self.controller.locationProcessed)
 
+        # Show the user!
         window.showMaximized()
+
+        # Save and close the app when the X is clicked
         window.destroyed.connect(self.save)
         window.destroyed.connect(self.quit)
 
     @Slot(Property)
     def predictionRequested(self, prop: Property):
+        """ Performs the prediction on the provided property, and stores it in the price field. """
         prop.price = self.configuration.predictProperty(prop)
         if prop not in self.configuration: self.configuration.addProperty(prop)
         self.processPrediction.emit(prop)
 
     @Slot(Property)
     def locationRequested(self, prop: Property):
+        """ Performs a location request for the provided property. """
         if prop.location != self.lastLocation:
             self.lastLocation = prop.location
             prop.location.requestLocation(self.location_client)
@@ -72,15 +78,18 @@ class HomeValueApplication(QApplication):
 
     @classmethod
     def defaultConfigPath(cls):
+        """ Returns the data path where the default JSON file is stored. """
         return user_data_dir("home-value-prediction", "su-cis-487")
     
     @classmethod
     def defaultConfigFile(cls, path: str | None = None):
+        """ Returns the data file name where the default JSON file is stored. """
         if path is None: path = cls.defaultConfigPath()
         return os.path.join(path, "config.json")
     
     @classmethod
     def deserialize(cls, obj: dict):
+        """ Creates objects based on incoming JSON data. """
         if "version" in obj:
             return Configuration(**obj)
         elif "coordinates" in obj:
@@ -89,6 +98,7 @@ class HomeValueApplication(QApplication):
             return Property(**obj)
     
     def load(self, path: str | None = None):
+        """ Loads the JSON configuration using the given path. Creates an empty configuration on error. """
         with open(self.defaultConfigFile(path)) as config_file:
             try: result = json.load(config_file, object_hook=self.deserialize)
             except Exception as error:
@@ -97,6 +107,7 @@ class HomeValueApplication(QApplication):
         return result
 
     def save(self, path: str | None = None):
+        """ Saves the JSON configuration to the given path (or the default path). """
         if type(path) != str: path = None
 
         def serialize(config: Configuration): return config.serialize()
@@ -104,5 +115,6 @@ class HomeValueApplication(QApplication):
         with open(self.defaultConfigFile(path), "wt") as config_file:
             json.dump(self.configuration, config_file, default=serialize)
 
+# This runs the application (also runs in the .exe)
 if __name__ == "__main__":
     sys.exit(HomeValueApplication(sys.argv).exec())

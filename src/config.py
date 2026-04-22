@@ -91,7 +91,8 @@ class Configuration:
         loc_prop = self.ml_loc_scaler.transform([loc_prop])
         price_loc = self.ml_loc_model.predict(loc_prop)
 
+        # Weighted more for the location because it determines the price a lot more than the small features
+        #   of the Ames model
         price_merge = 0.97 * price_loc[0] + 0.03 * price_ames[0]
-        # print(np.expm1((*price_loc, *price_ames, price_merge)))
 
         return float(np.expm1(price_merge))

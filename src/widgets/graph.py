@@ -52,6 +52,14 @@ class GraphDisplay(FigureCanvas):
         self.refresh(None)
 
     def refresh(self, currentProperty: Property | None):
+        """
+            Creates the graph. 
+
+            Each graph is created on the fly to accommodate the changes in graph mode and property attributes.
+            df_m indicates the Main graph, while df_s indicates the secondary graph
+            pandas is used extensively to properly organize the data for matplotlib to generate the graphs
+        
+        """
         graphMode = self.configuration.graphMode
 
         x_lim = list(X_AXIS_SCALES[graphMode])

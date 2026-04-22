@@ -14,6 +14,7 @@ def resourcePath(rel_path: str):
         # For PyInstaller
         return os.path.join(sys._MEIPASS, rel_path) # type: ignore
     except Exception:
+        # For debugging
         return os.path.join(os.path.dirname(__file__), f"../{rel_path}")
 
 class Location:
@@ -49,6 +50,9 @@ class Location:
         }
     
     def requestMap(self, client: googlemaps.Client):
+        # Most of this is provided in the Google Maps API docs
+        # The arguments are specific to us in that they allow the map to fit on our screen
+        #   with the appropriate zoom
         map_args = {
             "size": (540, 420),
             "zoom": 14,
@@ -68,6 +72,8 @@ class Location:
         self.mapImage = pixmap
 
     def requestLocation(self, client: googlemaps.Client):
+        # Most of this is provided in the Google Maps API docs
+        # Proper error checking has been implemented in case of problems with connections or location
         result: dict = {}
         try:
             result = client.geocode(self.address, components={"country": "US", "postal_code": self.zip_code})[0] # type: ignore
@@ -79,6 +85,7 @@ class Location:
             QMessageBox.information(None, "Location Error", "There was an error requesting this address.\n\nPlease try again.")
             return
 
+        # This extracts the actual address and coordinates from the response
         front_address_components = result["address_components"][:1]
 
         if [obj["types"][0] for obj in front_address_components] == ["street_address", "route"]:
@@ -89,6 +96,7 @@ class Location:
 
     @staticmethod
     def load():
+        # Does not work if the API key is missing!
         dotenv.load_dotenv(resourcePath(".env"))
         apiKey = os.getenv("API_KEY")
         if apiKey is None:

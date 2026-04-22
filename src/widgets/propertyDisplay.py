@@ -25,6 +25,8 @@ def resetStylesheet(widget: QWidget):
     widget.setStyleSheet(ss)
 
 
+# This holds each property within the interface
+# It handles selection as well as properly displaying the property attributes
 class PropertyDisplay(QWidget):
     selected = Signal(bool)
 
@@ -93,6 +95,8 @@ class PropertyDisplay(QWidget):
         self.setObjectName(self.prop.location.address)
 
 
+# This class is here to display all the PropertyDisplays in list form
+# It also handles selection and editing
 class PropertyDisplayManager(QWidget):
     propertySelected = Signal(Property)
 
