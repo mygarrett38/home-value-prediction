@@ -2,13 +2,15 @@
 
 ### CIS 487 Machine Learning Project Files
 
-Use the model.py file to run the machine learning model.
+Dependency package install command:
 
-Use the runner.py file to run the UI.
+`python -m pip install pyside6 sklearn xgboost python-dotenv googlemaps numpy pandas matplotlib joblib platformdirs`
 
-Package install command:
+All of these packages must be installed for Home Value Prediction to build.
 
-`python -m pip install pyside6 xgboost python-dotenv googlemaps numpy pandas matplotlib joblib`
+To run Home Value Prediction from the command line:
+
+`python src/runner.py`
 
 Create the executable using this command:
 
